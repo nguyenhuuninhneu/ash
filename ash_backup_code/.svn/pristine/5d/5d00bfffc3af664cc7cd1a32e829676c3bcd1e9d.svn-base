@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = @ViewBag.Title;
+    Layout = "~/Views/Shared/_LayoutPrintView.cshtml";
+}
+@model Web.Model.tbl_News
+<div class="row content-space">
+    <!-- start right content news -->
+    <div class="col-md-12 col-xs-12">
+        <div class="detail-news" style="padding-top: 20px;">
+            <h1 class="title">@Model.Title</h1>
+            <div class="detail-info">
+                Đăng vào @string.Format("{0:dd/MM/yyyy}", Model.CreatedDate)
+            </div>
+            <div class="detail-info">
+                <div class="addthis_inline_share_toolbox"></div>
+            </div>
+            <div class="detail-content">
+                @Html.Raw(Model.Details)
+            </div>
+            <div class="detail-info">
+                <div class="addthis_inline_share_toolbox"></div>
+            </div>
+        </div>
+    </div>
+</div>

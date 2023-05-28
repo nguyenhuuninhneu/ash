@@ -1,0 +1,58 @@
+﻿@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model Web.Model.tbl_DanhMucTaiLieu
+@{
+    var lstParent = (List<tbl_DanhMucTaiLieu>)TempData["lstParent"];
+    lstParent.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + " " + g.Name);
+}
+<style>
+    .select2-container .select2-choice .select2-arrow b {
+        background: none;
+    }
+</style>
+
+@using (Ajax.BeginForm("Edit", "DanhMucTaiLieu", null,
+                                        new AjaxOptions
+                                        {
+                                            HttpMethod = "POST",
+                                            OnSuccess = "dmtailieu.onEditSuccess"
+                                        },
+                                        new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("DonViCha")</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(g => g.ParentID, new SelectList(lstParent, "ID", "Name"), "--- Đơn vị cha ---", new { @class = "form-control selectAdd" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("ThuTu")</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", @placeholder = "Thứ tự...", value = "0" })
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input type="checkbox" id="Status" name="Status" @(Model.Status ? "checked" : "") value="true">
+                <label for="Status">@ConfigTextController.GetValueCFT("KichHoat")</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">@ConfigTextController.GetValueCFT("CapNhat")</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $('#ParentID').select2();
+    });
+</script>

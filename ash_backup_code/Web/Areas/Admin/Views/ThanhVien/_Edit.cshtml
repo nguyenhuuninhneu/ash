@@ -1,0 +1,150 @@
+﻿<link rel="stylesheet" href="/Content/Admin/assets/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="/Content/Admin/assets/colorpicker/js/colorpicker.js"></script>
+<script src="/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+@using Web.Core
+@using Web.Model
+@using Web.Model.CustomModel
+@model tbl_User
+@{
+    var lstdonvi = (List<tbl_DMChung>)TempData["donvi"];
+    lstdonvi.ForEach(g => g.Ten = string.Concat(Enumerable.Repeat("--", g.Level)) + " " + g.Ten);
+    var lstchucvu = (List<tbl_ChucVu>)TempData["chucvu"];
+    var PageNoiBoChecked = new List<int>();
+    if (Model.PageNoiBo != null)
+    {
+        PageNoiBoChecked = Model.PageNoiBo.Split(',').Select(int.Parse).ToList();
+    }
+    int sinhvien = (int)EnumHelper.TrangNoiBo.SinhVien;
+    int giangvien = (int)EnumHelper.TrangNoiBo.GiangVien;
+}
+@using (Ajax.BeginForm("Edit", "ThanhVien", null,
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnSuccess = "thanhvien.onEditSuccess"
+                },
+                new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g => g.ID)
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên đăng nhập</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.UserName, new { @class = "form-control ", placeholder = "Tên danh mục"})
+        </div>
+    </div>
+    @Html.HiddenFor(g => g.Password)
+    <div class="form-group">
+        <label class="col-md-2 control-label">Họ tên</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.FullName, new { @class = "form-control", placeholder = "Họ tên" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Email</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Email, new { @class = "form-control ", placeholder = "Email" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Điện thoại bàn</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Telephone, new { @class = "form-control", placeholder = "Điện thoại bàn" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Di động</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Phone, new { @class = "form-control", placeholder = "Số di động" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đơn Vị</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.DonviId, new SelectList(lstdonvi, "Id", "Ten"), "--Chọn Đơn Vị--", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Chức Vụ</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.ChucVuId, new SelectList(lstchucvu, "ID", "Name"), "--Chọn Chức Vụ--", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsBanChapHanh" name="IsBanChapHanh" type="checkbox" value="true" @(Model.IsBanChapHanh ? "checked" : "")>
+                <label for="IsBanChapHanh">
+                    Ban Chấp Hành
+                </label>
+            </div>
+        </div>
+    </div>
+    @*<div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsShow" name="IsShow" type="checkbox" value="true" @(Model.IsShow ? "checked" : "")>
+                <label for="IsShow">
+                    Hiển thị trang đơn vị
+                </label>
+            </div>
+        </div>
+    </div>*@
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Active" name="Active" type="checkbox" value="true" @(Model.Active ? "checked" : "")>
+                <label for="Active">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            UserName:
+            {
+                required: true
+            },
+            Password:
+            {
+                required: true
+            },
+            FullName:
+            {
+                required: true
+            },
+            Email: {
+                email: true,
+            }
+        },
+            messages:
+            {
+                UserName:
+                {
+                    required: "Chưa nhập tên tài khoản"
+                },
+                Password:
+                {
+                    required: "Chưa nhập mật khẩu"
+                },
+                FullName:
+                {
+                    required: "Chưa nhập họ tên"
+                },
+                Email: {
+                    email: "Email không đúng định dạng",
+
+                }
+            }
+        });
+        thanhvien.initcheckall();
+    });
+</script>

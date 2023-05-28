@@ -1,0 +1,57 @@
+﻿<script src="/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+@using Web.Model
+@model Web.Model.tbl_Magazine
+@using (Ajax.BeginForm("Edit", "TapChi", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "magazine.onEditSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g=>g.ID)
+    @Html.HiddenFor(g=>g.CreatedDate)
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên tạp chi</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên tạp chi" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ảnh bìa</label>
+        <div class="col-md-10">
+            @Html.Partial("_Attachment", new { Name = "Images", Multiple = false, Value = Model.Images })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">File</label>
+        <div class="col-md-10">
+            @Html.Partial("_Attachment", new { Name = "FileAttack", Multiple = false, Value = Model.FileAttack })
+        </div>
+    </div>
+
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên website"
+                }
+            }
+        });
+    });
+</script>

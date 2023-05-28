@@ -1,0 +1,87 @@
+﻿@using Web.Model
+@model Web.Model.tbl_ThamDoYKien
+<script src="~/AppJs/ThamDoYKien.js"></script>
+@using (Ajax.BeginForm("Edit", "ThamDoYKien", null,
+                                        new AjaxOptions
+                                        {
+                                            HttpMethod = "POST",
+                                            OnSuccess = "thamDoYKien.onEditSuccess"
+                                        },
+                                        new { @id = "basicForm", @class = "form-horizontal" }
+                                        ))
+{
+    @Html.HiddenFor(g => g.ID)
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên<span style="color:red">(*)</span></label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control ", placeholder = "Tên danh mục" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Danh mục cha<span style="color:red">(*)</span></label>
+        @{
+            var lstLevel = (List<tbl_ThamDoYKien>)TempData["lstLevel"];
+            lstLevel.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.ParentID, new SelectList(lstLevel, "ID", "Name"), "Chọn danh mục cha", new { @class = "form-control width300", @id = "ParentID" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "Thứ tự" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Trạng thái</label>
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" @(Model.Status == true ? "checked" : "") value="true">
+                <label for="Status">
+                </label>
+            </div>
+        </div>
+    </div>
+  
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+            }
+<script>
+    $(document).ready(function () {
+        $('#ParentID').select2();
+        $("#basicForm").validate({
+            rules:
+            {
+                Name:
+                {
+                    required: true
+                },
+                Ordering:
+                    {
+                        digits:true
+                    }
+
+
+            },
+            messages:
+            {
+                Name:
+                {
+                    required: "Nhập tên "
+                },
+                Ordering:
+                    {
+                        digits:"Thứ tự nhập kiểu số"
+                    }
+            },
+            highlight: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            }
+        });
+    })
+</script>

@@ -1,0 +1,178 @@
+﻿@using Web.Model;
+@{
+    ViewBag.Title = "Danhba";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+    var lstshowdonviaki = (List<tbl_DMChung>)TempData["ABC"];
+    var lstdonvi1 = (List<tbl_DMChung>)TempData["DonVi"];
+    lstdonvi1.ForEach(g => g.Ten = string.Concat(Enumerable.Repeat("--", g.Level)) + " " + g.Ten);
+    var lstchucvu = (List<tbl_ChucVu>)TempData["Chucvu"];
+}
+@using System.Configuration
+@using Web.Model
+@using Web.Core
+@using PagedList;
+@using PagedList.Mvc
+@model IPagedList<tbl_User>
+<div class="body-content ">
+    <div class="content-right col-md-12 col-xs-12 col-sm-12 bordernone">
+        @using (Html.BeginForm("DanhBa", "NoiBo", FormMethod.Get))
+            {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tìm kiếm Danh Bạ</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row" id="test">
+                                <div class="col-md-12">
+                                    <div class="form-group full_width" style="margin-bottom: 6px !important">
+                                        <label class="control-label col-md-3">Đơn vị</label>
+                                        <div class="col-md-9">
+                                            @Html.DropDownList("donvi", new SelectList(lstdonvi1, "Id", "Ten"), "--Chọn Đơn Vị--", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group full_width" style="margin-bottom: 6px !important">
+                                        <label class="control-label col-md-3">Chức Vụ</label>
+                                        <div class="col-md-9">
+                                            @Html.DropDownList("chucvu", new SelectList(lstchucvu, "Id", "Name"), "--Chọn Chức Vụ--", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group full_width" style="margin-bottom: 0px">
+                                        <label class="control-label col-md-3">Họ tên</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="hoten" name="hoten" placeholder="Họ tên" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <label class="control-label col-md-3"></label>
+                                    <div class="col-md-9">
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Danh sách Danh Bạ</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <table class="table cabn_datatable table-bordered">
+                                    <tbody>
+                                        <tr class="topheader text-center">
+                                            <td>Họ tên</td>
+                                            <td>Chức Vụ</td>
+                                            <td>Điện Thoại</td>
+                                            <td>Di Động</td>
+                                            <td>Email</td>
+                                        </tr>
+                                        @{
+                                            var lstIddonvi1 = Model.Select(s => s.DonviId).ToList();
+                                            var lstdonvishow1 = lstshowdonviaki.Where(s => lstIddonvi1.Contains(s.ID)).ToList();
+                                            var lstIddonvi2 = lstdonvishow1.Select(s => s.ParentID).ToList();
+                                            var lstdonvishow2 = lstshowdonviaki.Where(s => lstIddonvi2.Contains(s.ID)).ToList();
+                                            var lstIddonvi3 = lstdonvishow2.Select(s => s.ParentID).ToList();
+                                            var lstdonvishow3 = lstshowdonviaki.Where(s => lstIddonvi3.Contains(s.ID)).ToList();
+                                        }
+                                        @foreach (var item in lstdonvishow3)
+                                        {
+                                            var lstshow2 = lstdonvishow2.Where(s => s.ParentID == item.ID).ToList();
+                                            <tr class="donvi1"><td align="left" colspan="5" class="tddonvi1">@item.Ten</td></tr>
+                                            foreach (var ion in lstshow2)
+                                            {
+                                                var lstshow1 = lstdonvishow1.Where(s => s.ParentID == ion.ID).ToList();
+                                                <tr class="donvi2"><td align="left" colspan="5" class="tddonvi2">@ion.Ten</td></tr>
+                                                foreach (var ic in lstshow1)
+                                                {
+                                                    <tr class="donvi3"><td align="left" colspan="5" class="tddonvi3">@ic.Ten</td></tr>
+                                                    var listok = Model.Where(s => s.DonviId == ic.ID).ToList();
+                                                    foreach (var user in listok)
+                                                    {
+                                                        var chucvumoel = lstchucvu.Where(s => s.ID == user.ChucVuId).SingleOrDefault();
+                                                        <tr>
+                                                            <td>@user.FullName</td>
+                                                            @if (chucvumoel != null)
+                                                            {
+                                                                <td>@chucvumoel.Name</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+                                                            <td>@user.Telephone</td>
+                                                            <td>@user.Phone</td>
+                                                            <td>@user.Email</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .name_child {
+        width: 100%;
+        height: 28px;
+        color: #000;
+        text-indent: 10px;
+        font-weight: bold;
+        padding: 0 !important;
+    }
+
+    tr.topheader {
+        background: #f2dede;
+    }
+
+        tr.topheader td {
+            color: #000;
+            font-weight: bold;
+        }
+
+    .single_text {
+        width: 100%;
+        height: 28px;
+        color: #000;
+        text-indent: 10px;
+        font-weight: bold;
+        padding: 0 !important;
+    }
+
+    tr.donvi1 {
+        background: #055296;
+    }
+
+    .tddonvi1 {
+        color: #fff;
+    }
+
+    tr.donvi2 {
+        background: #d9edf7;
+    }
+
+    tr.donvi3 {
+        background: #ddd;
+    }
+</style>

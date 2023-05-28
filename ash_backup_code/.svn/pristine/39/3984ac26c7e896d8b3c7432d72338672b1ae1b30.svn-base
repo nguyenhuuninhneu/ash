@@ -1,0 +1,206 @@
+﻿
+<script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+@using Web.Model
+@model Web.Model.tbl_TTHC
+@using (Ajax.BeginForm("Add", "TTHC", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "tthc.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+            var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LangCode, new SelectList(languages, "Code", "Name"), new { @class = "form-control" })
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">1. Tiêu đề</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Tieude, new { @class = "form-control"})
+        </div>
+    </div> 
+    <div class="form-group">
+        <label class="col-md-2 control-label">2. Lĩnh vực</label>
+        @{
+    var lstLinhVuc = (List<tbl_LinhVucTTHC>)TempData["LinhVuc"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LinhVucId, new SelectList(lstLinhVuc, "ID", "Name"), "--Lĩnh vực TTHC--", new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">3. Đơn vị</label>
+        @{
+    var lstDonVi = (List<tbl_DonViTTHC>)TempData["DonVi"];
+    lstDonVi.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.DonViId, new SelectList(lstDonVi, "ID", "Name"), "--Đơn vị thực hiện--", new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">4, Thủ tục</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.ThuTuc, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">5. Trình tự thực hiện</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.TrinhTuThucHien, new { @class = "form-control ckeditor_vx" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">6. Cách thức thực hiện</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.CachThucThucHien, new { @class = "form-control", @rows=5 })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">7. Thành phần số lượng hồ sơ</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.ThanhPhanHoSo, new { @class = "form-control ckeditor_vx" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">8. Thời hạn giải quyết</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.ThoiHan, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">9. Đối tượng thực hiện</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.DoiTuong, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">10. Cơ quan thực hiện</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.CoQuanThucHien, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">11. Kết quả thực hiện thủ tục</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.KetQua, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">12. Lệ phí</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.LePhi, new { @class = "form-control ckeditor_vx" })
+        </div>
+    </div>
+    
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Tên mẫu đơn, mẫu tờ khai</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.TenMauDon, new { @class = "form-control" })
+        </div>
+    </div>*@
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">13. Yêu cầu, điều kiện thực hiện</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.YeuCauDieuKien, new { @class = "form-control ckeditor_vx" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">14. Cơ sở pháp lý</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.CoSoPhapLy, new { @class = "form-control ckeditor_vx" })
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">15. Mẫu đơn, tờ khai</label>
+        <div class="col-md-10">
+            @Html.Partial("_Attachment", new { Name = "Attachment", Multiple = true })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" id="AllowComment" name="AllowComment" value="1" checked>
+                <label for="AllowComment"> Cho phép bình luận</label>
+            </div>
+        </div>
+    </div>   
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" checked="" value="1">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Tieude:
+            {
+                required: true
+            },
+            LangCode:
+            {
+                required: true
+            },
+            LinhVucId:
+            {
+                required: true
+            },
+            DonViId:
+                {
+                    required: true
+                }
+        },
+            messages:
+            {
+                Tieude:
+                {
+                    required: "Chưa nhập tiêu đề TTHC"
+                },
+                LangCode: {
+                    required: "Bạn chưa chọn ngôn ngữ"
+                },
+                LinhVucId:
+                {
+                    required: "Bạn chưa chọn lĩnh vực TTHC"
+                },
+                DonViId:
+                {
+                    required: "Bạn chưa chọn đơn vị thực hiện"
+                }
+            }
+        });
+    });
+</script>

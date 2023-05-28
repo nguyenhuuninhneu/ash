@@ -1,0 +1,160 @@
+﻿@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model Web.Model.qProcess
+@{
+    var objNews = (tbl_News)TempData["objNews"];
+    var lstCategory = (List<tbl_Category>)TempData["lstCategory"];
+    //var Code = TempData["Code"];
+    var FromId = TempData["FromId"];
+    var FkId = TempData["FkId"];
+    var lststatus = (List<qProcedure>)TempData["Status"];
+    var objQtxb = (qProcedure)TempData["objQtxb"];
+    var lstCate = new List<tbl_Category>();
+}
+
+<form action="/Process/ProcessTransfer/" method="post" enctype="multipart/form-data" id="form-CXL">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chuyển quy trình</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="col-md-3 control-label">Tiêu đề:</label>
+                            <div class="col-md-9">@objNews.Title</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="col-md-3 control-label">Danh mục:</label>
+                            <div class="col-md-9">
+                                @if (objNews.CategoryIdStr != null)
+                                {
+                                    foreach (var item in objNews.CategoryIdStr.Split(','))
+                                    {
+                                        var objCategory = lstCategory.Where(x => x.ID == Convert.ToInt32(item)).ToList();
+                                        lstCate.AddRange(objCategory);
+                                    }
+                                }
+                                
+                                @if (lstCate != null)
+                                {
+                                    <ul>
+                                        @foreach (var i in lstCate)
+                                        {
+                                        <li>@i.Name</li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="col-md-3 control-label">Bước xử lý</label>
+                            <div class="col-md-9">
+                                <select class="form-control " name="Status" id="Status_Popup" onchange="check_buoc()">
+                                    @if (objQtxb != null)
+                                    {
+                                        var lst = lststatus.Where(x => x.ID != objQtxb.ID);
+                                        var nameProcedure = objQtxb.Name;
+                                        var idProcedure = objQtxb.ID;
+                                        <option selected="" value="@idProcedure">@nameProcedure</option>
+                                        foreach (var item in lst)
+                                        {
+
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option selected="">-Chọn-</option>
+                                        foreach (var item in lststatus)
+                                        {
+
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="col-md-3 control-label">Diễn giải</label>
+                            <div class="col-md-9">@Html.TextAreaFor(g => g.Contents, new { @class = "form-control", @id = "Content" })</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="col-md-3 control-label">Upload File</label>
+                            <div class="col-md-9">
+                                @Html.Partial("_Attachment", new { Name = "AttachmentFile", Multiple = false, id = "AttachmentFile" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+
+                    <button type="button" class="btn btn-primary chuyen-xu-ly" onclick="submitForm()">Hoàn thành</button>
+
+                    <button type="button" onclick="closeModal()" class="btn btn-default">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<style>
+    .col-md-12 {
+        margin-bottom: 10px;
+    }
+</style>
+<script src="/Scripts/jquery.validate.min.js"></script>
+<script src="/Content/Admin/assets/select2/select2.min.js"></script>
+
+<script>
+    function submitForm() {
+        debugger;
+        var status = $('#Status_Popup').val();
+        var attachmentFile = $('#AttachmentFile').val();
+        var content = $('#Content').val();
+        $('#Con-tent').val(content);
+        $('#Attachment_File').val(attachmentFile);
+        $('#Status-process').val(status);
+        $("#form-CXL").hide();
+        $('#frmpost').submit();
+    }
+    function closeModal() {
+
+        $('#loading').hide();
+        $('#chuyenXuLyForm').modal('hide');
+        $('#mymodal').hide();
+    }
+    // Basic Form
+    $(document).ready(function () {
+        $('.lockChar').on("keypress", function () {
+            return event.charCode >= 48 && event.charCode <= 57
+        })
+        $("#basicForm").validate({
+            rules:
+        {
+            Status_Process:
+            {
+                required: true
+            }
+        },
+            messages:
+            {
+                Status_Process:
+                {
+                    required: "Chưa chọn bước xử lý"
+                }
+            }
+        });
+
+    });
+</script>

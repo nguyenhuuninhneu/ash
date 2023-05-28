@@ -1,0 +1,92 @@
+﻿@{var lstAction = (List<int>)HttpContext.Current.Session["Action"];}
+@using Web.Model
+@using Web.Model.CustomModel
+@model List<Web.Model.tbl_User>
+@{
+    var lstdonvi = (List<tbl_DMChung>)TempData["donvi"];
+    lstdonvi.ForEach(g => g.Ten = string.Concat(Enumerable.Repeat("--", g.Level)) + " " + g.Ten);
+    var lstchucvu = (List<tbl_ChucVu>)TempData["chucvu"];
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th>Tên đăng nhập</th>
+            <th>Họ và tên</th>
+            <th>Đơn vị</th>
+            <th>Chức vụ</th>
+            @*<th>IP đăng nhập</th>*@
+            @*<th>Nội bộ</th>*@
+            <th>Trạng thái</th>
+            <th style="width:16%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td style="vertical-align: middle;">@item.UserName</td>
+                <td style="vertical-align: middle;">@item.FullName</td>
+                <td style="vertical-align: middle;">
+                    @{
+                        var tblDmChung = lstdonvi.FirstOrDefault(g => g.ID == item.DonviId);
+                        if (tblDmChung != null)
+                        {
+                            @tblDmChung.Ten.Replace("--","")
+                        }
+                    }
+                </td>
+                <td style="vertical-align: middle;">
+                    @{
+                        var tblchucvu = lstchucvu.FirstOrDefault(g => g.ID == item.ChucVuId);
+                        if (tblchucvu != null)
+                        {
+                            @tblchucvu.Name.Replace("--", "")
+                        }
+                    }
+                </td>
+                @*<td style="vertical-align: middle;">@string.Format("{0:dd/MM/yyyy}", item.TimeLogin)</td>*@
+                @*<td style="vertical-align: middle;">@item.IPLogin</td>*@
+                @*<td style="vertical-align: middle;">@Html.Raw(item.NoiBo == 1 ? "<span style='color:green'><i class='fa fa-check' aria-hidden='true'></i></span>" : "")</td>*@
+                <td style="vertical-align: middle;">@Html.Raw(item.Active ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-warning btn-bordered" onclick="thanhvien.loadfrmReset(@item.ID) " title="Reset mật khẩu"><i class="fa fa-key"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="thanhvien.loadfrmEdit(@item.ID) " title="Sửa"><i class="glyphicon glyphicon-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="thanhvien.ondelete(@item.ID) " title="Xóa">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+    });
+</script>

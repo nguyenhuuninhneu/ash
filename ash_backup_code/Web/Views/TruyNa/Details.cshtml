@@ -1,0 +1,310 @@
+﻿@{
+    ViewBag.Title = "Details";
+    var abc = ".html";
+    var tenfilefullDN = "";
+    var tenfileDN = "";
+    if (!string.IsNullOrEmpty(Model.Attachment))
+    {
+        tenfilefullDN = Model.Attachment.Split('/').Last();
+        tenfileDN = tenfilefullDN.Replace(tenfilefullDN.Split('-').First() + "-", "");
+    }
+    var tenfilefullTN = "";
+    var tenfileTN = "";
+    if (!string.IsNullOrEmpty(Model.AttachmentTN))
+    {
+        tenfilefullTN = Model.AttachmentTN.Split('/').Last();
+        tenfileTN = tenfilefullTN.Replace(tenfilefullTN.Split('-').First() + "-", "");   
+    }
+}
+@using Web.Core
+@model Web.Model.tbl_truyna
+<div class="block-template-detail pl10 pr10">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="title mt0 pt10">
+                @Model.Name
+            </h3>
+            <div class="ss-space-10 mb10"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3 col-sm-4 anhtruyna">
+                    <div class="posrel mb10">
+                        <a href="#" class="pop"><img src="@Model.Photo" class="img-responsive"></a>
+                        @if (Model.IsDinhNa)
+                        {
+                            <div class="dinhna dinhnadetail">ĐÌNH NÃ</div>
+                        }
+                    </div>
+                    <p>
+                        <a href="/pages/to-giac-toi-pham/@Model.ID@abc" class="btn btn-primary btn-baotin btn-block">
+                            Báo tin
+                        </a>
+                    </p>
+                    @if (Model.SmallPhoto != null)
+                    {
+                        var arrSP = Model.SmallPhoto.Split('|');
+                        <link href="/Content/Admin/assets/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+                        <link href="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-buttons.css" rel="stylesheet" />
+                        <link href="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-thumbs.css" rel="stylesheet" />
+                        <script src="/Content/Admin/assets/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+                        <script src="/Content/Admin/assets/fancybox/source/jquery.fancybox.js"></script>
+                        <script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-buttons.js"></script>
+                        <script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-thumbs.js"></script>
+                        <script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-media.js"></script>
+                        <div id="carousel-id-3" class="carousel slide vertical" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    @for (int i = 0; i < arrSP.Count(); i++)
+                                    {
+                                        <p>
+                                            <a class="fancybox" href="@arrSP[i]" data-fancybox-group=" gallery" title=""><img src="@arrSP[i]" alt="" /></a>
+                                        </p>
+                                        if ((i + 1)%4 == 0)
+                                        {
+                                            @Html.Raw("</div><div class='item'>")
+                                        }
+                                    }
+                                </div>
+                                <a class="left carousel-control vleft" href="#carousel-id-3" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                <a class="right carousel-control vright" href="#carousel-id-3" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </div>
+                        </div>
+                        <script>
+                            $(document).ready(function () {
+                                $(".fancybox").fancybox();
+                            });
+                        </script>
+                    }
+                </div>
+                <div class="col-md-9 col-sm-8">
+                    <h3 style="orphans: 3; widows: 3; page-break-after: avoid; box-sizing: border-box; font-family: tahoma; font-weight: 700; line-height: 1.1; font-size: 15px; text-transform: uppercase; margin: 0px 0px 10px; color: #d52d31; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">Thông tin chung</h3>
+                    <table class="table table-bordered" style="border-spacing: 0px; box-sizing: border-box; width: 100%; max-width: 100%; margin-bottom: 17px; border: 1px solid #dddddd; border-collapse: collapse !important; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">
+                        <tbody>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    Họ và tên
+                                </td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.Name
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Tên gọi khác</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @(Model.TenKhac != null ? Model.TenKhac : "Không")
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Giới tính</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@(@Model.GioiTinh == 1 ? "Nam" : "Nữ")</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Năm sinh</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.NamSinh</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Hộ khẩu thường trú</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.HoKhauTT
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Nơi đăng ký tạm trú</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.NoiDKTT
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    Quốc tịch
+                                </td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.QuocTich</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    Dân tộc
+                                </td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.DanToc</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Họ và tên Cha</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.TenCha</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Họ và tên Mẹ</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.TenMe</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3 style="orphans: 3; widows: 3; page-break-after: avoid; box-sizing: border-box; font-family: tahoma; font-weight: 700; line-height: 1.1; font-size: 15px; text-transform: uppercase; margin: 0px 0px 10px; color: #d52d31; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">Đặc điểm nhận dạng</h3>
+                    <table class="table table-bordered" style="border-spacing: 0px; box-sizing: border-box; width: 100%; max-width: 100%; margin-bottom: 17px; border: 1px solid #dddddd; border-collapse: collapse !important; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">
+                        <tbody>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    Chiều cao
+                                </td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.ChieuCao
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Màu da</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.MauDa</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Mái tóc</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.MaiToc</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Lông mày</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.LongMay</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Đặc điểm mũi</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.DacDiemMui</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Đặc điểm mắt</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.DacDiemMat</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Đặc điểm tai</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.DacDiemTai</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Đặc điểm khác</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.DacDiemKhac</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3 style="orphans: 3; widows: 3; page-break-after: avoid; box-sizing: border-box; font-family: tahoma; font-weight: 700; line-height: 1.1; font-size: 15px; text-transform: uppercase; margin: 0px 0px 10px; color: #d52d31; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">Can tội</h3>
+                    <table class="table table-bordered" style="border-spacing: 0px; box-sizing: border-box; width: 100%; max-width: 100%; margin-bottom: 17px; border: 1px solid #dddddd; border-collapse: collapse !important; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">
+                        <tbody>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    Tội danh
+                                </td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.ToiDanh
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Hệ loại tội danh</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.HeLoaiToiDanh
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Loại truy nã</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.LoaiTruyNa</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Quyết định truy nã</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.QuyetDinhTruyNa
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Phạm vi truy nã</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.PhamViTruyNa</td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Đơn vị ra quyết định</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@Model.DonViRaQD</td>
+                            </tr>
+                            @if (Model.AttachmentTN != null)
+                            {
+                                <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                    <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Quyết định truy nã</td>
+                                    <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                        <a href="@Model.AttachmentTN"><img src="~/Content/Site/images/download.ico" width="20" title="@tenfileTN" /> @tenfileTN</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <h3 style="orphans: 3; widows: 3; page-break-after: avoid; box-sizing: border-box; font-family: tahoma; font-weight: 700; line-height: 1.1; font-size: 15px; text-transform: uppercase; margin: 0px 0px 10px; color: #d52d31; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">Khi phát hiện báo cho</h3>
+                    <table class="table table-bordered" style="border-spacing: 0px; box-sizing: border-box; width: 100%; max-width: 100%; margin-bottom: 17px; border: 1px solid #dddddd; border-collapse: collapse !important; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">
+                        <tbody>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    Báo cho đơn vị
+                                </td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.BaoChoDonVi
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Điện thoại</td>
+                                <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                    @Model.DienThoai
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3 style="orphans: 3; widows: 3; page-break-after: avoid; box-sizing: border-box; font-family: tahoma; font-weight: 700; line-height: 1.1; font-size: 15px; text-transform: uppercase; margin: 0px 0px 10px; color: #d52d31; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">Thông tin thêm</h3>
+                    <table class="table table-bordered" style="border-spacing: 0px; box-sizing: border-box; width: 100%; max-width: 100%; margin-bottom: 17px; border: 1px solid #dddddd; border-collapse: collapse !important; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">
+                        <tbody>
+                            @if (Model.Attachment != null)
+                            {
+                                <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                                    <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Quyết định đình nã</td>
+                                    <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                        <a href="@Model.Attachment"><img src="~/Content/Site/images/download.ico" width="20" title="@tenfileDN" /> @tenfileDN</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="seperate"></div>
+<div class="ss-space-20"></div>
+<div id="ctl00_cplhLoadMainContent_pnlRelate" class="pl10 pr10">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="relative" style="margin-top:0;">
+                Những đối tượng khác
+            </h4>
+            <ul class="fa-ul">
+                @{ var lstRelatedNews = (List<Web.Model.tbl_truyna>)ViewBag.lstRelatedNews;
+                 var dothtml = ".html"; }
+                @foreach (var item in lstRelatedNews)
+                {
+                    <li>
+                        <a href="/pages/doi-tuong/@item.ID/@HelperString.RemoveMark(@item.Name)@dothtml" id="ctl00_cplhLoadMainContent_rptRelateLink_ctl00_hplRelateLink" title="@item.Name"><i class='glyphicon glyphicon-play'></i> @item.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <img src="" class="imagepreview" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.pop').on('click', function () {
+            $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+            $('#imagemodal').modal('show');
+            $('#imagemodal').attr('style', 'display:flex');
+            $('#imagemodal .modal-dialog').attr('style', 'width:auto;');
+        });
+    });
+</script>

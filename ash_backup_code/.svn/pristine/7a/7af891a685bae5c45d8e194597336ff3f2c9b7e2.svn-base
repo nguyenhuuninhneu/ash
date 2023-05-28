@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HLU Đại học Luật</title>
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- google font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&subset=vietnamese" rel="stylesheet">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="misc/swiper/css/swiper.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/stylefix.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="panel" class="panel">
+        <div class="container-fluid header">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="quick-menu">
+                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="#">Lịch công tác</a></li>
+                        <li><a href="#">Hộp thư</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Đăng nhập</a></li>
+                        <li><a href="#">English</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div class="col-md-7 col-xs-12">
+                    <div>
+                        <a class="logo" href="#"><img src="images/logo.png"></a>
+                        <div class="logo-text">
+                            <h3><a href="#">TRƯỜNG ĐẠI HỌC LUẬT HÀ NỘI</a></h3>
+                            <h4><a href="#">HANOI LAW UNIVERSITY</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-12">
+                    <div class="search-box">
+                        <form action="a.php" method="GET">
+                            <input class="search-input" type="text" name="search" placeholder="Nhập từ tìm kiếm" value="">
+                            <button type="submit" class="search-button">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <nav class="navbar navbar-default" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+                                <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                            </button> <a class="navbar-brand hidden-lg hidden-md visible-xs" data-toggle="collapse" data-target="#main-navigation" href="#">Danh mục chính</a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="main-navigation">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#">GIỚI THIỆU</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Lược sử</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Toàn cảnh</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#">HOẠT ĐỘNG KHOA HỌC</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Đề tài NCKH (Giảng viên)</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Toàn cảnh</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">CHƯƠNG TRÌNH ĐÀO TẠO</a>
+                                </li>
+                                <li>
+                                    <a href="#">VIÊN CHỨC HLU</a>
+                                </li>
+                                <li>
+                                    <a href="#">NGƯỜI HỌC</a>
+                                </li>
+                                <li>
+                                    <a href="#">CỰU SINH VIÊN</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="#" title="I LOVE HLU"><img src="images/ilovehlu.png" class="ilovehlu"></a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Dashboard"><i class="glyphicon glyphicon-th"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Lịch công tác"><i class="glyphicon glyphicon-calendar"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="orange-line"></div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <!-- Swiper -->
+                <div class="swiper-container swiper1">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="images/slider1.jpg"></div>
+                        <div class="swiper-slide"><img src="images/slider1.jpg"></div>
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next swiper-button-white"></div>
+                    <div class="swiper-button-prev swiper-button-white"></div>
+                </div>
+                <div class="center-menu-box">
+                    <ul>
+                        <li>
+                            <img src="images/dt1.png">
+                            <a href="#">cán bộ<br/> giảng viên</a>
+                        </li>
+                        <li>
+                            <img src="images/dt2.png">
+                            <a href="#">Sinh viên<br/> Học viên</a>
+                        </li>
+                        <li>
+                            <img src="images/dt3.png">
+                            <a href="#">Cựu sinh<br/> viên</a>
+                        </li>
+                        <li>
+                            <img src="images/dt4.png">
+                            <a href="#">Đối tác<br/> hợp tác</a>
+                        </li>
+                        <li>
+                            <img src="images/dt5.png">
+                            <a href="#">Sinh viên<br/> tương lai</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="orange-line"></div>
+            <div class="main-space">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="block-news">
+                            <h2 class="block-title"><a href="#">Thông tin</a></h2>
+                            <div class="item-news">
+                                <a href="#" class="thumb"><img src="images/thumb2.png"></a>
+                                <h2><a href="#">Ông Lê Tiến Châu được bổ nhiệm giữ chức Thứ trưởng Bộ Tư pháp</a></h2>
+                                <div class="time">20/09/2016</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="item-news">
+                                <a href="#" class="thumb"><img src="images/thumb1.png"></a>
+                                <h2><a href="#">Căng - tin mới trường Luật "xịn như nhà hàng" khiến SV ngất ngây</a></h2>
+                                <div class="time">21/09/2016</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="item-news">
+                                <a href="#" class="thumb"><img src="images/thumb2.png"></a>
+                                <h2><a href="#">Căng - tin mới trường Luật "xịn như nhà hàng" khiến SV ngất ngây</a></h2>
+                                <div class="time">21/09/2016</div>
+                                <div class="clear"></div>
+                            </div>
+                            <a href="#" class="view-more">Xem thêm các tin cùng chuyên mục »</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="block-news">
+                            <h2 class="block-title"><a href="#">Sự kiện</a></h2>
+                            <div class="item-news">
+                                <a href="#" class="thumb"><img src="images/thumb1.png"></a>
+                                <h2><a href="#">Ông Lê Tiến Châu được bổ nhiệm giữ chức Thứ trưởng Bộ Tư pháp</a></h2>
+                                <div class="time">20/09/2016</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="item-news">
+                                <a href="#" class="thumb"><img src="images/thumb2.png"></a>
+                                <h2><a href="#">Căng - tin mới trường Luật "xịn như nhà hàng" khiến SV ngất ngây</a></h2>
+                                <div class="time">21/09/2016</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="item-news">
+                                <a href="#" class="thumb"><img src="images/thumb1.png"></a>
+                                <h2><a href="#">Căng - tin mới trường Luật "xịn như nhà hàng" khiến SV ngất ngây</a></h2>
+                                <div class="time">21/09/2016</div>
+                                <div class="clear"></div>
+                            </div>
+                            <a href="#" class="view-more">Xem thêm các tin cùng chuyên mục »</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="block-news">
+                            <h2 class="block-title"><a href="#">Hình ảnh</a></h2>
+                            <div class="gallery">
+                                <div class="gallery-border">
+                                    <!-- Swiper -->
+                                    <div class="swiper-container swiper3 no-shadow">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide galley-item">
+                                                <img src="images/gallery1.jpg">
+                                                <div class="caption">Thủ tướng Nguyễn Xuân Phúc trao Huân chương Độc lập hạng nhì cho Đại học Luật Hà Nội</div>
+                                            </div>
+                                            <div class="swiper-slide galley-item">
+                                                <img src="images/gallery1.jpg">
+                                                <div class="caption">Thủ tướng Nguyễn Xuân Phúc trao Huân chương Độc lập hạng nhì cho Đại học Luật Hà Nội</div>
+                                            </div>
+                                        </div>
+                                        <!-- Add Arrows -->
+                                        <div class="swiper-button-next swiper-button-white"></div>
+                                        <div class="swiper-button-prev swiper-button-white"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-news">
+                            <h2 class="block-title small"><a href="#">Hoạt động khoa học - Hợp tác quốc tế</a></h2>
+                            <ul class="list-news">
+                                <li><a href="#">Thông báo V/v xét đăng ký thực tập chuyên môn đối với sinh viên đại học hệ chính quy ngành Luật</a></li>
+                                <li><a href="#">Thông báo V/v viết khóa luận tốt nghiệp đối với sinh viên Khóa 13 (2014-2017) hệ văn bằng bằng</a></li>
+                                <li><a href="#">Danh sách sinh viên đủ điều kiện và không đủ điều kiện tốt nghiệp lớp văn bằng 2 K10 chính quy</a></li>
+                            </ul>
+                            <div class="mini-pagination">
+                                <ul class="pagination mini-pagination">
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="orange-line"></div>
+            <div class="main-space">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="block-news">
+                            <!--<h2 class="block-title"><span>Viện, trung tâm, công ty và các chương trình hợp tác quốc tế</span></h2>-->
+                            <!-- Swiper -->
+                            <div class="swiper-container swiper2 no-shadow">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad1.jpg"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad2.gif"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad3.gif"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad4.gif"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad5.gif"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad6.jpg"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad7.gif"></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="ad-img"><img src="images/ad8.gif"></a>
+                                    </div>
+                                </div>
+                                <!-- Add Arrows -->
+                                <div class="swiper-button-next "></div>
+                                <div class="swiper-button-prev "></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="orange-line"></div>
+        </div>
+        <div class="footer container-fluid">
+            <div class="row footer-container">
+                <div class="col-md-4">
+                    <div class="big-logo">
+                        <img src="images/hlu-footer.png">
+                    </div>
+                    <div class="footer-address">
+                        87 Nguyễn Chí Thanh, Q. Đống Đa, Hà Nội, Việt Nam
+                        <br/> Điện thoại: 84.8.38295299 - Fax: 84.8.38250359
+                        <br/> Email: info@hlu.edu.vn
+                        <br/> © 2016 Trường Đại học Luật Hà Nội
+                        <br/>
+                    </div>
+                    <div class="social-footer">
+                        <a href="#"><img src="images/fb-footer.png"></a> &nbsp;&nbsp;
+                        <a href="#"><img src="images/youtube-footer.png"></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-info">
+                        <h2 class="title">Thông tin hỗ trợ</h2>
+                        <ul class="footer-info">
+                            <li>Tuyển sinh - Chính quy </li>
+                            <li>043.835.1879</li>
+                            <li>Tuyển sinh - Sau đại học</li>
+                            <li>0437.733.287</li>
+                            <li>Tuyển sinh - Tại chức:</li>
+                            <li>0438.355.771</li>
+                            <li>Hiệu trưởng</li>
+                            <li><strong>chault@hlu.edu.vn</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-info">
+                        <h2 class="title">HỆ THỐNG QUẢN TRỊ</h2>
+                        <ul class="footer-info footer-link">
+                            <li><a href="#">Hộp thư viên chức HLU</a></li>
+                            <li><a href="#">Hộp thư người học</a></li>
+                            <li><a href="#">Lịch công tác</a></li>
+                            <li><a href="#">ISO 9001:2008</a></li>
+                            <li><a href="#">Quy chế công khai</a></li>
+                            <li><a href="#">Mời thầu - Chào giá</a></li>
+                            <li><a href="#">Tuyển sinh - Chính quy </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <ul class="footer-info footer-cat">
+                        <li><a href="#">Giới thiệu <img class="hidden-xs" src="images/icon1.png" align="absmiddle"></a></li>
+                        <li><a href="#">Hoạt động khoa học <img class="hidden-xs" src="images/icon2.png"></a></li>
+                        <li><a href="#">Chương trình đào tạo <img class="hidden-xs" src="images/icon3.png"></a></li>
+                        <li><a href="#">Viên chức HLU <img class="hidden-xs" src="images/icon4.png"></a></li>
+                        <li><a href="#">Sinh viên <img class="hidden-xs" src="images/icon5.png"></a></li>
+                        <li><a href="#">Cựu sinh viên <img class="hidden-xs" src="images/icon6.png"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Swiper JS -->
+    <script src="misc/swiper/js/swiper.min.js"></script>
+    <!-- Initialize Swiper -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/home.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+﻿  
+@media (max-width:1023px){
+   .wrp {width: calc(100% - 20px)}
+    #container .colleft {width: 100%}
+    #container .colright {display: none}
+    #truyenhinh .right { width: 100%; margin-top: 20px; clear: both}
+    #truyenhinh .right .item{ width: calc((100% - 30px) / 3); float: left; margin-right: 10px;border-bottom: none}
+    #truyenhinh .left { width: 55%;margin: 0}
+    #truyenhinh .mid { width: 43%;float: right}
+    #header .logo img { max-width: 100%; height: auto}
+    #header .bot .filter .item.search {display: none} 
+
+    #header .top {position: relative}
+    #header .logo {float: left}
+    .btnmenures { display: block; width: 50px; height: 50px; background: url(Icon/icomenurwd.png) center no-repeat; border-left: 1px solid #cdcdcd; float: right; position: absolute; top: 0; right: 0}
+    #menu { position: fixed; top: 0; left: -100%; width: 80%; height: 100%; z-index: 10; transition: 0.5s all ease-in-out;-moz-transition: 0.5s all ease-in-out;-webkit-transition: 0.5s all ease-in-out}
+    #menu.active {left: 0}
+    #menu ul li { float: none}
+    #menu .wrp {width: 100%}
+    #menu .item.search { width: calc(100% - 20px); border: 1px solid #d7d7d7; background: #fff; margin: 10px auto; display: table}
+    #menu .item.search input{ border: none; float: left; height: 28px; box-sizing: border-box; padding: 0 10px; width: calc(100% - 25px); outline: none;font-size: 12px}
+    #menu .item.search a.btnsearch{float: right; width: 25px; height: 28px; display: block; background: url(Icon/icon-search.png) center no-repeat}
+
+    #overlay { position: fixed; width: 100%; height: 100%; z-index: 9; background: rgba(0, 0, 0, 0.8); display: none; top: 0; left: 0}
+}
+
+@media (max-width:991px){
+    #truyenhinh .left .cont {max-height: 84px}
+    #footer .bot .left {margin-top: 10px}
+}
+
+@media (max-width:767px){
+    #footer .top {padding: 0}
+    #footer .top ul.left li { width: calc((100% - 20px) / 3);margin-bottom: 10px;}
+    #footer .top ul.left li:nth-child(4n) {margin-right: 10px}
+    #footer .top ul.left li:nth-child(3n) {margin-right: 0}
+    #new .newest .left {width: 68%}
+    #new .newest .right {width: 29%}
+    #truyenhinh .left {padding: 0}
+    #truyenhinh .right { padding: 0; border: none;clear: both} 
+    #truyenhinh .khungAnh:before {padding-bottom: 74.37%} 
+    #thoisu .right,#thoisu .left {width: 100%}
+    #thoisu .left {margin-top: 15px}
+    #thoisu .left .item { width: calc((100% - 20px) / 2); float: left; margin-right: 20px; border-bottom: none; margin-bottom: 0}
+    #thoisu .left .item:nth-child(2n) {margin-right: 0}
+    #thoisu .left .item .name { max-height: 63px;margin-top: 3px}
+    #truyenhinh .right .item { width: calc((100% - 30px) / 2); margin-right: 30px;}
+    #truyenhinh .right .item:nth-child(2) {margin-right: 0}
+    #truyenhinh .right .item:nth-child(2) ~.item {display: none}
+    .bannermid {margin:15px 0}
+}
+
+@media (max-width:479px){
+    #footer .bot .left, #footer .bot .right { width: 100%; float: left;text-align: left}
+    #footer .bot .right .plug.fr {float: left}
+    #footer .top ul.left li,#footer .top ul.left li:nth-child(3n) { width: calc((100% - 10px) / 2); margin-bottom: 10px;margin-right: 10px}
+    #footer .top ul.left li:nth-child(2n) {margin-right: 0px} 
+    #vande-theoguong .group,#nhipcautuyentruyen .left,#nhipcautuyentruyen .right {width: 100%}
+    #nhipcautuyentruyen .right {margin-top: 15px}
+    #truyenhinh .right .item { width: 100%; padding-bottom: 0; margin-bottom: 15px}
+    #truyenhinh .right .item:nth-child(2) {margin-bottom: 0}
+    #truyenhinh .left,#truyenhinh .mid,#thoisu .left .item,#new .newest .left,#new .newest .right {width: 100%}
+    #truyenhinh .right {margin-top: 15px}
+    #truyenhinh .mid { margin-top: 15px; padding-bottom: 10px; border-bottom: 1px dashed #ccc}
+    #new .newest .right { margin-top: 15px; background: #ddd; padding: 5px}
+    #header .bot .filter select.item:first-child { width: 95px; margin: 0;}
+    #header .bot .date { text-align: center; width: 100%}
+}
+
+

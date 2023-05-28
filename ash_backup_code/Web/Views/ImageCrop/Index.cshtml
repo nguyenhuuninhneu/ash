@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/assets/css/smartadmin-production-plugins.min.css" rel="stylesheet" />
+<script src="~/Assets/js/jcrop/jquery.Jcrop.min.js"></script>
+<script src="~/Assets/js/jcrop/jquery.color.min.js"></script>
+<!-- new tab: Basic handler -->
+<h1>@ViewBag.stt</h1>
+<h4 class="margin-bottom-10">Basic Handler — basic form integration</h4>
+
+<div class="alert alert-info">
+    <b>An example with a basic event handler.</b> Here we've tied
+    several form values together with a simple event handler invocation.
+    The result is that the form values are updated in real-time as
+    the selection is changed using Jcrop's <em>onChange</em> handler.
+</div>
+
+<!-- This is the image we're attaching Jcrop to -->
+<img src="/Upload/Images/Normal/2017/1/fe6a1c47150459e33230ab799a0bdb40-123.jpg" id="target-2" alt="[Jcrop Example]" />
+
+<!-- This is the form that our event handler fills -->
+<form id="coords"
+      class="coords margin-top-10"
+      method="POST"
+      action="/ImageCrop/Index">
+
+    <div class="inline-labels">
+        <label>
+            X1
+            <input type="text" size="4" id="x1" name="x1" />
+        </label>
+        <label>
+            Y1
+            <input type="text" size="4" id="y1" name="y1" />
+        </label>
+        <label>
+            X2
+            <input type="text" size="4" id="x2" name="x2" />
+        </label>
+        <label>
+            Y2
+            <input type="text" size="4" id="y2" name="y2" />
+        </label>
+        <label>
+            W
+            <input type="text" size="4" id="w" name="w" />
+        </label>
+        <label>
+            H
+            <input type="text" size="4" id="h" name="h" />
+        </label>
+    </div>
+    <button type="submit">Cat de</button>
+</form>
+
+<!-- end s2 tab pane -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var jcrop_api;
+
+        $('#target-2').Jcrop({
+            onChange: showCoords,
+            onSelect: showCoords,
+            onRelease: clearCoords
+        }, function () {
+            jcrop_api = this;
+        });
+
+        $('#coords').on('change', 'input', function (e) {
+            var x1 = $('#x1').val(), x2 = $('#x2').val(), y1 = $('#y1').val(), y2 = $('#y2').val();
+            jcrop_api.setSelect([x1, y1, x2, y2]);
+        });
+        jcrop_api.setOptions({
+            aspectRatio: 3 / 2
+        });
+        // Simple event handler, called from onChange and onSelect
+        // event handlers, as per the Jcrop invocation above
+        function showCoords(c) {
+            $('#x1').val(c.x);
+            $('#y1').val(c.y);
+            $('#x2').val(c.x2);
+            $('#y2').val(c.y2);
+            $('#w').val(c.w);
+            $('#h').val(c.h);
+        };
+
+        function clearCoords() {
+            $('#coords input').val('');
+        };
+
+        // end basic_handler
+
+    });
+</script>
+

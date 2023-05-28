@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Mở rộng bài viết";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var MorePageId = (int)TempData["MorePageId"];
+}
+<script src="~/AppJs/news.js"></script>
+@using Web.Core
+@using Web.Model
+@model tbl_News
+@using (Html.BeginForm("ExpandNews", "News", FormMethod.Post, new { id = "frmpost", @class = "form-horizontal", role = "form" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Mở rộng bài viết: <span class="text-danger">@Model.Title</span></h3>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" name="MorePageId" value="@MorePageId" />
+                    <div class="form-group">
+                        <label class="col-md-12">Danh mục bài viết</label>
+                        <div class="col-md-12">
+                            @{ var categories = (List<tbl_Category>)ViewBag.categories;}
+                            <select name="MoreCategoryId" id="MoreCategoryId" class="form-control">
+                                <option value="">-- Chọn danh mục --</option>
+                                @foreach (var item in categories)
+                                {
+                                    <option value="@item.ID">@string.Concat(Enumerable.Repeat("--", @item.Level))@item.Name</option>
+                                }
+                            </select>
+                            <script>
+                                $("#MoreCategoryId").val(@Model.MoreCategoryId);
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10" id="boxnewsconfig"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 text-center">
+                            <button type="submit" class="btn btn-info waves-effect waves-light"><i class="fa fa-pencil"></i> Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $("#MoreCategoryId").change(function () {
+            var select_val = $(this).val();
+            news.loadBoxNewsConfig(select_val);
+            if (select_val == "") {
+                $("#boxnewsconfig").find("input").prop("checked", false);
+            }
+        });
+        news.loadBoxNewsConfig('@Model.MoreCategoryId', '@Model.MoreDisplayZone');
+    })
+</script>

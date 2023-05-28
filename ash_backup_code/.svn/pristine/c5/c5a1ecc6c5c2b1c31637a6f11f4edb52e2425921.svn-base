@@ -1,0 +1,94 @@
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
+@using Web.Core
+@model List<Web.Model.tbl_truyna>
+@{
+    ViewBag.Title = "Đối tượng truy nã";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+    var dothtml = ".html";
+    var nc = Request["nc"];
+    string[] arrnc = {};
+    if (!string.IsNullOrEmpty(nc))
+    {
+        arrnc = nc.Split(',');
+    }
+}
+<div class="row content-space" style="background: #e6e6dc !important">
+    <div class="truyna_list">
+        <!-- start right content news -->
+        <form action="" method="GET" class="form-horizontal custom-form" id="frmSrcTruyNa">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-2 pr0 pull-right">
+                        <div class="dropdown timnangcao">
+                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                Tìm kiếm nâng cao
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="left: auto; right:0;">
+                                <li>
+                                    <a href="#">
+                                        <div class="full_width"><input type="checkbox" name="nc" value="hoten" @((arrnc.Contains("hoten") || !arrnc.Any()) ? "checked" : "") /> Họ và tên</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="tenkhac" @(arrnc.Contains("tenkhac") ? "checked" : "") /> Tên gọi khác</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="gioitinh" @(arrnc.Contains("gioitinh") ? "checked" : "") /> Giới tính</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="namsinh" @(arrnc.Contains("namsinh") ? "checked" : "") /> Năm sinh</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="hokhau" @(arrnc.Contains("hokhau") ? "checked" : "") /> Hộ khẩu thường trú</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="tamtru" @(arrnc.Contains("tamtru") ? "checked" : "") /> Nơi đăng ký tạm trú</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="quoctich" @(arrnc.Contains("quoctich") ? "checked" : "") /> Quốc tịch </div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="dantoc" @(arrnc.Contains("dantoc") ? "checked" : "") /> Dân tộc</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="tencha" @(arrnc.Contains("tencha") ? "checked" : "") /> Họ và tên Cha</div>
+                                        <div class="full_width"><input type="checkbox" name="nc" value="tenme" @(arrnc.Contains("tenme") ? "checked" : "") /> Họ và tên Mẹ</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1 pl0 ml5 pull-right">
+                        <img src="~/assets/images/nuttk.png" class="nuttk" onclick="$('#frmSrcTruyNa').submit();" />
+                        @* <button type="submit" id="btnSearch" class="btn btn-purple waves-effect waves-light pull-left" style="border: 1px solid #999; ">Tìm kiếm</button>*@
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12 pr0 pull-right">
+                        <input type="text" class="form-control" name="title" placeholder="Tìm kiếm" value="@ViewBag.Tieude">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12 pr0 pull-right">
+                        <select class="form-control" name="IsDinhNa" onchange="$('#frmSrcTruyNa').submit()">
+                            <option value="">--- Tình trạng ---</option>
+                            <option value="2" @( Request["IsDinhNa"] == "2" ? "selected" : "")>Đang truy nã</option>
+                            <option value="1" @( Request["IsDinhNa"] == "1" ? "selected" : "")>Đã đình nã</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-md-4 mt10 truyna_item">
+                    <div class="col-md-4 col-sm-12 col-xs-12 pl0 pr0 posrel">
+                        <a href="/pages/doi-tuong/@item.ID/@HelperString.RemoveMark(@item.Name)@dothtml" style="text-decoration: none;">
+                            <img src="@item.Photo" alt="" class="img-responsive">
+                            @if (item.IsDinhNa)
+                            {
+                                <div class="dinhna">ĐÌNH NÃ</div>
+                            }
+                        </a>
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 pl10 pr0">
+                        <ul>
+                            <li>Họ tên: <a href="/pages/doi-tuong/@item.ID/@HelperString.RemoveMark(@item.Name)@dothtml"><b>@item.Name</b></a> </li>
+                            <li>Tên gọi khác: @item.TenKhac </li>
+                            <li>Giới tính: @(item.GioiTinh == 1 ? "Nam" : "Nữ") </li>
+                            <li>Năm sinh: @item.NamSinh </li>
+                            <li>Hộ khẩu thường trú: @item.HoKhauTT </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-md-12 mt10 truyna_item text-center" style="width: 100% !important">Không có đối tượng.</div>
+        }
+    </div>
+</div>

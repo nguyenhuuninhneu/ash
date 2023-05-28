@@ -1,0 +1,119 @@
+﻿<script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+<script src="~/AppJs/calendar.js"></script>
+@using Web.Model
+@model Web.Model.tbl_Calendar
+@using (Ajax.BeginForm("Add", "Calendar", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "calendar.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+    var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LangCode, new SelectList(languages, "Code", "Name"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thuộc trang</label>
+        @{
+    var lstpageElements = (List<tbl_PageElement>)TempData["PageElement"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.PageElementId, new SelectList(lstpageElements, "ID", "Name"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tiêu đề</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tiêu đề" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Nội dung</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Details, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">File</label>
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.Logo)
+            <a id="Browser" class="btn btn-primary btn-custom waves-effect waves-light m-b-5"><span class="glyphicon glyphicon-paperclip"></span> FileUpload</a>
+            <div class="mt10" id="previewthumbnail">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" checked="" value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            },
+            LangCode:
+            {
+                required: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên website"
+                },
+                LangCode: {
+                    required: "Bạn chưa chọn ngôn ngữ"
+                }
+            }
+        });
+        $("#basicForm #LangCode").change(function () {
+            $.get("/PageElement/GetAllByLangCode?LangCode=" + $(this).val(), function (res) {
+                var html = "";
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + res[i].Name + '</option>';
+                }
+                $("#basicForm #PageElementId").html(html);
+            });
+        });
+        $("#Browser").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<a href="' + fileUrl + '">' + fileUrl + '</a>');
+                $("#Logo").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+        CKEDITOR.replace("Details", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 350
+        });
+    });
+</script>

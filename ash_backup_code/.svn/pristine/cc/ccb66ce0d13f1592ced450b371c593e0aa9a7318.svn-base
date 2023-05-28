@@ -1,0 +1,188 @@
+﻿
+@using Web.Model
+@model document_category
+@{ 
+    var controllerName = (String)TempData["controllerName"];
+    var code = controllerName.Replace("Category","").ToLower();
+}
+<input hidden id="controllerName" value="@controllerName" />
+<table class="table table-striped" border="1 solid #F9F9F9">
+    <tr>
+        <th style="vertical-align: middle;">Chọn nhóm hỗ trợ đề mục</th>
+        <td style="vertical-align: middle;">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Danh mục cha : </label>
+                @{
+                    var lstSupport = (List<support_category>)TempData["lstSupport"];
+                }
+                <div class="col-md-8">
+                    <select id="support_1" name="support_1" class="form-control select2 DanhMucChaHoTroTrucTuyen" onchange="GetChild('DanhMucChaHoTroTrucTuyen', 'DocumentCategory', 'SelectDanhMucConHoTroTrucTuyen')">
+                        <option value="">- Chọn danh mục gốc-</option>
+                        @{
+                            if (lstSupport!=null)
+                            {
+
+                                foreach (var item in lstSupport)
+                                {
+                                    <option value="@item.ID" @(Model != null && Model.support_1 == item.ID.ToString() ? "selected" : "")>@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Danh mục con : </label>
+
+                <div class="col-md-8">
+                    <div id="SelectDanhMucConHoTroTrucTuyen">
+                        <select class="form-control select2">
+                                <option >- Chọn nhóm -</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th style="vertical-align: middle;">Chọn nhóm Quảng cáo</th>
+        <td style="vertical-align: middle;">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Danh mục cha : </label>
+                @{
+                    var lstAdvert = (List<advert_category>)TempData["lstAdvert"];
+
+                }
+                <div class="col-md-8">
+                    <select id="advert_1" name="advert_1" class="form-control select2 DanhMucChaQuangCao" onchange="GetChild('DanhMucChaQuangCao', 'DocumentCategory', 'SelectDanhMucConQuangCao')">
+                        <option value="">-Chọn danh mục gốc-</option>
+                        @{
+                            if (lstAdvert != null)
+                            {
+                                foreach (var item in lstAdvert)
+                                {
+                                    <option value="@item.ID" @(Model != null && Model.advert_1 == item.ID.ToString() ? "selected" : "")>@item.Name</option>
+                                }
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Danh mục con : </label>
+
+                <div class="col-md-8">
+                    <div id="SelectDanhMucConQuangCao">
+                        <select class="form-control select2">
+                            <option>- Chọn nhóm -</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th style="vertical-align: middle;" rowspan="2">
+            @Html.RadioButton("view_more_detail", "update") Mới cập nhật<br>
+            @Html.RadioButton("view_more_detail", "same_category") Cùng mục<br>
+            @Html.RadioButton("view_more_detail", "same_date") Cùng ngày
+        </th>
+        <td style="vertical-align: middle;text-align:center;font:bold;" class="control-label">Tăng cường hiển thị</td>
+    </tr>
+    <tr>
+
+
+        <td style="vertical-align: middle;">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Danh mục cha : </label>
+                @{
+                    var lstModule = (List<module>)TempData["lstModule"];
+                    lstModule = lstModule.Where(g => g.Code != code).ToList();
+
+                }
+                <div class="col-md-8">
+                    <select id="display_1" name="display_1" class="form-control select2 DanhMucChaModule" onchange="GetChild('DanhMucChaModule', 'DocumentCategory', 'SelectDanhMucConModule')">
+                        <option value="">-Chọn danh mục gốc-</option>
+                        @{
+                            if (lstModule != null)
+                            {
+                                @*@Html.Hidden("Code",lstModule)*@
+                                foreach (var item in lstModule)
+                                {
+                                    <option value="@item.ID" class="getCode" data-id="@item.Code" @(Model != null && Model.display_1 == item.ID.ToString() ? "selected" : "")>@item.Name</option>
+                                }
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Danh mục con : </label>
+
+                <div class="col-md-8">
+                    <div id="SelectDanhMucConModule">
+                        <select class="form-control select2">
+                            <option>- Chọn nhóm -</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </td>
+    </tr>
+
+</table>
+<script>
+    function GetChild(class1, module1, id1) {
+        debugger;
+        //var a = $("." + class1 + " option:selected").context.activeElement.id;
+        var data = $("." + class1 + " option:selected").val();
+        var code = $("." + class1).children('option:selected').data('id');
+        //  var code = $(".getCode").attr("data-id");
+        if (data != null && data != "") {
+            AjaxService.GET("/Admin/" + module1 + "/ListChildCreate", { id: data, name: class1, code: code }, function (res) {
+                debugger;
+                $('#' + id1).html(res);
+                $('#' + id1 + ' select').select2({ "width": "100%" });
+            });
+        } else {
+            $('#' + id1).html('<select class="form-control select2"><option>- Chọn nhóm -</option></select>');
+            $('#' + id1 + ' select').select2({ "width": "100%" });
+        }
+    };
+    function GetChildEdit(class1, module1, id1, idForm) {
+        debugger;
+        //var a = $("." + class1 + " option:selected").context.activeElement.id;
+        var data = $("." + class1 + " option:selected").val();
+        var code = $("." + class1).children('option:selected').data('id');
+        var codeCurrent = '@code';
+        var support_1 = $("#support_1z").val();
+        var advert_1 = $("#advert_1z").val();
+        var display_1 = $("#display_1z").val();
+        //  var code = $(".getCode").attr("data-id");
+        if (data != null && data != "") {
+            AjaxService.POST("/Admin/" + module1 + "/ListChildEdit", { id: data, name: class1, code: code, idForm: idForm, support_1: support_1, advert_1: advert_1, display_1: display_1, codeCurrent: codeCurrent }, function (res) {
+                debugger;
+                $('#' + id1).html(res);
+                $('#' + id1 + ' select').select2({ "width": "100%" });
+            });
+        } else {
+            $('#' + id1).html('<select class="form-control"><option>- Chọn nhóm -</option></select>');
+            $('#' + id1 + ' select').select2({ "width": "100%" });
+        }
+    };
+    $(document).ready(function () {
+        var idForm = $("#ID").val();
+        var controllerName = $("#controllerName").val();
+        if (idForm != null) {
+            GetChildEdit('DanhMucChaHoTroTrucTuyen', 'DocumentCategory', 'SelectDanhMucConHoTroTrucTuyen', idForm)
+            GetChildEdit('DanhMucChaQuangCao', 'DocumentCategory', 'SelectDanhMucConQuangCao', idForm)
+            GetChildEdit('DanhMucChaModule', 'DocumentCategory', 'SelectDanhMucConModule', idForm)
+        }
+    });
+</script>

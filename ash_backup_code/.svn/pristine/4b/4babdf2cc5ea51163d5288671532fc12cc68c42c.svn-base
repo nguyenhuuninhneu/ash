@@ -1,0 +1,76 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Web.Model.CustomModel
+@using Web.Model
+@model List<tbl_NewsVersion>
+<script src="~/AppJs/historynews.js"></script>
+@{ 
+    var objNews=(tbl_News)TempData["News"];
+    var lstQtxb = (List<qProcedure>)TempData["QuyTrinhXuatBan"];
+    var QtxbID = lstQtxb.Where(x => x.isPublish == true).FirstOrDefault().ID;
+    var objUser = (tbl_UserAdmin)TempData["objUser"];
+    var langCode = Session["langCodeDefaut"];
+    var lstQuyTrinh = (List<qProcedure>)TempData["lstqProcedure"];
+   
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ngày cập nhật</th>
+            <th>Người cập nhật</th>
+            <th>Phiên bản</th>
+            <th>Hoạt động</th>
+            <th>Tin gốc</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ int tt = 0; }
+        @foreach (var item in Model)
+        {
+            tt++;
+            <tr>
+                <td style="vertical-align: middle;">@string.Format("{0:dd/MM/yyyy HH:mm}",item.LastModifieDate)</td>
+                <td style="vertical-align: middle;">@item.LastModifieBy</td>
+                <td style="vertical-align: middle;">@string.Format("{0}.0",item.Version)</td>
+                <td style="vertical-align: middle;">
+                    @{
+                        var showtt = "";
+                        var stt = item.Status;
+                        {
+                            var objQuyTrinh = lstQuyTrinh.FirstOrDefault(g => g.ID == stt);
+                            if (objQuyTrinh != null && langCode.ToString() != "vn")
+                            {
+                                showtt = objQuyTrinh.NameEnglish;
+                            }
+                            else
+                            {
+                                showtt = objQuyTrinh.Name;
+                            }
+                        }
+                    }
+                    @showtt
+                </td>
+                <td style="vertical-align: middle;">@Html.Raw(tt == Model.Count ? "<i class='fa fa-check'></i>" : "")</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (!objNews.IsPublish && (User.isAdmin || objNews.IdUserChoose == User.ID))
+                        {
+                            <a style="cursor: pointer" title="Khôi phục bài viết" class="btn btn-warning btn-bordered" onclick="historynews.restore(@item.ID, @item.Version)"><i class="fa fa-refresh"></i></a>
+                        }
+                        <a style="cursor: pointer" title="Chi tiết bài viết" class="btn btn-primary btn-bordered" onclick="renderView(@item.ID, @item.Version,'@item.Title')"><i class="ion-document-text"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+    });
+    function renderView(newsid, version, title) {
+        modal.Render("/Admin/HistoryNews/ViewVersionNews?newsid=" + newsid + "&version=" + version, title, "modal-lg");
+    }
+</script>

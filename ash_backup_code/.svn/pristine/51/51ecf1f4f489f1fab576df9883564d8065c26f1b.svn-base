@@ -1,0 +1,91 @@
+﻿@using Web.Model
+@using Web.Model.CustomModel
+@model IEnumerable<qProcedure>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var lstLangs = (List<tbl_Languages>)TempData["Languages"];
+    var langCode = "vn";
+    if (Session["langCodeDefaut"] != null)
+    {
+        langCode = Session["langCodeDefaut"].ToString();
+    }
+    var ngonNgu = (string)TempData["NgonNgu"];
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th>Tên quy trình xuất bản</th>
+            <th>Thứ tự</th>
+            <th  style="text-align:center">Publish</th>
+            @*<th>Ngôn ngữ</th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                @if (langCode == "vn")
+                {
+                    <td style="vertical-align: middle;">
+                        @item.Name
+                    </td>
+                }
+                else
+                {
+                    <td style="vertical-align: middle;">
+                        @item.NameEnglish
+                    </td>
+                }
+                <td style="vertical-align: middle;width:70px" class="lockChar">
+                    @Html.HiddenFor(g => item.ID)
+                    @Html.TextBoxFor(g => item.Ordering, new { @class = "form-control text-center", type = "number", min = 0 })
+                </td>
+                <td style="vertical-align: middle;cursor:pointer; text-align: center;" class="publish  text-center" onclick="qProcedure.active(@item.ID,'isPublish')">
+                    @Html.Raw(item.isPublish ? "<i class='fa fa-check' title='Hủy kích hoạt' style='color:green'></i>" : "<i class='fa fa-times' title='Kích hoạt' style='color:red;'></i>")
+                </td>
+                @*<td style="vertical-align: middle">@ngonNgu</td>*@
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="qProcedure.loadfrmedit(@item.ID) "><i class="glyphicon glyphicon-pencil"></i></a>
+                            @*<a href="#" class="btn btn-success btn-bordered" onclick="qProcedure.active(@item.ID,'isPublish') " title="@(item.isPublish == true ? "Vô hiệu" : "Kích hoạt" )">
+                                    <i class="fa fa-power-off"></i>
+                                </a>*@
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="qProcedure.ondelete(@item.ID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $('.lockChar').on("keypress", function () {
+        return event.charCode >= 48 && event.charCode <= 57
+    })
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+    });
+</script>

@@ -1,0 +1,265 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dothtml = ".html";
+    var idshow = Model.ID;
+    var langCode = "vn";
+    if (Session["langCodeHome"] != null)
+    {
+        langCode = Session["langCodeHome"].ToString();
+    }
+}
+@using Web.Areas.Admin.Controllers
+@using Web.Core;
+@using Web.Model
+@model tbl_Topic
+
+@{
+    var time = "";
+
+    if (Convert.ToBoolean(Model.Status))
+    {
+        if (Model.StartDate != null)
+        {
+            time = (Model.StartDate > DateTime.Now ? string.Format("{0: HH:mm}", Model.StartDate) : ConfigTextController.GetValueCFT("dangdienra","Đang diễn ra"));
+        }
+        else
+        {
+            time = ConfigTextController.GetValueCFT("chuaxacdinh");
+        }
+    }
+    else
+    {
+        time = ConfigTextController.GetValueCFT("daketthuc");
+    }
+
+}
+
+<div class="wrp">
+    <div class="colleft">
+        <div id="topic">
+            <div class="main"> 
+                <div class="slidetopic">
+                    @if (Model.ListImgSlide != null)
+                    {
+                        foreach (var item in Model.ListImgSlide.Split('|'))
+                        {
+                            <div class="khungAnh">
+                                <a class="khungAnhCrop" href="javascript://" title="">
+                                    <img src="@item"/>
+                                </a>
+                            </div> 
+                        }
+                    } 
+                </div>
+                <div class="info">
+                    <div class="left">
+                        <div class="dayyear">
+                            <div class="day">
+                                @(Model.StartDate != null ? string.Format("{0: dd}", Model.StartDate) : "")
+                                <p>@ConfigTextController.GetValueCFT("thang","Tháng") @(Model.StartDate != null ? (langCode != "vn" ? string.Format("{0: MMMM}", Model.StartDate) : string.Format("{0: MM}", Model.StartDate)) : "")</p>
+                            </div>
+                            <div class="year">@(Model.StartDate != null ? string.Format("{0: yyyy}", Model.StartDate) : "")</div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="name">@Model.Title</div>
+                        <div class="time"> @ConfigTextController.GetValueCFT("thoigian"): @time
+                        </div>
+                        <div class="cont">
+                            @Html.Raw(Model.Details)
+                        </div>
+                    </div>
+                    <div class="cb"></div>
+                </div>
+            </div> 
+            <div class="group">
+                <div id="gridData">
+
+                </div>  
+                <a href="javascript://" onclick="loadmore()" class="viewmore" style="">@ConfigTextController.GetValueCFT("xemthemcauhoikhac")</a>
+            </div>
+            <div id="CommonCuoiChiTietTin">
+                <div class="fl apd">
+                    <a class="prevDBT" href="javascript:history.go(-1)">@ConfigTextController.GetValueCFT("vetrangtruoc")</a>
+                    <div class="fr pl20 apd">
+                        <a href="javascript:void(0)" class="email addthis_button_email">@ConfigTextController.GetValueCFT("guiemail")</a>
+                        <a href="javascript:window.print()" class="print">@ConfigTextController.GetValueCFT("intrang")</a>
+                    </div>
+                </div>
+                <div class="fr">
+                    <!-- AddThis Button BEGIN -->
+                    <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+                        <div id="fb-root"></div>
+                        <script>
+                            (function (d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) return;
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, "script", "facebook-jssdk"));
+                        </script>
+                        <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+
+                        <!-- Place this tag where you want the share button to render. -->
+                        <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+
+                        <!-- Place this tag after the last share tag. -->
+                        <script type="text/javascript">
+                            (function () {
+                                var po = document.createElement("script");
+                                po.type = "text/javascript";
+                                po.async = true;
+                                po.src = "https://apis.google.com/js/platform.js";
+                                var s = document.getElementsByTagName("script")[0];
+                                s.parentNode.insertBefore(po, s);
+                            })();
+                        </script>
+
+                        <div class="shareItem">
+                            <a class="addthis_button_facebook"></a>
+                        </div>
+                        <div class="shareItem">
+                            <a class="addthis_button_twitter"></a>
+                        </div>
+                        <div class="shareItem">
+                            <a class="addthis_button_zingme"></a>
+                        </div>
+                        <div class="shareItem">
+                            <a class="addthis_button_compact"></a>
+                        </div>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5299e3fd219dc19f"></script>
+                        <!-- AddThis Button END -->
+                    </div>
+
+                </div>
+                <div class="cb"></div>
+            </div>
+            @if (Convert.ToBoolean(Model.Status))
+            {
+                <div class="inputForm">
+                    <div class="title">
+                        @ConfigTextController.GetValueCFT("guicauhoi")
+                    </div>
+                    <div class="form">
+                        <div class="col-md-6">
+                            <p class="fRobotoB">@ConfigTextController.GetValueCFT("hovaten") (<span class="cred">*</span>)
+                            </p>
+                            <input type="text" value="" class="fullName require"/>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fRobotoB">Email</p>
+                            <input type="text" value="" class="email"/>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="fRobotoB">@ConfigTextController.GetValueCFT("noidung") (<span class="cred">*</span>)
+                            </p>
+                            <textarea  class="content require"></textarea>
+                        </div>
+                        <div>
+                            <div class="capcha">
+                                <p class="fRobotoB dib pr10">@ConfigTextController.GetValueCFT("mabaove") (<span class="cred">*</span>)</p>
+                                <input type="text" class="imgcode require"/>
+                                <img class="imgcapcha" id="myimg" src="~/CImage.aspx" onclick="recapcha();"/>
+                                <a href="javascript://" class="recapcha" onclick="recapcha();"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                            </div>
+                            <a href="javascript://" title="" class="btnsend">@ConfigTextController.GetValueCFT("gui")</a>
+                            <div class="fr fsti lh35 pr20 pt10">
+                                @ConfigTextController.GetValueCFT("nhungtruongcodau") (<span class="cred">*</span>) @ConfigTextController.GetValueCFT("batbuocnhap")!
+                            </div> 
+                            <div class="cb"></div>
+                        </div>
+                    </div>
+                </div>
+            } 
+        </div>
+    </div>
+    <div class="colright">
+        @{ Html.RenderAction("AdvRight1", "AdvHome"); }
+        <!--Bên phải 1-->
+        @{ Html.RenderAction("BanCanBiet", "News"); }
+        <div class="cb h10"></div>
+        @{ Html.RenderAction("SuKienNoiBat", "News"); }
+        @{ Html.RenderAction("AdvRight2", "AdvHome"); }
+
+        @{ Html.RenderAction("ThuVienAnh", "Image"); }
+        @{ Html.RenderAction("Index", "LinkWebsite"); }
+    </div>
+    <div class="cb"></div>
+</div> 
+<input type="hidden" id="idshow" value="@idshow" />
+<input type="hidden" id="ippage" value="0" />
+<script>
+    $(document).ready(function() {
+        $('.btnsend').click(function() {
+            var check = 0;
+            $(this).parent().parent('.form').find('.require').each(function() {
+                if ($(this).val().trim() === "") {
+                    alertmsg.error('@ConfigTextController.GetValueCFT("cannhapdayduthongtin")');
+                    check = 1;
+                    return false;
+                }
+            });
+            if (check === 1) return false;
+
+            var email = $(this).parent().parent('.form').find('.email').val();
+            if (email != "" && email != null && !validateEmail(email)) {
+                alertmsg.error('Email @ConfigTextController.GetValueCFT("nhapchuadungdinhdang")');
+                return false;
+            }
+            debugger; 
+            var fullname = $(this).parent().parent('.form').find('.fullName').val();
+            var content = $(this).parent().parent('.form').find('.content').val();
+            var imgcode = $(this).parent().parent('.form').find('.imgcode').val();
+
+            AjaxService.POST("/Topic/AddComment",
+                {
+                    idnews: @Model.ID, 
+                    fullname: fullname,
+                    email: email,
+                    content: content,
+                    imgcode: imgcode
+                },
+                function(res) {
+                    if (res.thongbaocapcha == "false") {
+                        alertmsg.error('@ConfigTextController.GetValueCFT("nhapmabaovesaimoinhaplai")');
+                        $('.form').find('.imgcode').val("");
+                        $('.form').find('.imgcode').focus();
+                        recapcha();
+                        return false;
+                    }
+                    if (res.thongbao == "success") {
+                        alertmsg.success("@ConfigTextController.GetValueCFT("guibinhluanthanhcong")");
+                        $('.form').find('.require,.email').val("");
+                    } else alertmsg.error('@ConfigTextController.GetValueCFT("guibinhluanthatbaithulai")');
+                    recapcha();
+                });
+        });
+    });
+</script>
+<script>
+    loadmore();
+    function loadmore() {
+        $("#loading").show();
+        var idshow = $('#idshow').val();
+        var page = $('#ippage').val();
+        page = 1 + parseInt(page);
+        $('#ippage').val(page);
+          
+        AjaxService.POST("/Topic/ListData", {id: idshow, page: page }, function (res) {
+            if (res.totalPages === page || res.totalPages === 0) $('.viewmore').fadeOut();
+            $("#gridData").append(res.viewContent);
+            $("#loading").hide(); 
+        });
+
+    }
+
+    function recapcha() {
+        var myimg = document.getElementById('myimg');
+        myimg.style.display = "";
+        myimg.src = '/CImage.aspx?value=' + Math.random(); 
+    } 
+</script>

@@ -1,0 +1,28 @@
+﻿@model Web.Model.tbl_NewsPaperComment
+@using Web.Core
+<form class="form-horizontal" novalidate="novalidate">
+    <div class="form-group">
+        <label class="col-md-2 control-label">Người đóng góp: </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.FullName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Email: </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngày gửi: </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.CreateDate, new { @class = "form-control", Value = HelperDateTime.ConvertDateToString(Model.CreateDate) })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Nội dung: </label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.NoiDung, new { @class = "form-control", @rows = "14"})
+        </div>
+    </div>
+</form>

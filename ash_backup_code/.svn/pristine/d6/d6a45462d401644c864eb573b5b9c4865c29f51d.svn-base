@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Quản lý ConfigText";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var lstAction = (List<int>) HttpContext.Current.Session["Action"];
+}
+@using Web.Model.CustomModel
+@model List<Web.Model.tbl_ConfigText>
+<script src="/Scripts/jquery.validate.min.js"></script>
+<script src="~/AppJs/configtext.js"></script>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Quản lý ConfigText</h3>
+                @*<div style="top: 8px;position: absolute; right: 40px;" class="pull-right">
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Add))
+                    {
+                        <button type="button" class="btn btn-primary waves-effect waves-light" onclick=" configtext.loadfrmAdd() "><i class="fa fa-plus"></i> Thêm mới</button>
+                    }
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                    {
+                        <button type="button" class="btn btn-danger waves-effect waves-light" onclick=" configtext.onmultidelete() "><i class="fa fa-trash-o"></i> Xóa nhiều</button>
+                    }
+                </div>*@
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive" id="gridData">
+
+                        </div>
+                        <div class="col-md-12" id="paginationholder">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        configtext.loadData(1);
+        jQuery('#fromdate').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
+        jQuery('#todate').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
+    });
+</script>
+

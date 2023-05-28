@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D0436499-F74C-4776-AF8C-3E76AD2C8869}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web.Repository</RootNamespace>
+    <AssemblyName>Web.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Web.Core">
+      <HintPath>..\Web.Core\bin\Debug\Web.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Web.Model">
+      <HintPath>..\Web.Model\bin\Debug\Web.Model.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IAccessViewRespository.cs" />
+    <Compile Include="IConfigRepository .cs" />
+    <Compile Include="IDocumentType_Repository.cs" />
+    <Compile Include="IRecruitCategory_Repository.cs" />
+    <Compile Include="IAdvertCategory_Repository.cs" />
+    <Compile Include="IAdvert_Category_Module_Repository.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="IGuideCategory_Repository.cs" />
+    <Compile Include="IContactCategory_Repository.cs" />
+    <Compile Include="IFaqCategory_Repository.cs" />
+    <Compile Include="ISurveyCategory_Repository.cs" />
+    <Compile Include="INewsCategory_Repository.cs" />
+    <Compile Include="ITestCategory_Repository.cs" />
+    <Compile Include="ISupport_Category_Module_Repository.cs" />
+    <Compile Include="ISupportCategory_Repository.cs" />
+    <Compile Include="IDocumentCategory_Repository.cs" />
+    <Compile Include="IDocumentPublisher_Repository.cs" />
+    <Compile Include="IDocumentPrice_Repository.cs" />
+    <Compile Include="IModule_Repository.cs" />
+    <Compile Include="ISubeMagazineRepository.cs" />
+    <Compile Include="IFieldFileRep.cs" />
+    <Compile Include="IImageCategoryRepository.cs" />
+    <Compile Include="IGroupCusRepository.cs" />
+    <Compile Include="IConfigTextRepository.cs" />
+    <Compile Include="IAdvRepository.cs" />
+    <Compile Include="IeMagazineRepository.cs" />
+    <Compile Include="IImagesRepository.cs" />
+    <Compile Include="ILimitRepository.cs" />
+    <Compile Include="IMagazineRepository.cs" />
+    <Compile Include="IChatRepository.cs" />
+    <Compile Include="IModuleCateRepository.cs" />
+    <Compile Include="ITopicRepository.cs" />
+    <Compile Include="IPositionRepository.cs" />
+    <Compile Include="IProcessRepository.cs" />
+    <Compile Include="IThamDoYKienIpRepository.cs" />
+    <Compile Include="IAccessOnlineRespository.cs" />
+    <Compile Include="ITaiLieuRepository.cs" />
+    <Compile Include="IDanhMucTaiLieuRepository.cs" />
+    <Compile Include="IDMNhomRepostitory.cs" />
+    <Compile Include="IContactInfoRepository.cs" />
+    <Compile Include="IDonViTTHCRepository.cs" />
+    <Compile Include="ILinhVucTTHCRepository.cs" />
+    <Compile Include="IFooterRepository.cs" />
+    <Compile Include="IQALinhVucRepository.cs" />
+    <Compile Include="IConfigNoteRepository.cs" />
+    <Compile Include="INewsPaperRepository.cs" />
+    <Compile Include="IThamDoYKienRepository.cs" />
+    <Compile Include="IToGiacRepository.cs" />
+    <Compile Include="ITTHCRepository.cs" />
+    <Compile Include="IAdminMenuRepository.cs" />
+    <Compile Include="IBoxNewsConfigRepository.cs" />
+    <Compile Include="ITruyNaRepository.cs" />
+    <Compile Include="ICategoryRepository.cs" />
+    <Compile Include="IChucVuRepository.cs" />
+    <Compile Include="ICoQuanBanHanhReporitory.cs" />
+    <Compile Include="IGroupUserRepository.cs" />
+    <Compile Include="IHomeMenuRepository.cs" />
+    <Compile Include="ILanguagesRepository.cs" />
+    <Compile Include="ILichCongTacRepository.cs" />
+    <Compile Include="ILinhVucVanBanRepository.cs" />
+    <Compile Include="ICalendarRepository.cs" />
+    <Compile Include="ILinkWebsiteRepository.cs" />
+    <Compile Include="ILoaiVanBanRepository.cs" />
+    <Compile Include="ILogRepository.cs" />
+    <Compile Include="INewsHistoryRepository.cs" />
+    <Compile Include="INewsRepository.cs" />
+    <Compile Include="IPageElementRepository.cs" />
+    <Compile Include="IContactReporitory.cs" />
+    <Compile Include="IQAReporitory.cs" />
+    <Compile Include="IFeedBackReporitory.cs" />
+    <Compile Include="IqProcedureRepository.cs" />
+    <Compile Include="ISlideImagesRepository.cs" />
+    <Compile Include="IUserAdminRepository.cs" />
+    <Compile Include="IUserRepository.cs" />
+    <Compile Include="IDMChungRepository.cs" />
+    <Compile Include="IVanBanRepository.cs" />
+    <Compile Include="ICountAccessRepository.cs" />
+    <Compile Include="IOnlineRepository.cs" />
+    <Compile Include="IVideoCategoryRepository.cs" />
+    <Compile Include="IVideoRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

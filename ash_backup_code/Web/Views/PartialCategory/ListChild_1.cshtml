@@ -1,0 +1,28 @@
+﻿<script src="/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/_references.js"></script>
+@using Web.Model
+@model Web.Model.support_category
+
+@{
+    var getItemCategory = (document_category)TempData["getItemCategory"];
+}
+<select id="support_2" name="support_2" class="form-control">
+    @{
+        var lstChildSupport = (List<support_category>)TempData["lstChildSupport"];
+    }
+    @if (lstChildSupport.Count() != 0)
+    {
+        <option value="">-Chọn nhóm-</option>
+        lstChildSupport.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+        foreach (var item in lstChildSupport)
+        {
+            <option value="@item.ID" @(getItemCategory != null && getItemCategory.support_2 == item.ID.ToString() ? "selected" : "")>@item.Name</option>
+        }
+    }
+    else
+    {
+        <option value="">-Chọn nhóm-</option>
+    }
+
+</select>
+

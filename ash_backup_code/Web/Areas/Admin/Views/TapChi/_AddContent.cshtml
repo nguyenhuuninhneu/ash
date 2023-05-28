@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = @TempData["Title"];
+    Layout = null;
+}
+@model Web.Model.CustomModel.tbl_Magazine_Content
+<div class="formaddContent col-md-12">
+    <h4>Tạp chí: @TempData["Title"]</h4>
+    @using (Ajax.BeginForm("AddContent", "TapChi", null,
+        new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "magazine.onAddPageSuccess"
+        },
+        new { @id = "contentForm", @class = "form-horizontal" }))
+    {
+        <input type="hidden" name="magazineid" value="@TempData["MagazineId"]" />
+        <div class="form-group">
+            <label class="col-md-2 control-label">Trang số</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(g => g.Page, new { @class = "form-control", placeholder = "0" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Nội dung trang</label>
+            <div class="col-md-10">
+                @Html.Partial("_Attachment", new { Name = "Images", Multiple = false })
+            </div>
+        </div>
+        <div class="col-md-10 pull-right pl0">
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="table-responsive" id="gridDataContent">
+
+        </div>
+        <div class="col-md-12" id="paginationholder">
+            <ul id="pagination" class="pagination"></ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        magazine.loadDataContent('@TempData["MagazineId"]', 1);
+        $("#contentForm").validate({
+            ignore: [],
+            rules:
+            {
+                Page:
+                {
+                    required: true
+                },
+                Images: {
+                    required: true
+                }
+            },
+            messages:
+            {
+                Page:
+                {
+                    required: "Chưa nhập số trang"
+                },
+                Images:
+                {
+                    required: "Bạn chưa upload nội dung"
+                }
+            }
+        });
+    });
+</script>
+<style>
+    .formaddContent {
+        float: left;
+        width: 100%;
+        padding: 0 20px 20px 20px;
+        border-bottom: 3px solid #ddd;
+        border-radius: 5px;
+    }
+</style>

@@ -1,0 +1,20 @@
+﻿@using Web.Model
+@{ 
+    Layout = null;
+    var langCode = "vn";
+    if (Session["langCodeHome"] != null)
+    {
+        langCode = Session["langCodeHome"].ToString();
+    }
+    var lst=(List<tbl_Advert>)TempData["lstAdvRight1"];
+    lst = lst.Where(g => g.LangCode == langCode).ToList();
+} 
+
+@foreach (var item in lst)
+{
+    <a href="@item.Url" @(item.isNewTab ? "target='_blank'" :"") title="@item.Name" class="banner">
+        <img src="@item.Image" alt="@item.Name" />
+    </a>
+}
+
+ 

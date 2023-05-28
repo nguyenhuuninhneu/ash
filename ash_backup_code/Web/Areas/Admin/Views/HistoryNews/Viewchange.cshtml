@@ -1,0 +1,119 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Core
+@using Web.Model
+@using Web.Model.CustomModel
+@using HtmlDiff
+@model Web.Model.CustomModel.tbl_NewsVersion
+@{
+    var objOld = (tbl_NewsVersion)TempData["OldVersion"];
+    var objNew = (tbl_NewsVersion)TempData["NewVersion"];
+}
+<div class="col-md-6" id="version1Div">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-left">Tiêu đề</td>
+                <td id="Title3">@Html.Raw(HtmlDiff.Execute(objOld.Title != null ? objOld.Title : "", objNew.Title != null ? objNew.Title : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Ảnh đại diện</td>
+                <td><img src="@Common.Replace2Thumb(objOld.Photo)" width="250" /></td>
+            </tr>
+            <tr>
+                <td class="col-left">Mô tả</td>
+                <td id="Description3">@Html.Raw(HtmlDiff.Execute(objOld.Description != null ? objOld.Description : "", objNew.Description != null ? objNew.Description : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Nội dung</td>
+                <td id="Details3">@Html.Raw(HtmlDiff.Execute(objOld.Details != null ? objOld.Details : "", objNew.Details != null ? objNew.Details : ""))</td>
+            </tr>
+
+            <tr>
+                <td class="col-left">Tác giả</td>
+                <td id="Author3">@Html.Raw(HtmlDiff.Execute(objOld.Author != null ? objOld.Author : "", objNew.Author != null ? objNew.Author : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Tag</td>
+                <td id="Tags3">@Html.Raw(HtmlDiff.Execute(objOld.Tags != null ? objOld.Tags : "", objNew.Tags != null ? objNew.Tags : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Phiên bản</td>
+                <td>@string.Format("{0}.0", objOld.Version)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-6" id="version2Div">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-left">Tiêu đề</td>
+                <td id="Title3">@Html.Raw(HtmlDiff.Execute(objOld.Title != null ?objOld.Title:"", objNew.Title != null ? objNew.Title : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Ảnh đại diện</td>
+                <td><img src="@Common.Replace2Thumb(objNew.Photo)" width="250" /></td>
+            </tr>
+            <tr>
+                <td class="col-left">Mô tả</td>
+                <td id="Description3">@Html.Raw(HtmlDiff.Execute(objOld.Description != null ? objOld.Description : "", objNew.Description != null ? objNew.Description : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Nội dung</td>
+                <td id="Details3">@Html.Raw(HtmlDiff.Execute(objOld.Details != null ? objOld.Details : "", objNew.Details != null ? objNew.Details : ""))</td>
+            </tr>
+
+            <tr>
+                <td class="col-left">Tác giả</td>
+                <td id="Author3">@Html.Raw(HtmlDiff.Execute(objOld.Author != null ? objOld.Author : "", objNew.Author != null ? objNew.Author : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Tag</td>
+                <td id="Tags3">@Html.Raw(HtmlDiff.Execute(objOld.Tags != null ? objOld.Tags : "", objNew.Tags != null ? objNew.Tags : ""))</td>
+            </tr>
+            <tr>
+                <td class="col-left">Phiên bản</td>
+                <td>@string.Format("{0}.0", objNew.Version)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<style>
+    #contentnews img {
+        max-width: 100%;
+    }
+    #Details1 img,#Details2 img, #Details3 img{
+        max-width: 100%;
+    }
+    .col-left {
+        width: 135px;
+        vertical-align: middle !important;
+        font-weight: bold;
+    }
+    #version1Div ins,#version2Div ins{
+        background-color:yellow ;
+    }
+    #version1Div del,#version2Div del{
+        background-color:red ;
+    }
+    #version1Div ins{
+        display: none;
+    }
+    #version2Div del{
+        display: none;
+    }
+</style>
+<script>
+    $("#version1Div ins img").each(function (index) {
+        $(this).parent().show();
+        $(this).hide();
+        $(this).parent().attr("style", "display:block; background:none; height:" + $(this).height()+"px");
+    });
+    $("#version2Div del").each(function (index) {
+        $(this).attr("style", "height: " + $(this).height() + "px; display: inline; opacity: 0;");
+    });
+</script>

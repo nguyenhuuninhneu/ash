@@ -1,0 +1,17 @@
+﻿@model Web.Model.tbl_TTHCComment
+<div class="form-group col-md-12">
+    <label class="col-md-2 control-label">Người bình luận: </label>
+    <div class="col-md-10">@Model.FullName</div>
+</div>
+<div class="form-group col-md-12">
+    <label class="col-md-2 control-label">Email: </label>
+    <div class="col-md-10">@Model.Email</div>
+</div>
+<div class="form-group col-md-12">
+    <label class="col-md-2 control-label">Ngày gửi: </label>
+    <div class="col-md-10">@string.Format("{0: dd/MM/yyyy HH:mmm}", Model.CreateDate)</div>
+</div>
+<div class="form-group col-md-12">
+    <label class="col-md-2 control-label">Nội dung: </label>
+    <div class="col-md-10">@Model.NoiDung</div>
+</div>

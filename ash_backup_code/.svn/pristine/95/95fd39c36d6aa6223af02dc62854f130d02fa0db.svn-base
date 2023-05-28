@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Tài liệu nhà xuất bản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var lstLanguages = (List<tbl_Languages>)TempData["languages"];
+    var LangCode = (String)Session["LangCode"];
+    var controllerName = (String)TempData["controllerName"];
+}
+@using Web.Model.CustomModel
+@using Web.Model
+@model List<Web.Model.faq_category>
+<script src="~/AppJs/faqcategory.js"></script>
+<script src="~/AppJs/faqcategory_validate.js"></script>
+<script src="~/Scripts/_references.js"></script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">@controllerName</h3>
+                <div style="top: 8px;position: absolute; right: 40px;" class="pull-right">
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Add))
+                    {
+                        <button type="button" class="btn btn-primary waves-effect waves-light" onclick="FaqCategory.loadfrmAdd() "><i class="fa fa-plus"></i> Thêm mới</button>
+                    }
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                    {
+                        <button type="button" class="btn btn-success waves-effect waves-light" onclick="FaqCategory.onupdateposittion() "><i class="fa fa-refresh"></i> Cập nhật vị trí</button>
+                    }
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                    {
+                        <button type="button" class="btn btn-danger waves-effect waves-light" onclick="FaqCategory.onmultidelete() "><i class="fa fa-trash-o"></i> Xóa nhiều</button>
+                    }
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-2">
+                            <input class="form-control" placeholder="Nhập tiêu đề" name="NameSeach" id="NameSeach" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="form-control selectSeach" id="LangCode" name="LangCode" onchange="FaqCategory.loadData(1)">
+                                    @foreach (var itemLanguage in lstLanguages)
+                                    {
+                                        <option value="@itemLanguage.Code" @(LangCode != null && LangCode == itemLanguage.Code ? "selected" : "")>@itemLanguage.Name</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="form-control selectSeach" id="Status" name="Status">
+                                    <option value="">- Trạng thái -</option>
+                                    <option value="1">Kích hoạt</option>
+                                    <option value="0">Vô hiệu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="btn btn-purple" onclick="FaqCategory.loadData(1)">Tìm kiếm </button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row" style="padding-bottom:10px;">
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive" id="gridData">
+
+                        </div>
+                        @*<div class="col-md-12" id="paginationholder">
+                                <ul id="pagination" class="pagination"></ul>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        FaqCategory.loadData(1);
+        $(".selectSeach").select2();
+
+    });
+</script>

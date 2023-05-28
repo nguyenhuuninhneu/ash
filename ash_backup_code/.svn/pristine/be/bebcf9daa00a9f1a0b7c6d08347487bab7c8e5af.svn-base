@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HLU Đại học Luật</title>
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- google font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&subset=vietnamese" rel="stylesheet">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="misc/swiper/css/swiper.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/stylefix.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="panel" class="panel">
+        <div class="container-fluid header">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="quick-menu">
+                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="#">Lịch công tác</a></li>
+                        <li><a href="#">Hộp thư</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Đăng nhập</a></li>
+                        <li><a href="#">English</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div class="col-md-7 col-xs-12">
+                    <div>
+                        <a class="logo" href="#"><img src="images/logo.png"></a>
+                        <div class="logo-text">
+                            <h3><a href="#">TRƯỜNG ĐẠI HỌC LUẬT HÀ NỘI</a></h3>
+                            <h4><a href="#">HANOI LAW UNIVERSITY</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-12">
+                    <div class="search-box">
+                        <form action="a.php" method="GET">
+                            <input class="search-input" type="text" name="search" placeholder="Nhập từ tìm kiếm" value="">
+                            <button type="submit" class="search-button">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <nav class="navbar navbar-default" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+                                <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                            </button> <a class="navbar-brand hidden-lg hidden-md visible-xs" data-toggle="collapse" data-target="#main-navigation" href="#">Danh mục chính</a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="main-navigation">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#">GIỚI THIỆU</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Lược sử</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Toàn cảnh</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#">HOẠT ĐỘNG KHOA HỌC</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Đề tài NCKH (Giảng viên)</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Toàn cảnh</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">CHƯƠNG TRÌNH ĐÀO TẠO</a>
+                                </li>
+                                <li>
+                                    <a href="#">VIÊN CHỨC HLU</a>
+                                </li>
+                                <li>
+                                    <a href="#">NGƯỜI HỌC</a>
+                                </li>
+                                <li>
+                                    <a href="#">CỰU SINH VIÊN</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="#" title="I LOVE HLU"><img src="images/ilovehlu.png" class="ilovehlu"></a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Dashboard"><i class="glyphicon glyphicon-th"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Lịch công tác"><i class="glyphicon glyphicon-calendar"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- start body content -->
+        <div class="container-fluid bg-space">
+            <div class="orange-line"></div>
+            <div class="row content-space">
+                <div class="col-md-3 hidden-xs hidden-sm leftmenu-fix leftmenu">
+                    <div class="left-block-menu">
+                        <h2 class="title">Cán bộ, viên chức</h2>
+                        <ul>
+                            <li class="parent">
+                                <a href="#">Hoạt động HLU</a>
+                                <ul>
+                                    <li>
+                                        <a href="#">Thông tin</a>
+                                        <a href="#">Sự kiện</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Lãnh đạo các đơn vị</a></li>
+                            <li><a href="#">Tra cứu thông tin</a></li>
+                            <li class="parent">
+                                <a href="#">Bộ tiêu chuẩn đánh giá</a>
+                                <ul>
+                                    <li>
+                                        <a href="#">Thông tin</a>
+                                        <a href="#">Sự kiện</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left-block-menu">
+                        <ul>
+                            <li>
+                                <a href="#"><img src="images/icon1.png"> Giới thiệu</a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="images/icon2.png"> Hoạt động khoa học</a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="images/icon3.png"> Chương trình đào tạo</a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="images/icon4.png"> Viên chức HLU</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left-block-menu">
+                        <h2 class="title">Hệ thống quản trị</h2>
+                        <ul class="ul-square">
+                            <li><a href="#">&middot; Hộp thư viên chức HLU</a></li>
+                            <li><a href="#">&middot; Hộp thư người đọc</a></li>
+                            <li><a href="#">&middot; Lịch công tác</a></li>
+                            <li><a href="#">&middot; Quy chế công khai</a></li>
+                            <li><a href="#">&middot; Mời thầu - chào giá</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- start right content news -->
+                <div class="col-md-9 col-xs-12">
+                    <div class="visible-xs visible-sm">
+                        <button class="btn-toggle-left toggle-button"><strong>☰ Danh mục phụ</strong> (trượt sang phải &rarr; )</button>
+                    </div>
+                    <div class="breadcrumb">
+                        <ul>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-home"> </i></a> <i class="glyphicon glyphicon-menu-right
+    "></i>
+                            </li>
+                            <li><a href="#">Cán bộ, viên chức</a> <i class="glyphicon glyphicon-menu-right
+    "></i></li>
+                            <li><a href="">Hoạt động HLU</a></li>
+                        </ul>
+                    </div>
+                    <div class="detail-news">
+                        <h1 class="title">Họp mặt Cựu Sinh viên Kinh tế - Kết nối 40 năm</h1>
+                        <div class="detail-info">Đăng vào 12:11 16/11/2016</div>
+                        <div class="detail-info">
+                            <div class="addthis_inline_share_toolbox"></div>
+                        </div>
+                        <div class="detail-content">
+                            <p>
+                                Sáng ngày 16/10/2016, tại Trung tâm Hội nghị Riverside Palace, Ban Điều hành UEH Alumni đã long trọng tổ chức buổi họp mặt “Cựu Sinh viên Kinh tế - Kết nối 40 năm” chào mừng 40 năm thành lập trường Đại học Kinh tế TP. Hồ Chí Minh (UEH) (27/10/1976 - 27/10/2016).</p>
+                            <p style="text-align: justify;">
+                                Đến tham dự, về phía lãnh đạo UEH có PGS.TS. Phạm Văn Năng - Chủ tịch UEH Alumni; GS.TS. Nguyễn Đông Phong - Hiệu trưởng; PGS.TS. Nguyễn Ngọc Định - Chủ tịch Hội đồng trường; PGS.TS. Phan Thị Bích Nguyệt - Phó Hiệu trưởng; GS.TS. Nguyễn Trọng Hoài - Phó Hiệu trưởng; TS. Trần Thế Hoàng - Phó Hiệu trưởng; PGS.TS. Nguyễn Hữu Huy Nhựt - Phó Hiệu trưởng; Ban Điều hành UEH Alumni; lãnh đạo các đơn vị thuộc UEH; các đơn vị tài trợ đồng hành với UEH trong chuỗi hoạt động kỷ niệm 40 năm thành lập UEH và hơn 400 cựu sinh viên các khóa, hệ cũng về tham dự buổi họp mặt.</p>
+                            <p style="text-align: center;">
+                                <img alt="" src="http://ueh.edu.vn/images/upload/editer/1. hop mat ueh alumni.jpg" /></p>
+                            <p style="text-align: center;">
+                                <img alt="" src="http://ueh.edu.vn/images/upload/editer/2. hop mat ueh alumni.jpg" /></p>
+                            <p align="center">
+                                <em>Văn nghệ chào mừng buổi họp mặt</em></p>
+                            <p style="text-align: justify;">
+                                Trong buổi họp mặt, Thầy Nguyễn Đông Phong thay mặt cho Ban Giám hiệu UEH trao đổi những thông tin liên quan đến trường trong thời gian qua và định hướng phát triển của UEH trở thành trường đại học vùng trong thời gian tới. Nhân buổi họp mặt, UEH cũng đã có những lời tri ân đến các nhà tài trợ chuỗi hoạt động kỷ niệm 40 năm thành lập UEH.</p>
+                            <p style="text-align: center;">
+                                <img alt="" src="http://ueh.edu.vn/images/upload/editer/3. hop mat ueh alumni.jpg" /></p>
+                            <p style="text-align: center;">
+                                <em>Thầy Nguyễn Đông Phong - Hiệu trưởng phát biểu tại buổi họp mặt</em></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/4. hop mat ueh alumni.jpg"  /></em></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/5. hop mat ueh alumni.jpg"  /></em></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/6. hop mat ueh alumni.jpg"  /></em></p>
+                            <p style="text-align: center;">
+                                <em>Ban Giám hiệu UEH tặng kỷ niệm chương tri ân các đơn vị tài trợ cho UEH trong chuỗi hoạt động kỷ niệm 40 năm thành lập UEH</em></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/7. hop mat ueh alumni.jpg"  /></em></p>
+                            <p style="text-align: center;">
+                                <em>Anh Nguyễn Lâm Vinh Huy - Chủ tịch HĐQT Sacombank-SBJ (Cựu sinh viên khóa 26 -  ĐHCQ) tặng UEH quà lưu niệm chào mừng 40 năm thành lập UEH</em></p>
+                            <p style="text-align: justify;">
+                                Để nâng cao vai trò kết nối của UEH Alumni, Thầy Phạm Văn Năng thông tin đến các cựu sinh viên về tình hình hoạt động cũng như định hướng của Ban Điều hành UEH Alumni với tham vọng kết nối hơn 200.000 cựu sinh viên UEH trên mọi nẻo đường đất nước.</p>
+                            <p style="text-align: center;">
+                                <img alt="" src="http://ueh.edu.vn/images/upload/editer/8. hop mat ueh alumni.jpg" /></p>
+                            <p align="center">
+                                <em>Thầy Phạm Văn Năng - Chủ tịch UEH Alumni phát biểu tại buổi họp mặt</em></p>
+                            <p style="text-align: justify;">
+                                Qua buổi họp mặt, Ban Tổ chức đã triển khai đấu giá 40 cặp đồng hồ phiên bản giới hạn, sản xuất tại Thụy Sĩ với logo UEH 40 năm có số serie 01 đến 40 mang ý nghĩa 40 năm hình thành và phát triển của UEH, nhằm đóng góp cho Quỹ Phát triển UEH. Phiên đấu giá diễn ra với sự tham gia của các anh chị cựu sinh viên đến từ nhiều khóa, hệ và kết quả như sau:</p>
+                            <p style="text-align: justify;">
+                                - Với cặp đồng hồ mang số serie 01 đã thuộc về Anh Nguyễn Cao Trí - Chủ tịch HĐQT - Tổng Giám đốc Công ty CP Tập đoàn Capella - Capella Holdings với giá 260.000.000 (Hai trăm sáu mươi triệu đồng).</p>
+                            <p style="text-align: justify;">
+                                - Với cặp đồng hồ mang số serie 40 thuộc về Anh Nguyễn Lâm Vinh Huy - Chủ tịch Sacombank-SBJ với giá 250.000.000 (Hai trăm năm mươi triệu đồng).</p>
+                            <p style="text-align: justify;">
+                                - 38 cặp đồng hồ còn lại cũng đã được các anh chị cựu sinh viên UEH đấu giá với giá trị đóng góp rất cao cho Quỹ Phát triển UEH.</p>
+                            <p style="text-align: justify;">
+                                Với cặp đồng hồ vừa đấu giá được, Ông Trần Phương Bình - Cựu sinh viên trường đã tặng lại thủ khoa đầu ra khóa 38 - ĐHCQ vừa tốt nghiệp nhằm đưa thông điệp: Hãy trân trọng thời gian để thực hiện những hoài bão được ấp ủ trong quảng đời sinh viên UEH.</p>
+                            <p style="text-align: center;">
+                                <img alt="" src="http://ueh.edu.vn/images/upload/editer/9. hop mat ueh alumni.jpg" /></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/13. hop mat ueh alumni.jpg" /></em></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/14. hop mat ueh alumni.jpg" /></em></p>
+                            <p style="text-align: center;">
+                                <em>Các chủ nhân của 38 cặp đồng hồ UEH - 40 năm đã đấu giá thành công theo số serie từ 02 - 39</em></p>
+                            <p style="text-align: center;">
+                                <em><img alt="" src="http://ueh.edu.vn/images/upload/editer/15. hop mat ueh alumni.jpg"  /></em></p>
+                            <p style="text-align: center;">
+                                <em>Các anh chị cựu sinh viên may mắn trong quay số trúng thưởng. Giải thưởng là 05 vouchers nghỉ dưỡng tại Eden Resort Phú Quốc trong 03 ngày, 02 đêm dành cho 02 người</em></p>
+                            <p style="text-align: justify;">
+                                Sau khi kết thúc buổi họp mặt, Ban Tổ chức đã công bố số tiền huy động cho Quỹ Phát triển UEH từ nguồn đóng góp trực tiếp và đấu giá 40 cặp đồng hồ UEH 40 năm với số tiền: <strong>1.483.400.054 đồng</strong>. Thầy Phạm Văn Năng thay mặt cho toàn thể cựu sinh viên trao số tiền huy động được cho Cô Phan Thị Bích Nguyệt đại diện lãnh đạo nhà trường.</p>
+                            <p align="right">
+                                <em><strong>Tin, ảnh: Ban Điều hành UEH Alumni, Phòng Truyền thông và quan hệ công chúng</strong></em></p>
+                        </div>
+                        <div class="detail-info">
+                            <div class="addthis_inline_share_toolbox"></div>
+                        </div>
+                        <div class="related-news">
+                            <h2 class="title">Tin bài liên quan</h2>
+                            <ul>
+                                <li><a href="#">-  Tình hình thực hiện đề tài NCKH cấp Trường năm 2015</a> (29/06/2016)</li>
+                                <li><a href="#">- Tình hình thực hiện đề tài NCKH cấp Trường năm 2015</a> (29/06/2016)</li>
+                                <li><a href="#">- Tình hình thực hiện đề tài NCKH cấp Trường năm 2015</a> (29/06/2016)</li>
+                                <li><a href="#">- Tình hình thực hiện đề tài NCKH cấp Trường năm 2015</a> (29/06/2016)</li>
+                                <li><a href="#">- Tình hình thực hiện đề tài NCKH cấp Trường năm 2015</a> (29/06/2016)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="visible-xs visible-sm">
+                        <button class="btn-toggle-left toggle-button"><strong>☰ Danh mục phụ</strong> (trượt sang phải &rarr; )</button>
+                    </div>
+                </div>
+            </div>
+            <div class="orange-line"></div>
+        </div>
+        <!-- end body content -->
+        <div class="footer container-fluid">
+            <div class="row footer-container">
+                <div class="col-md-4">
+                    <div class="big-logo">
+                        <img src="images/hlu-footer.png">
+                    </div>
+                    <div class="footer-address">
+                        87 Nguyễn Chí Thanh, Q. Đống Đa, Hà Nội, Việt Nam
+                        <br/> Điện thoại: 84.8.38295299 - Fax: 84.8.38250359
+                        <br/> Email: info@hlu.edu.vn
+                        <br/> © 2016 Trường Đại học Luật Hà Nội
+                        <br/>
+                    </div>
+                    <div class="social-footer">
+                        <a href="#"><img src="images/fb-footer.png"></a> &nbsp;&nbsp;
+                        <a href="#"><img src="images/youtube-footer.png"></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-info">
+                        <h2 class="title">Thông tin hỗ trợ</h2>
+                        <ul class="footer-info">
+                            <li>Tuyển sinh - Chính quy </li>
+                            <li>043.835.1879</li>
+                            <li>Tuyển sinh - Sau đại học</li>
+                            <li>0437.733.287</li>
+                            <li>Tuyển sinh - Tại chức:</li>
+                            <li>0438.355.771</li>
+                            <li>Hiệu trưởng</li>
+                            <li><strong>chault@hlu.edu.vn</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-info">
+                        <h2 class="title">HỆ THỐNG QUẢN TRỊ</h2>
+                        <ul class="footer-info footer-link">
+                            <li><a href="#">Hộp thư viên chức HLU</a></li>
+                            <li><a href="#">Hộp thư người học</a></li>
+                            <li><a href="#">Lịch công tác</a></li>
+                            <li><a href="#">ISO 9001:2008</a></li>
+                            <li><a href="#">Quy chế công khai</a></li>
+                            <li><a href="#">Mời thầu - Chào giá</a></li>
+                            <li><a href="#">Tuyển sinh - Chính quy </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <ul class="footer-info footer-cat">
+                        <li><a href="#">Giới thiệu <img class="hidden-xs" src="images/icon1.png" align="absmiddle"></a></li>
+                        <li><a href="#">Hoạt động khoa học <img class="hidden-xs" src="images/icon2.png"></a></li>
+                        <li><a href="#">Chương trình đào tạo <img class="hidden-xs" src="images/icon3.png"></a></li>
+                        <li><a href="#">Viên chức HLU <img class="hidden-xs" src="images/icon4.png"></a></li>
+                        <li><a href="#">Sinh viên <img class="hidden-xs" src="images/icon5.png"></a></li>
+                        <li><a href="#">Cựu sinh viên <img class="hidden-xs" src="images/icon6.png"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu" class="hide">
+        <button class="btn-toggle-left toggle-button btn-block"><strong> <i class="glyphicon glyphicon-remove-sign"></i> Ẩn</strong> (&larr; trượt sang trái )</button>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="misc/swiper/js/swiper.min.js"></script>
+    <!-- Initialize Swiper -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/slideout.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/home.js"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-580ae1381e82e3f5"></script>
+</body>
+
+</html>

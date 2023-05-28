@@ -1,0 +1,87 @@
+﻿@model Web.Model.tbl_QuestionAndAnswer
+@{var lstQALinhVuc = (List<Web.Model.tbl_QALinhVuc>)TempData["lstQALinhVuc"];}
+<script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+@using (Ajax.BeginForm("Answer", "QA", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "qa.onAnswerSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label pt0">Họ tên: </label>
+        <div class="col-md-10">
+            @Html.DisplayFor(g => g.FullNameOfQuestion)
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label pt0">Số điện thoại: </label>
+        <div class="col-md-10">
+            @Html.DisplayFor(g => g.Phone)
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label pt0">Địa chỉ: </label>
+        <div class="col-md-10">
+            @Html.DisplayFor(g => g.DiaChi)
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label pt0">Email: </label>
+        <div class="col-md-10">
+            @Html.DisplayFor(g => g.Email)
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label pt0">Thời gian: </label>
+        <div class="col-md-10">@string.Format("{0: dd/MM/yyyy HH:mm}", Model.CreatedDate)</div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label pt0">Nội dung câu hỏi: </label>
+        <div class="col-md-10">
+            @Html.DisplayFor(g => g.Question)
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Trả lời: </label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Answer, new { @class = "form-control ckeditor_vx" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Người trả lời: </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.UserNameOfAnswer, new { @class = "form-control", @Value = Model.UserNameOfAnswer ?? "Liên minh HTX Quảng Trị" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">&nbsp;</label>
+        <div class="col-md-10">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" value="true" @(Model.Status ? "checked" : "")>
+                <label for="Status">Kích hoạt</label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Gửi trả lời</button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $(".ckeditor_vx").each(function () {
+            var Field = $(this).attr("name");
+            CKEDITOR.replace(Field, {
+                language: 'vi',
+                filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+                filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+                filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+                height: 350
+            });
+        });
+    });
+</script>

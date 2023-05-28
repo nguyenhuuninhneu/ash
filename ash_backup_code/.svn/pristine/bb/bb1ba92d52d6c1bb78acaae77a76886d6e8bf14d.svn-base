@@ -1,0 +1,82 @@
+﻿@model Web.Model.tbl_DMNhom
+@using (Ajax.BeginForm("Add", "dmnhom", null,
+                            new AjaxOptions
+                            {
+                                HttpMethod = "POST",
+                                OnSuccess = "dmnhom.onAddSuccess"
+                            },
+                            new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên nhóm</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên nhóm" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Code</label>
+        <div class="col-md-10">
+            <select class="form-control" name="Code" id="Code">
+                <option value="">-------Không chọn----</option>
+                <option value="tructhuoc">Công đoàn cơ sở trực thuộc</option>
+                <option value="tinhthanh">Công đoàn y tế tỉnh thành</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", @placeholder = "Thứ tự...", value = "0" })
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input type="checkbox" id="Status" name="Status" checked="" value="true">
+                <label for="Status"> Kích hoạt</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            },
+            Code:
+                {
+                    required: true
+                },
+            Ordering: {
+                required: true,
+                number: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên nhóm"
+                },
+                Code:
+                {
+                    required: "Chưa nhập code"
+                },
+                Ordering: {
+                    required: "Chưa nhập thứ tự",
+                    number: "Yêu cầu phải là số"
+                }
+            }
+        });
+        $("#Code").select2();
+    });
+</script>

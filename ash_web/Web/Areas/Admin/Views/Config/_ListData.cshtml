@@ -1,0 +1,83 @@
+﻿@using Web.Model.CustomModel
+@using Web.Model
+@using Web.Core
+@model List<tbl_Config>
+@{ var lstAction = (List<int>) HttpContext.Current.Session["Action"]; }
+<script src="~/AppJs/config.js"></script>
+<table data-page-length="100" class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <th style="width:65px" class="grid-width-50">
+                <input type="hidden" id="hdfID" />
+                <div style="margin-left:7px" class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th style="width:150px">Tiêu đề</th>
+            <th style="width:200px">Mô tả</th>
+            <th>Nhuận bút</th>
+            <th>Thứ tự</th>
+            @*<th>Ngôn ngữ</th>*@
+            <th style="width:115px">Trạng thái</th>
+            <th style="width:150px"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="vertical-align: middle;">
+                        <div class="checkbox">
+                            <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                            <label for="chk'@item.ID'"></label>
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle; width: 100px;">@item.Name</td>
+                    <td style="vertical-align: middle; width: 100px;">@item.Description</td>
+                    <td style="vertical-align: middle; width: 100px;">@HelperNumber.ConvertToMoney(item.Price)</td>
+                    <td style="vertical-align: middle;" class="lockChar">
+                        @Html.HiddenFor(g => item.ID)
+                        @Html.TextBoxFor(g => item.Ordering, new { @class = "form-control width50 text-center" })
+                    </td>
+                    @*<td>@item.NgonNgu</td>*@
+                    <td style="vertical-align: middle;">@Html.Raw(item.Status == true ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                    <td>
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="javascript://" class="btn btn-primary btn-bordered" onclick="config.loadfrmedit('@item.ID') " title="Sửa"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <a href="javascript://" class="btn btn-success btn-bordered" onclick="config.active(@item.ID) " title="@(item.Status == true ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="config.ondelete('@item.ID')" title="Xóa">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').dataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/vietnamese.json"
+                },
+            }
+        );
+    });
+    $('.lockChar').on("keypress", function () {
+        return event.charCode >= 48 && event.charCode <= 57
+    })
+</script>

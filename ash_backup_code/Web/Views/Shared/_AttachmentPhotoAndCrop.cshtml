@@ -1,0 +1,176 @@
+﻿@{
+    var obj = Model.GetType();
+    var name = obj.GetProperty("Name").GetValue(Model, null);
+    var multiple = obj.GetProperty("Multiple").GetValue(Model, null);
+    var value = obj.GetProperty("Value") == null ? "" : obj.GetProperty("Value").GetValue(Model, null);
+}
+<link href="~/assets/css/smartadmin-production-plugins.min.css" rel="stylesheet" />
+<script src="~/Assets/js/jcrop/jquery.Jcrop.min.js"></script>
+<script src="~/Assets/js/jcrop/jquery.color.min.js"></script>
+<script src="/Content/Admin/assets/notifications/notify.min.js"></script>
+<script src="/Content/Admin/assets/notifications/notify-metro.js"></script>
+<script src="/Content/Admin/assets/notifications/notifications.js"></script>
+<script src="/Content/Admin/assets/sweet-alert/sweet-alert.min.js"></script>
+<script src="/Content/Admin/assets/sweet-alert/sweet-alert.init.js"></script>
+<script src="~/Scripts/common.js"></script>
+<input type="hidden" id="@name" name="@name" value="@value" />
+<input type="hidden" id="CropImage" name="CropImage" value="@value" />
+@if (multiple == true)
+{
+    <input type="file" multiple id="btn-upload-ajax-@name" class="btn btn-success btn-flat browser-image hidden" value="Chọn file văn bản">
+}
+else
+{
+    <input type="file" id="btn-upload-ajax-@name" class="btn btn-success btn-flat browser-image hidden" value="Chọn file văn bản">
+}
+<div class="upload-ajax">
+    <a href="javascript:void(0)" type="button" id="Upload" class="btn btn-primary btnUpImg" onclick="$('#btn-upload-ajax-@name').click()"><i class="glyphicon glyphicon-paperclip"></i> Tải ảnh lên </a>
+    <i class="ion-loading-a loading-ajax-@name" style="display: none;"></i>
+</div>
+<div id="fileupload-@name" class="fileupload"></div>
+<script>
+    $(document).ready(function () {
+        var arrFiles = [];
+        var strFiles = "";
+        //Bind 2 Edit
+        if ($("#@name").val() != "") {
+            arrFiles = $("#@name").val().split("|");
+            for (var i = 0; i < arrFiles.length; i++) {
+                strFiles += '<p class="completedImg" id="f' + i + '"><img src="' + arrFiles[i] + '" width="150" alt="" />';
+                strFiles += "<a title='Xóa file' class='clsclick' onclick=\"$(this).parent().remove();removeFileImg('" + arrFiles[i] + "')\"><i class='fa fa-times removefileImg'></i></a></p>";
+            }
+            $("#fileupload-@name").html(strFiles);
+        }
+        $("#btn-upload-ajax-@name").uploadajax(".loading-ajax-@name", function (res) {
+            if (res.status == true) {
+                strFiles = $("#fileupload-@name").html();
+                if ($("#@name").val() != "" && "@multiple" == "True") {
+                    arrFiles = $("#@name").val().split("|");
+                } else {
+                    arrFiles = [];
+                    strFiles = "";
+                }
+                for (var i = 0; i < res.files.length; i++) {
+                    strFiles += '<p class="completedImg" id="f' + i + '"><img src="' + res.files[i].FileName + '" id="target-2" width="150" alt="" />';
+                    strFiles += "<a title='Xóa file' class='clsclick' onclick=\"$(this).parent().remove();removeFileImg('" + res.files[i].FileName + "')\"><i class='fa fa-times removefileImg'></i></a></p>";
+                    arrFiles.push(res.files[i].FileName);
+                }
+                $("#@name").val(arrFiles.join("|"));
+                $("#CropImage").val(arrFiles.join("|"));
+                $("#fileupload-@name").html(strFiles);
+                alertmsg.success(res.msg);
+                // begin crop
+                $(".loading-ajax-@name").hide();
+                var jcrop_api;
+
+                $('#target-2').Jcrop({
+                    onChange: showCoords,
+                    onSelect: showCoords,
+                    onRelease: clearCoords,
+                    aspectRatio: 3 / 2,
+                }, function () {
+                    jcrop_api = this;
+                });
+
+                $('#coords').on('change', 'input', function (e) {
+                    var x1 = $('#x1').val(), x2 = $('#x2').val(), y1 = $('#y1').val(), y2 = $('#y2').val();
+                    jcrop_api.setSelect([x1, y1, x2, y2]);
+                });
+                /*jcrop_api.setOptions({
+                    aspectRatio: 3 / 2
+                });*/
+                // Simple event handler, called from onChange and onSelect
+                // event handlers, as per the Jcrop invocation above
+                function showCoords(c) {
+                    $('#x1').val(c.x);
+                    $('#y1').val(c.y);
+                    $('#x2').val(c.x2);
+                    $('#y2').val(c.y2);
+                    $('#w').val(c.w);
+                    $('#h').val(c.h);
+                };
+
+                function clearCoords() {
+                    $('#coords input').val('');
+                };
+            } else {
+                alertmsg.error(res.msg);
+            }
+            $(".loading-ajax-@name").hide();
+        });
+    });
+    var removeFileImg = function (filename) {
+        $("#@name").val('');
+        $("#CropImage").val('');
+    }
+</script>
+<style>
+    .fileupload {
+        margin-top: 3px;
+        width: 100%;
+    }
+
+    .completedImg {
+        padding: 5px;
+        background: rgba(221, 221, 221, 0.61);
+        box-shadow: 1px 1px #ccc;
+        margin-bottom: 2px;
+        position: relative;
+        float: left;
+        margin-top: 0 !important;
+        margin-right: 5px !important;
+    }
+
+        .completedImg span {
+            float: left;
+        }
+
+    .removefileImg {
+        position: absolute;
+        right: 10px;
+        bottom: 0;
+        margin-left: 10px;
+        color: red;
+        cursor: pointer;
+        line-height: 20px;
+    }
+
+    .btnUpImg, .btnUpImg i {
+        background: #fff !important;
+        color: #1e88e5 !important;
+    }
+
+        .btnUpImg:hover, .btnUpImg:hover i {
+            cursor: pointer;
+        }
+</style>
+
+<!-- This is the form that our event handler fills -->
+<div id="coords" class="coords margin-top-10" style="display: none;">
+    <div class="inline-labels">
+        <label>
+            X1
+            <input type="text" size="4" id="x1" name="x1" />
+        </label>
+        <label>
+            Y1
+            <input type="text" size="4" id="y1" name="y1" />
+        </label>
+        <label>
+            X2
+            <input type="text" size="4" id="x2" name="x2" />
+        </label>
+        <label>
+            Y2
+            <input type="text" size="4" id="y2" name="y2" />
+        </label>
+        <label>
+            W
+            <input type="text" size="4" id="w" name="w" />
+        </label>
+        <label>
+            H
+            <input type="text" size="4" id="h" name="h" />
+        </label>
+    </div>
+</div>

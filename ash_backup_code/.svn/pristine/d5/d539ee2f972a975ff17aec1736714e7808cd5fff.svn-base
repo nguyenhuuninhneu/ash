@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Core
+@using Web.Model
+@model IEnumerable<Web.Model.tbl_Magazine>
+@{
+    var dothtml = ".html";
+    var count = 0;
+}  
+
+@foreach (var item in Model)
+{
+    string link = "javascript://";
+    if (!String.IsNullOrEmpty(item.Attachment))
+    {
+        link = "/flipbook/web/viewer.html?file="+ item.Attachment + "#magazineMode=true";
+    } 
+    if (count % 6 == 0)
+    {
+        @Html.Raw("<div class='group'>")
+    }
+    <div class="khungAnh">
+        <a class="khungAnhCrop" href="@link" title="@item.Title" target="_blank">
+            <img src="@item.Photo" />
+        </a>
+    </div> 
+    if (count % 6 == 5 || count == Model.Count() - 1)
+    {
+        @Html.Raw("</div><div class='cb'></div>");
+    } 
+    count++;
+} 

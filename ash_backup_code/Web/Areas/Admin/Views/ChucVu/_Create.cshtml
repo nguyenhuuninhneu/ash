@@ -1,0 +1,66 @@
+﻿@using Web.Model
+@model Web.Model.tbl_ChucVu
+@using (Ajax.BeginForm("Add", "ChucVu", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "chucvu.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-4 control-label">Tên chức vụ</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên chức vụ" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Thứ tự</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-8 col-sm-offset-4">
+            <div class="checkbox checkbox-primary">
+                <input id="isPublish" name="isPublish" type="checkbox" value="true">
+                <label for="isPublish">
+                    Trạng Thái Kích Hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8  col-sm-offset-4">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            },
+            Ordering:
+            {
+                required: true,
+                digits: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên chức vụ"
+                },
+                Ordering: {
+                    required: "Bạn chưa nhập thứ tự",
+                    digits: "Bạn phải nhập vào một số nguyên"
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Model
+@model List<Web.Model.tbl_HomeMenu>
+@helper RenderLeftMenu(tbl_HomeMenu objParent)
+{
+    var lstChild = Model.Where(g => g.ParentID == objParent.ID).ToList();
+    <ul>
+        @if (lstChild.Count > 0)
+        {
+            <li class="parent">
+                <a href="/News/GetAllNewsByCat/?catid=@objParent.CategoryId">@objParent.Name</a>
+                @foreach (var child in lstChild)
+                {
+                    @RenderLeftMenu(child);
+                }
+            </li>
+        }
+        else
+        {
+            <li><a href="/News/GetAllNewsByCat/?catid=@objParent.CategoryId">@objParent.Name</a></li>
+        }
+    </ul>
+}
+<div class="col-md-3 hidden-xs hidden-sm leftmenu-fix leftmenu">
+    @if (Model.Count > 0)
+    {
+        var parent = Model.FirstOrDefault(g => g.ParentID == 0);
+        <div class="left-block-menu">
+            <h2 class="title">@parent.Name</h2>
+            @{
+        var lstChild = Model.Where(g => g.ParentID == parent.ID);
+        foreach (var child in lstChild)
+        {
+            @RenderLeftMenu(child)
+        }
+            }
+        </div>
+    }
+
+    <div class="left-block-menu">
+        <ul>
+            <li>
+                <a style="cursor: pointer" onclick="redirectToSubdomain('giangvien')"><img src="/Content/Site/images/dt1.png" width="25" height="25"> Cán bộ giảng viên</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" onclick="redirectToSubdomain('sinhvien')"><img src="/Content/Site/images/dt2.png" width="25" height="25"> Sinh viên học viên</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" onclick="redirectToSubdomain('cuusinhvien')"><img src="/Content/Site/images/dt3.png" width="25" height="25"> Cựu sinh viên</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" onclick="redirectToSubdomain('doitachoptac')"><img src="/Content/Site/images/dt4.png" width="25" height="25"> Đối tác hợp tác</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" onclick="redirectToSubdomain('tuyensinh')"><img src="/Content/Site/images/dt5.png" width="25" height="25"> Sinh viên tương lai</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="visible-xs visible-sm">
+    <button class="btn-toggle-left toggle-button"><strong>☰ Danh mục phụ</strong> (trượt sang phải &rarr; )</button>
+</div>

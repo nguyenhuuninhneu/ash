@@ -1,0 +1,415 @@
+﻿@{
+    ViewBag.Title = "Sửa bài viết";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var langCode = "vn";
+    if (Session["langCodeDefaut"] != null)
+    {
+        langCode = Session["langCodeDefaut"].ToString();
+    }
+    var lst = (List<tbl_HomeMenu>)TempData["ChuyenTrang"];
+    lst.ForEach(g => g.Name = g.Name.Replace("--", ""));
+    lst.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+    var lstConfig = (List<tbl_Config>)TempData["Config"];
+    var lstCategory = (List<tbl_Category>)TempData["Category"];
+    var lstCTV = (List<tbl_UserAdmin>)TempData["lstCTV"];
+    lstCategory.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+    var listPosition = (List<tbl_Position>)TempData["LstPos"];
+    var lststatus = (List<qProcedure>)TempData["Status"];
+    var lstQtxb = (List<qProcedure>)TempData["QuyTrinhXuatBan"];
+    var QtxbID = (lstQtxb.FirstOrDefault(x => x.isPublish) != null ? lstQtxb.FirstOrDefault(x => x.isPublish).ID : 0);
+    var objUser = (tbl_UserAdmin)TempData["objUser"];
+    var Type = TempData["Type"];
+    var isPublicHiiden = (int)TempData["isPublic"];
+}
+<script src="~/AppJs/account.js"></script>
+<script src="~/Scripts/_references.js"></script>
+<script src="/Scripts/jquery.validate.min.js"></script>
+<script src="~/AppJs/news.js"></script>
+<script src="~/AppJs/process.js"></script>
+<script src="~/Scripts/newsEdit.js"></script>
+
+@using Web.Core
+@using Web
+@using Web.Model
+@model Web.Model.tbl_News
+@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { id = "frmpost", @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(g => g.IdUserChoose)
+    @Html.HiddenFor(g => g.ID)
+    @Html.HiddenFor(g => g.CreatedDate)
+    @Html.HiddenFor(g => g.CreatedBy)
+    @Html.HiddenFor(g => g.UserActId)
+    @Html.HiddenFor(g => g.ProcedureId)
+    @Html.HiddenFor(g => g.IsPublish)
+    @Html.HiddenFor(g => g.LangCode)
+    @Html.HiddenFor(g => g.IsDelete) 
+
+    <input type="hidden" value="" name="isContinue" id="isContinue" />
+    <input type="hidden" value="" name="isDuyet" id="isDuyet" />
+    <input type="hidden" value="" name="Publish" id="Publish" />
+    <input type="hidden" id="isProcess" name="isProcess" value="" />
+    <input type="hidden" value="0" name="ViewCount" id="ViewCount" />
+    <input type="hidden" id="Attachment_File" value="" name="Attachment_File" />
+    <input type="hidden" id="Con-tent" value="" name="Contents_Process" />
+    <input type="hidden" id="Status-process" value="" name="Status_Process" />
+    <input type="hidden" id="code" value="news" name="Code" />
+    <input type="hidden" name="Type" id="Type" value="@Type"/>
+    <input hidden name="isPublicHiiden" value="@isPublicHiiden"/>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sửa bài viết</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Chuyên mục <span class="asterisk">(*)</span></label>
+                        <div class="col-md-10" id="category">
+                            <input type="hidden" value="@Model.CategoryIdStr" id="cateHide" />
+                            @Html.DropDownListFor(g => g.CategoryIdStr, new SelectList(lstCategory, "ID", "Name"), new { @class = "form-control select2", @multiple = "multiple" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Tiêu đề <span class="asterisk">(*)</span></label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(g => g.Title, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Tiêu đề phụ</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(g => g.SubTitle, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ảnh đại diện <span class="asterisk">(*)</span></label>
+                        <div class="col-md-10">
+                            @Html.HiddenFor(g => g.Photo)
+                            <a id="BrowserPhoto" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+                            </a>
+                            <div class="mt10" id="previewthumbnail">
+                                @if (!string.IsNullOrEmpty(Model.Photo))
+                                {
+                                    <img src="@Model.Photo" width="150" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Sapo <span class="asterisk">(*)</span></label>
+                        <div class="col-md-10"> 
+                            @Html.TextAreaFor(g => g.Description, new {@class = "form-control", @rows = 5})
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-left:10px" class="control-label">Nội dung</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(g => g.Details, new { @class = "form-control" })
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Tài liệu đính kèm</label>
+                    <div class="col-md-10">
+                        @Html.Partial("_Attachment", new { Name = "Attachment", Multiple = false, Value = Model.Attachment })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Tác giả <span class="asterisk">(*)</span></label>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(g => g.Author, new { @class = "form-control" }) 
+                    </div>
+                    <label class="col-md-2 control-label">Cộng tác viên </label>
+                    <div class="col-md-4">
+                        <select id="CTVID" name="CTVID" class="form-control select2" onchange="news.ChooseCT()">
+                            <option value="">-- Chọn cộng tác viên --</option>
+                            @{
+                                foreach (var item in lstCTV)
+                                {
+                                    <option value="@item.ID" @(Model.CTVID == item.ID ? "selected" : "")>@item.FullName</option>
+                                }
+                            }
+                        </select>
+                        
+                        <div style="margin-top: 3px">
+                            <a href="javascript:void(0)" id="infoTG" onclick="account.loadfrmInfo(@(Model.CTVID != null ? Model.CTVID : Model.CreatedBy))"><i class="fa fa-plus" aria-hidden="true"></i>Thông tin tác giả</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                    @*<div class="form-group">
+                        <label class="col-md-2 control-label">Cộng tác viên </label>
+                        <div class="col-md-4">
+                            <select id="CTVID" name="CTVID" class="form-control select2">
+                                <option value="">-- Chọn cộng tác viên --</option>
+                                @{
+                                    foreach (var item in lstCTV)
+                                    {
+                                        <option value="@item.ID" @(Model.CTVID == item.ID ? "selected" : "")>@item.FullName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        </div>*@
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Nguồn tin</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(g => g.SourceNews, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Tags</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(g => g.Tags, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Loại tin bài <span class="asterisk">(*)</span></label>
+                            <div class="col-md-4">
+                                <select id="NewMoney" name="NewMoney" class="form-control select2" onchange="showMoney()">
+                                    @if (Model.NewMoney != null)
+                                    {
+                                        var namePrice = (lstConfig.FirstOrDefault(x => x.ID == Model.NewMoney) != null ? lstConfig.FirstOrDefault(x => x.ID == Model.NewMoney).Name : "");
+                                        <option value="@Model.NewMoney" data-price="@Model.NhuanBut">@namePrice</option>
+                                    }
+                                    else
+                                    {
+                                        <option>-- Chọn --</option>
+                                    }
+
+                                    @if (lstConfig != null)
+                                    {
+                                        foreach (var item in lstConfig.Where(x => x.ID != Model.NewMoney))
+                                        {
+                                            <option value="@item.ID" data-price="@item.Price">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div id="nhuanbut">
+                                <label class="col-md-2 control-label">Nhuận bút:</label>
+                                @if (User.isAdmin || objUser.QuyTrinhXuatBanID.Contains(QtxbID.ToString()))
+                                {
+                                    <div class="col-md-3 lockChar">
+                                        <input type="text" maxlength="12" class="form-control" id="NhuanBut" name="NhuanBut" value="" />
+                                    </div>
+                                    <div class="vnđ">(VNĐ)</div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-4">
+                                        <p style="margin-top:7px"><span id="showMoney">0</span><span style="margin-top:7px"> vnđ</span></p>
+                                    </div>
+                                    <input type="hidden" class="form-control" id="NhuanBut" name="NhuanBut" value="" />
+                                }
+                            </div>
+                        </div>
+                        @if (Model.IsPublish)
+                        {
+                            lststatus = lststatus.Where(g => g.isPublish).ToList();
+                        }
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Trạng thái</label>
+                            @if (langCode == "vn")
+                            {
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(g => g.Status, new SelectList(lststatus, "ID", "Name"), null, new { @class = "form-control select2" })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(g => g.Status, new SelectList(lststatus, "ID", "NameEnglish"), null, new { @class = "form-control select2" })
+                                </div>
+                            }
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Vị trí tin</label>
+                            <div class="col-md-10">
+                                @foreach (var item in listPosition)
+                                {
+                                    <div class="checkbox checkbox-primary">
+                                        <input id="Code" name="position" type="checkbox" @(Model.Position != null && Model.Position.Split(',').Contains(item.Code) ? "checked" : "") value="@item.Code">
+                                        <label for="Status">
+                                            @item.Name
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Ngày</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    @Html.HiddenFor(g => g.CreatedDate)
+                                    <input type="text" name="EditDate" id="EditDate" class="form-control datepicker-mask1" value="@string.Format("{0: dd/MM/yyyy HH:mm}",Model.CreatedDate)" />
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Tin liên quan</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(g => g.RelatedNews)
+                                <input type="hidden" value="@Model.RelatedNews" id="RelatedNewsIdHide" />
+                                <input type="hidden" value="@ViewBag.jsonRelateNews" id="jsonRelateNews" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Bình luận bài viết</label>
+                            <div class="col-sm-10 pull-right">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="IsComment" name="IsComment" type="checkbox" @(Model.IsComment ? "checked" : "") value="true">
+                                    <label for="IsComment">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" id="save" class="btn btn-info waves-effect waves-light"><i class="fa fa-plus"></i> Lưu</button>
+                                <button type="button" id="vali" class="btn btn-info waves-effect waves-light"><i class="fa fa-plus"></i> Lưu và thoát</button>
+                                <button type="button" class="btn btn-warning waves-effect waves-light" onclick="news.checkprocess(@Model.ID,'news')"><i class="fa fa-refresh"></i> Chuyển xử lý</button>
+                                @if (User.isAdmin || objUser.QuyTrinhXuatBanID.Contains(QtxbID.ToString()))
+                                {
+                                    if (Model.IsPublish)
+                                    {
+                                        <button type="button" onclick="news.unpublish()" title="Hủy xuất bản" id="" class="btn btn-default btn-bordered text-danger"><i class='fa fa-times'></i> Hủy Xuất bản</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" onclick="news.checkpublish()" title="Xuất bản" id="publish" class="btn btn-default btn-bordered text-success"><i class='fa fa-check'></i> Xuất bản</button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" onclick="news.checkduyet()" id="duyettin" title="Duyệt tin" class="btn btn-default btn-bordered text-success"><i class="fa fa-check" aria-hidden="true"></i> Duyệt tin</button>
+                                }
+                                <a href="/Admin/News?isPublic=@isPublicHiiden&Type=@Type" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-list"></i> Danh sách</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .vnđ {line-height: 34px;}
+    .asterisk {color: red;font-weight: normal;}
+</style>
+@if (Request["sc"] == "2")
+{
+    <script>
+        $(document).ready(function () {
+            alertmsg.success("Cập nhật thành công !");
+            //setTimeout(function () { window.history.pushState({ state: 'new' }, '', "/Admin/News"); }, 3000);
+        });
+    </script>
+}
+<script>
+    $('#save').on('click', function () {
+        $('#isContinue').val("1");
+    })
+
+    var cateHide = $("#cateHide").val();
+    if (cateHide != "") {
+        var arrIdHide = cateHide.split(',');
+        $('#CategoryIdStr').val(arrIdHide).trigger('change');
+    }
+    $('#CategoryIdStr').on('change', function () {
+        var value = $(this).val();
+        if (value != "") {
+            $('#category label.error').remove();
+        }
+    })
+    $(document).ready(function () {
+        $('.datepicker-mask1').datetimepicker({
+            locale: 'vi',
+            sideBySide: true
+        });
+        $(".select2").select2({ "width": "100%" });
+        $(".select2Multi").select2({
+            "width": "100%"
+        });
+
+        $("#frmpost").validate({
+            ignore: [],
+            rules:
+            { 
+                Title:
+                {
+                    required: true,
+                    maxlength: 500
+                },
+                CategoryIdStr:
+                {
+                    required: true
+                },
+                Author:
+                {
+                    required: true
+                }, 
+                Description: {
+                    required: function () {
+                        CKEDITOR.instances.Description.updateElement();
+                    }
+                }
+            },
+            messages:
+            {
+                Title:
+                {
+                    required: "Chưa nhập tiêu đề bài viết"
+                },
+                CategoryIdStr:
+                {
+                    required: "Bạn chưa chọn danh mục"
+                },
+                Author:
+                {
+                    required: "Chưa nhập tác giả bài viết"
+                },
+                Description:{
+                    required:"Chưa nhập Sapo bài viết",
+                }
+            },
+            highlight: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            }
+        });
+         
+
+        CKEDITOR.replace("Details", {
+            language: 'vi',
+            disableNativeSpellChecker: false,
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 350
+        });
+        CKEDITOR.replace("Description", {
+            language: 'vi',
+            disableNativeSpellChecker: false,
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 150
+        });
+        $("#BrowserPhoto").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Photo").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+
+    });
+</script>

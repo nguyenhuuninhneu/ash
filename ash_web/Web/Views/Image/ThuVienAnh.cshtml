@@ -1,0 +1,34 @@
+﻿@using Web.Model;
+@using Web.Core;
+@using Web.Areas.Admin.Controllers
+@{
+    ViewBag.Title = "";
+    var dothtml = ".html";
+    Layout = null; 
+    var lstCateImg = (List<tbl_ImagesCategory>)TempData["LstCateImg"];
+
+}
+
+@if (lstCateImg != null && lstCateImg.Count > 0)
+{
+    <div id="thuvienanh">
+        <div class="title">
+            <a href="/pages/images.html" title="">
+                <p>@ConfigTextController.GetValueCFT("ThuVienAnhHome")</p>
+            </a>
+        </div>
+        <div class="group">
+            @foreach (var item in lstCateImg)
+            {
+                <div class="item">
+                    <div class="khungAnh">
+                        <a class="khungAnhCrop" href="/pages/images/@item.ID/@HelperString.RemoveMark(item.Name)@dothtml" title="Thư viện ảnh">
+                            <img src="@item.Image" />
+                        </a>
+                    </div>
+                    <a href="/pages/images/@item.ID/@HelperString.RemoveMark(item.Name)@dothtml" title="" class="name">@item.Name</a>
+                </div>
+            }
+        </div>
+    </div>
+} 

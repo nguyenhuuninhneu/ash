@@ -1,0 +1,38 @@
+﻿@using Web
+@using Web.Core
+@using Web.Model
+@model List<Web.Model.tbl_QuestionAndAnswer>
+@{
+    var LinhVuc = (List<tbl_QALinhVuc>)ViewBag.LinhVuc;
+}
+<table class="table table-bordered tableqa">
+    <tr>
+        <td align="center" valign="middle">TT</td>
+        <td align="center" valign="middle">Lĩnh vực</td>
+        <td align="center" valign="middle">Nội dung câu hỏi</td>
+        @*<td align="center" valign="middle" width="170">Người hỏi</td>*@
+        
+        <td align="center" valign="middle" width="100">Trạng thái</td>
+    </tr>
+    @{ var tt = 1; var stt = 1; }
+    @foreach (var item in Model)
+    {
+        stt = tt + (Convert.ToInt32(Request["page"]) - 1) * Convert.ToInt32(Webconfig.RowLimit);
+        <tr class="@(tt % 2 == 0 ? "" : "active" )" onclick="qa.showAnswer(@item.ID)">
+            <td align="center" class="vmiddle">@stt</td>
+            <td>@item.LinhVuc</td>
+            <td>@HelperString.TruncateByWord(@item.Question,100)</td>
+            
+           @*<td class="vmiddle">@item.</td>*@
+           @* <td class="vmiddle">@string.Format("{0: dd/MM/yyyy HH:mm}", item.CreatedDate)</td>*@
+            <td class="vmiddle text-center xemtraloi">Xem trả lời</td>
+        </tr>
+        tt++;
+    }
+    @if (Model == null || Model.Count == 0)
+    {
+        <tr>
+            <td align="center" valign="middle" colspan="3">Chưa có câu hỏi</td>
+        </tr>
+    }
+</table>

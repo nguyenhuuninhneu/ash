@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "assets/display/Js/jwplayer.es5.js",
+    "inputFile": "assets/display/Js/jwplayer.js"
+  },
+  {
+    "outputFile": "assets/display/Js/ScrollBar/jquery.mCustomScrollbar.es5.js",
+    "inputFile": "assets/display/Js/ScrollBar/jquery.mCustomScrollbar.js"
+  }
+]

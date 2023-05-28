@@ -1,0 +1,318 @@
+﻿@{
+    ViewBag.Title = "Danh sách văn bản theo trích yếu";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+    var lstVanBan = (List<tbl_VanBan>)TempData["VanBan"];
+    var lstLinhVucVB = (List<tbl_LinhVucVanBan>)TempData["LinhVucVB"];
+    var lstCoQuanBH = (List<tbl_CoQuanBanHanh>)TempData["CoQuanBanHanh"];
+    lstCoQuanBH.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+    var lstLoaiVB = (List<tbl_LoaiVanBan>)TempData["lstLoaiVB"];
+    var TrichYeu = Request["TrichYeu"];
+    var SoHieu = Request["SoHieu"];
+    var LinhVucVanBanId = Request["LinhVucVanBanId"];
+    var CoQuanBanHanhID = Request["CoQuanBanHanhID"];
+    var LoaiVanBanId = Request["LoaiVanBanId"];
+    var NgayBanHanh = Request["NgayBanHanh"];
+    var Isnoibo = Request["Isnoibo"];
+    var dothtml = ".html";
+    int i = 0;
+}
+@using System.Configuration
+@using Web.Model
+@using Web.Core
+@using PagedList;
+@using PagedList.Mvc
+@using Web.Areas.Admin.Controllers
+@model IPagedList<tbl_VanBan>
+<script src="/AppJs/vanban.js"></script>
+<div class="body-content ">
+    <div class="content-right col-md-12 col-xs-12 col-sm-12 bordernone">
+        @using (Html.BeginForm("GetAllNewsByCat", "VanBanFE", FormMethod.Get, new { @id = "basicformsearch" }))
+        {
+            <div class="row">
+                <div class="col-md-12" style="margin-top:9px;margin-bottom:-8px;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">@ConfigTextController.GetValueCFT("vanban_timkiem")</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group full_width" style="margin-bottom: 6px">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">@ConfigTextController.GetValueCFT("vanban_trichyeu")</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="TrichYeu" name="TrichYeu" placeholder="@ConfigTextController.GetValueCFT("vanban_trichyeu")" value="@TrichYeu">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="Isnoibo" id="Isnoibo" />
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group full_width" style="margin-bottom: 6px ">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">@ConfigTextController.GetValueCFT("vanban_sokihieu")</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="SoHieu" name="SoHieu" placeholder="@ConfigTextController.GetValueCFT("vanban_sokihieu")" value="@SoHieu">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="test">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group full_width" style="margin-bottom: 6px !important">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">@ConfigTextController.GetValueCFT("vanban_linhvuc")</label>
+                                            <div class="col-md-8">
+                                                <select id="LinhVucVanBanId" name="LinhVucVanBanId">
+                                                    <option value="">---------- Chọn @ConfigTextController.GetValueCFT("vanban_linhvuc") ---------</option>
+                                                    @foreach (var item in lstLinhVucVB)
+                                                    {
+                                                        if (!string.IsNullOrEmpty(LinhVucVanBanId))
+                                                        {
+                                                            <option value="@item.ID" @(item.ID == Convert.ToInt32(LinhVucVanBanId) ? "selected" : "")> @item.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.ID"> @item.Name</option>
+                                                        }
+
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group full_width" style="margin-bottom: 0px">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">@ConfigTextController.GetValueCFT("vanban_cqbh")</label>
+                                            <div class="col-md-8">
+                                                <select class="select2" id="CoQuanBanHanhID" name="CoQuanBanHanhID">
+                                                    <option value="">--------- Chọn @ConfigTextController.GetValueCFT("vanban_cqbh") -------</option>
+                                                    @foreach (var item in lstCoQuanBH)
+                                                    {
+                                                        if (!string.IsNullOrEmpty(CoQuanBanHanhID))
+                                                        {
+                                                            <option value="@item.ID" @(item.ID == Convert.ToInt32(CoQuanBanHanhID) ? "selected" : "")>@item.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.ID">@item.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group full_width" style="margin-bottom: 0px">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">@ConfigTextController.GetValueCFT("vanban_loai")</label>
+                                            <div class="col-md-8">
+                                                <select class="select2" id="LoaiVanBanId" name="LoaiVanBanId">
+                                                    <option value="">--------- Chọn @ConfigTextController.GetValueCFT("vanban_loai") -------</option>
+                                                    @foreach (var item in lstLoaiVB)
+                                                    {
+                                                        if (!string.IsNullOrEmpty(LoaiVanBanId))
+                                                        {
+                                                            <option value="@item.ID" @(item.ID == Convert.ToInt32(LoaiVanBanId) ? "selected" : "")>@item.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.ID">@item.Name</option>
+                                                        }
+
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group full_width" style="margin-bottom: 6px !important">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">@ConfigTextController.GetValueCFT("vanban_ngaybh")</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control datepicker-mask" id="NgayBanHanh" name="NgayBanHanh" placeholder="@ConfigTextController.GetValueCFT("vanban_ngaybh")" data-mask="99/99/9999" value="@NgayBanHanh" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 hidden-xs"></div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group full_width">
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light sunmitdorm">@ConfigTextController.GetValueCFT("timkiem")</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+        <div class="col-md-12 boxhomevz pl0 pr0 homevbz">
+            <ul class="nav nav-tabs">
+                @*@if (ViewBag.Vitri == 1)
+                {
+                    <li class="active"><a data-toggle="tab" id="vb_noibo" href="#2">@ConfigTextController.GetValueCFT("vanban_noibo")</a></li>
+                    <li><a data-toggle="tab" id="Vb_qppl" href="#1">@ConfigTextController.GetValueCFT("vanban_qppl")</a></li>
+                }
+                else
+                {*@
+                    <li class="active"><a data-toggle="tab" id="Vb_qppl" href="#1">@ConfigTextController.GetValueCFT("vanban_qppl")</a></li>
+                    @*<li class=""><a data-toggle="tab" id="vb_noibo" href="#2">@ConfigTextController.GetValueCFT("vanban_noibo")</a></li>
+                }*@
+            </ul>
+            <div class="tab-content">
+                <div id="vb" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-responsive full_width" id="gridData">
+                                <table class="table table-striped cabn_datatable table-bordered">
+                                    <thead>
+                                        <tr style="font-weight:bold">
+                                            <th style="width:42px;">@ConfigTextController.GetValueCFT("vanban_stt")</th>
+                                            <th style="width: 150px;">@ConfigTextController.GetValueCFT("vanban_sokihieu")</th>
+                                            <th style="width:100px;">@ConfigTextController.GetValueCFT("vanban_ngaybh")</th>
+                                            <th>@ConfigTextController.GetValueCFT("vanban_trichyeu")</th>
+                                            <th style="width:65px;">@ConfigTextController.GetValueCFT("vanban_taive")</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            i++;
+                                        <tr>
+                                            <td style="vertical-align: middle; text-align:center;">@((ViewBag.page - 1) * @ViewBag.limit + i)</td>
+                                            <td style="vertical-align: middle;">@item.SoHieu</td>
+                                            <td style="vertical-align: middle;">@Web.Core.HelperDateTime.ConvertDateToString(item.NgayBanHanh)</td>
+                                            <td style="vertical-align: middle;"><a style="text-decoration:none;" href="/pages/vanban/@item.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@item.TrichYeu), 150)@dothtml">@item.TrichYeu</a></td>
+                                            @if (!string.IsNullOrEmpty(item.Attachment))
+                                                {
+                                                <td style="vertical-align:middle; text-align:center;"><a href="@item.Attachment"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                                                }
+                                                else
+                                                {
+                                                <td style="vertical-align:middle; text-align:center;"></td>
+                                                }
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="text-center">
+                @if (Model.PageCount > 1)
+                {
+                @Html.PagedListPager(Model, page => Url.Action("GetAllNewsByCat", new { TrichYeu, SoHieu, LinhVucVanBanId, CoQuanBanHanhID, NgayBanHanh, Isnoibo,page }))
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#CoQuanBanHanhID").select2();
+        $("#LinhVucVanBanId").select2();
+        $("#LoaiVanBanId").select2();
+        $.fn.datepicker.defaults.language = 'vi';
+        $('.datepicker-mask').datepicker({
+            format: 'dd/mm/yyyy',
+            mask: '39/19/9999',
+            autoclose: true,
+        });
+        $("#vb_noibo").click(function () {
+            $("#Isnoibo").val(1);
+            $(".sunmitdorm").click();
+        });
+        $("#Vb_qppl").click(function () {
+            $("#Isnoibo").val(0);
+            $(".sunmitdorm").click();
+        });
+        $("#Isnoibo").val(@Isnoibo);
+        $(document).ready(function () {
+            $(function () {
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    localStorage.setItem('lastTab', $(this).attr('href'));
+                });
+                var lastTab = localStorage.getItem('lastTab');
+                if (lastTab) {
+                    $('[href="' + lastTab + '"]').tab('show');
+                }
+            });
+        });
+
+    });
+</script>
+@*<div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">@ConfigTextController.GetValueCFT("vanban_danhsach")</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-responsive full_width" id="gridData">
+                                <table class="table table-striped cabn_datatable table-bordered">
+                                    <thead>
+                                        <tr style="font-weight:bold">
+                                            <th style="width:42px;">@ConfigTextController.GetValueCFT("vanban_stt")</th>
+                                            <th style="width: 150px;">@ConfigTextController.GetValueCFT("vanban_sokihieu")</th>
+                                            <th style="width:100px;">@ConfigTextController.GetValueCFT("vanban_ngaybh")</th>
+                                            <th>@ConfigTextController.GetValueCFT("vanban_trichyeu")</th>
+                                            <th style="width:65px;">@ConfigTextController.GetValueCFT("vanban_taive")</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                            {
+                                                i++;
+                                        <tr>
+                                            <td style="vertical-align: middle; text-align:center;">@((ViewBag.page - 1) * @ViewBag.limit + i)</td>
+                                            <td style="vertical-align: middle;">@item.SoHieu</td>
+                                            <td style="vertical-align: middle;">@Web.Core.HelperDateTime.ConvertDateToString(item.NgayBanHanh)</td>
+                                            <td style="vertical-align: middle;"><a style="text-decoration:none;" href="/pages/vanban/@item.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@item.TrichYeu), 150)@dothtml">@item.TrichYeu</a></td>
+                                            @if (!string.IsNullOrEmpty(item.Attachment))
+                                                    {
+                                                <td style="vertical-align:middle; text-align:center;"><a href="@item.Attachment"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                <td style="vertical-align:middle; text-align:center;"></td>
+                                                    }
+                                        </tr>
+                                            }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                @if (Model.PageCount > 1)
+                                    {
+                                @Html.PagedListPager(Model, page => Url.Action("GetAllNewsByCat", new { TrichYeu, SoHieu, LinhVucVanBanId, CoQuanBanHanhID, NgayBanHanh, page }))
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

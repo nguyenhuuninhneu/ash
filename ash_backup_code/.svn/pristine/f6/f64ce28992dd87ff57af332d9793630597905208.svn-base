@@ -1,0 +1,38 @@
+﻿@model Web.Model.tbl_NewsComment
+@using Web.Core 
+@{
+    var objCMT = (Web.Model.tbl_NewsComment)TempData["objCMT"];
+}
+
+<div class="form-group">
+    <label class="col-md-2 control-label">Người bình luận: </label>
+    <div class="col-md-10">@objCMT.FullName</div>
+    <div class="cb"></div>
+</div>
+<div class="form-group">
+    <label class="col-md-2 control-label">Email: </label>
+    <div class="col-md-10">@objCMT.Email</div>
+    <div class="cb"></div>
+</div>
+<div class="form-group">
+    <label class="col-md-2 control-label">Ngày gửi: </label>
+    <div class="col-md-10">@string.Format("{0: dd/MM/yyyy HH:mmm}", objCMT.CreateDate).Replace('-','/')</div>
+    <div class="cb"></div>
+</div>
+<div class="form-group">
+    <label class="col-md-2 control-label">Trả lời: </label>
+    <div class="col-md-10">
+        @Model.NoiDung
+    </div>
+    <div class="cb"></div>
+</div>
+<div class="form-group">
+    <label class="col-md-2 control-label">Người trả lời: </label>
+    <div class="col-md-10">
+        @Model.FullName
+    </div>
+    <div class="cb"></div>
+</div> 
+<style>
+    .cb {clear: both}
+</style>

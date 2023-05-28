@@ -1,0 +1,154 @@
+﻿body { min-width: 1170px; font-family: RobotoR; font-size: 14px; color: #333}  
+.khungAnh{position:relative;z-index:1}
+.khungAnh:before{content:"";display:block}
+.khungAnhCrop,
+.khungAnhCrop0{display:inline-block;height:100%;left:0;overflow:hidden;position:absolute;text-align:center;top:0;width:100%; z-index: 1} 
+.khungAnhCrop0 img{left:50%;max-height:100%;max-width:100%;position:absolute;top:50%;transform:translate(-50%,-50%);z-index:1}
+.khungAnhCrop0 img{-moz-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)} 
+.khungAnhCrop img{left:50%;max-height:150%;max-width:150%;position:absolute;top:50%;transform:translate(-50%,-50%);z-index:1}
+.khungAnhCrop img{-moz-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)} 
+.khungAnhCrop img.wide{height:100%;max-width:none} 
+.khungAnhCrop img.tall{max-height:none;width:100%} 
+.wrp { width: 1170px; margin: auto;}
+
+/*Header*/
+#header .top { padding: 12px 0 15px 0; background: url(Icon/bg-header.png) center no-repeat;}
+#menu {background: #007ebb}
+#menu ul { padding: 0; margin: 0; list-style: none; color: #fff; font-size: 13px; font-family: RobotoC; text-transform: uppercase; display: table; width: 100%}
+#menu ul li { float: left; border-right: 1px solid #1a8bc2; } 
+#menu ul li a { display: block; padding: 9px 6px}
+#menu ul li:first-child a {padding: 7px 6px}
+#menu ul li:hover a,#menu ul li.active a {background: #006ca0}
+#menu ul li:last-child {border-right: none}
+
+#header .bot { padding: 5px 0 7px 0; border-bottom: 1px solid #dcdcdc}
+#header .bot .date { line-height: 30px; float: left;font-size: 12px}
+#header .bot .filter {float: right}
+#header .bot .filter .item { float: left; border: 1px solid #aaaaaa; box-sizing: border-box; margin-left: 8px; box-shadow: 0 0 3px #f7f7f7; height: 30px}
+#header .bot .filter select.item { padding: 0 12px; outline: none;font-size: 12px}
+#header .bot .filter select.item:first-child {width: 115px}
+#header .bot .filter select.item:nth-child(2) {width: 195px}
+#header .bot .filter .item.search { width: 215px;border: 1px solid #d7d7d7}
+#header .bot .filter .item.search input{ border: none; float: left; height: 28px; box-sizing: border-box; padding: 0 10px; width: calc(100% - 25px); outline: none;font-size: 12px}
+#header .bot .filter .item.search a.btnsearch{float: right; width: 25px; height: 28px; display: block; background: url(Icon/icon-search.png) center no-repeat}
+
+#container {padding: 15px 0}
+#container .colleft { width: 73.75%;float: left}
+#container .colright { width: 25.1%;float: right}
+#new .newest .left { width: 74.23%;float: left}
+#new .newest .left .khungAnh:before {padding-bottom: 62.52%}
+#new .newest .left .name { display: block; font-size: 21px; font-family: RobotoB; line-height: 25px; margin: 5px 0}
+a:hover {color: #0645ad; }
+#new .newest .left .cont { line-height: 21px; max-height: 63px; overflow: hidden}
+#new .newest .right { width: 23.97%; float: right;overflow: hidden}
+#new .newest .right ul { padding: 0; margin: 0;list-style: none}
+#new .newest .right ul li { padding: 12px 0; border-bottom: 1px dashed #d1d1d1}
+#new .newest .right ul li:first-child {padding-top: 0}
+
+#new .newest .list {margin-top: 20px}
+#new .newest .list .khungAnh:before {padding-bottom: 62.22%}
+#new .newest .list .name { display: block; line-height: 21px; max-height: 63px; overflow: hidden; margin-top: 7px;font-family: RobotoB}
+
+.banner { display: block; margin-bottom: 10px}
+.banner img { width: 100%; height: auto}
+#bancanbiet { background: #f3f3f3; box-sizing: border-box; padding: 5px 0}
+#bancanbiet ul { padding: 0 10px; margin: 0; list-style: none;font-size: 14px}
+#bancanbiet ul li { margin-bottom: 10px; line-height: 21px; padding-left: 15px; background: url(Icon/icon-lst.png) left top 7px no-repeat}
+#bancanbiet .title { text-transform: uppercase; font-family: RobotoB; position: relative; margin-bottom: 16px; display: block; border-bottom: 1px solid #ffffff; border-top: 1px solid #d4d4d4; height: 0;margin-top: 10px}
+#bancanbiet .title p { position: absolute; top: 40%; transform: translateY(-50%);-moz-transform: translateY(-50%); padding: 0 11px; background: #f3f3f3;left: 11px}
+
+.bannermid { display: block; margin: 25px 0; }
+.bannermid img { max-width: 100%; height: auto; margin: auto; display: block}
+
+#thoisu { padding: 7px; box-sizing: border-box; background: #fafafa;margin-bottom: 17px}
+#thoisu .title { position: relative; color: #204d9e; text-transform: uppercase; font-family: RobotoB; font-size: 18px; height: 0; border-bottom: 1px solid #183873; margin: 17px 0 20px 0;display: block}
+#thoisu .title p { position: absolute; background: #fafafa; padding-right: 13px; top: 40%; transform: translateY(-50%);-moz-transform: translateY(-50%)}
+#thoisu .left { width: 33.94%;float: right}
+#thoisu .left .item { padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #dddddd}
+#thoisu .left .item:last-child { margin-bottom: 0; padding-bottom: 0;border: none}
+#thoisu .left .item .khungAnh { width: 47.3%;float: left}
+#thoisu .left .item .khungAnh:before {padding-bottom: 62.6%}
+#thoisu .left .item .name { display: block; float: right; line-height: 21px; font-family: RobotoB; max-height: 84px; overflow: hidden; width: 45.38%; color: #999999;margin-top: -3px} 
+#thoisu .right { width: 63.83%;float: left} 
+#thoisu .right .khungAnh:before {padding-bottom: 50.51%}
+#thoisu .right .name { display: block; font-size: 21px; font-family: RobotoB; line-height: 25px; margin: 5px 0}
+#thoisu .right .cont { line-height: 21px; max-height: 63px; overflow: hidden}
+
+#nhipcautuyentruyen .title { font-size: 18px; font-family: RobotoB; padding-bottom: 5px; border-bottom: 2px solid #dddddd; display: block;margin-bottom: 12px}
+#nhipcautuyentruyen .title p { position: relative;display: inline-block}
+#nhipcautuyentruyen .title p:after { position: absolute; width: 100%; height: 2px; background: #0054a6; bottom: -7px; content: ""; left: 0;}
+#nhipcautuyentruyen .left { width: 60.38%;float: left}
+#nhipcautuyentruyen .left .khungAnh:before {padding-bottom: 61.57%}
+#nhipcautuyentruyen .left .name { display: block; font-size: 18px; font-family: RobotoB; line-height: 23px; margin: 10px 0}
+#nhipcautuyentruyen .left .cont { line-height: 21px; max-height: 42px; overflow: hidden}
+
+#nhipcautuyentruyen .right { width: 38%;float: right}
+#nhipcautuyentruyen .right .khungAnh:before {padding-bottom: 64.13%}
+#nhipcautuyentruyen .right .name { display: block; font-family: RobotoB; line-height: 21px; margin: 10px 0; max-height: 63px; overflow: hidden}
+#nhipcautuyentruyen .right ul { padding: 0; margin: 0; list-style: none;border-top: 1px solid #dddddd}
+#nhipcautuyentruyen .right ul li {margin-top: 15px}
+#nhipcautuyentruyen .right ul li:before { content: url(Icon/icon-lst.png); margin-right: 8px}
+
+.bannerleft { margin-top: 15px; margin-bottom: 20px}
+
+#vande-theoguong .group { width: calc((100% - 10px) / 2); float: left; margin-right: 10px}
+#vande-theoguong .group:nth-child(2n) {margin-right: 0}
+#vande-theoguong .group .title { font-size: 18px; font-family: RobotoB; padding-bottom: 5px; border-bottom: 2px solid #dddddd; display: block;margin-bottom: 12px}
+#vande-theoguong .group .title p { position: relative;display: inline-block}
+#vande-theoguong .group .title p:after { position: absolute; width: 100%; height: 2px; background: #0054a6; bottom: -7px; content: ""; left: 0;}
+#vande-theoguong .group .item .khungAnh:before {padding-bottom: 56.91%}
+#vande-theoguong .group .name { font-family: RobotoB; display: block; padding-top: 10px; margin-top: 10px; border-top: 1px dashed #d1d1d1}
+#vande-theoguong .group .item .name { font-size: 18px; font-family: RobotoB; display: block; padding: 0; margin: 10px 0;border: none}
+#vande-theoguong .group .item .cont { line-height: 21px; max-height: 63px; overflow: hidden}
+#vande-theoguong .group .banner {margin-top: 13px}
+
+#sukiennoibat { border: 1px solid #cccccc; box-sizing: border-box;margin-bottom: 10px}
+#sukiennoibat .title { padding: 8px 0;border-bottom: 2px solid #dcdcdc}
+#sukiennoibat .title a { display: table; margin: auto; font-family: RobotoB; color: #204d9e;}
+#sukiennoibat .title a:before { content: url(Icon/icon-titlehotnew.png);margin-right: 12px}
+#sukiennoibat .title a:after { content: url(Icon/icon-titlehotnewr.png); margin-left: 14px; }
+#sukiennoibat .group { background: #fafafa; padding: 10px;box-sizing: border-box}
+#sukiennoibat .group .item {margin-bottom: 10px}
+#sukiennoibat .group .item:last-child {margin-bottom: 0}
+#sukiennoibat .group .item .khungAnh { float: left; width: 32.98%}
+#sukiennoibat .group .item .khungAnh:before {padding-bottom: 61.7%}
+#sukiennoibat .group .item .name { float: right; width: 63.88%; font-family: RobotoB; line-height: 21px; max-height: 84px; overflow: hidden;margin-top: -3px}
+
+#thuvienanh {margin-bottom: 13px}
+#thuvienanh .title,#lienketwebsite .title { font-size: 18px; font-family: RobotoB; padding-bottom: 5px; border-bottom: 2px solid #dddddd; display: block;margin-bottom: 12px}
+#thuvienanh .title p,#lienketwebsite .title p { position: relative; display: inline-block;text-transform: uppercase}
+#thuvienanh .title p:after,#lienketwebsite .title p:after { position: absolute; width: 100%; height: 2px; background: #0054a6; bottom: -7px; content: ""; left: 0;}
+#thuvienanh .group .item .khungAnh:before {padding-bottom: 79.67%}
+#thuvienanh .group .item .name { display: block; margin-top: 8px; font-family: RobotoB; line-height: 21px}
+
+#lienketwebsite select { width: calc(100% - 30px); margin: auto; height: 30px; border: 1px solid #aaaaaa; display: table; outline: none;padding: 0 10px}
+
+#truyenhinh { background: #eeeeee; padding: 15px 0}
+#truyenhinh .left { width: 26.84%; float: left; padding-left: 15px;margin-right: 25px}
+#truyenhinh .left .title { padding-left: 30px; background: url(Icon/icon-truyenhinh.png) left no-repeat; text-transform: uppercase; color: #f27232; font-family: RobotoB;display: block}
+#truyenhinh .left .name { font-size: 18px; font-family: RobotoB; line-height: 23px; display: block; margin: 12px 0}
+#truyenhinh .left .cont { line-height: 21px; max-height: 168px; overflow: hidden; color: #594a6f}
+#truyenhinh .mid { width: 38.03%;float: left}
+#truyenhinh .khungAnh:before {padding-bottom: 56.37%}
+#truyenhinh .khungAnh:after {content: "" ; background: url(Icon/icon-video.png); position: absolute; bottom: 12px; left: 12px; width: 30px; height: 30px; z-index: 5; pointer-events: none; background-size: cover}
+img { transition: 0.3s all ease-in-out;-moz-transition: 0.3s all ease-in-out}
+img:hover { -webkit-filter: brightness(110%);-moz-filter:brightness(110%)}
+#truyenhinh .right { width: 29.48%; float: right; padding-left: 15px; box-sizing: border-box;border-left: 1px solid #d8d8d8}
+#truyenhinh .right .item { padding-bottom: 10px; border-bottom: 1px dashed #d8d8d8; margin-bottom: 10px;position: relative}
+#truyenhinh .right .item:last-child { border: none; margin-bottom: 0; padding: 0}
+#truyenhinh .right .item .name { width: 55.85%; float: left; display: block; line-height: 21px; max-height: 63px; overflow: hidden; position: absolute; top: 50%; transform: translateY(-50%); -moz-transform: translateY(-50%); -webkit-transform: translateY(-50%);font-family: RobotoB}
+#truyenhinh .right .item .khungAnh { float: right; width: 39.33%}
+#truyenhinh .right .item .khungAnh:before {padding-bottom: 51.53%}
+#truyenhinh .right .khungAnh:after { width: 20px; height: 20px; left: 10px; bottom: 10px}
+
+#footer .top { border-bottom: 1px solid #d8d8d8; padding: 10px 0 20px 0}
+#footer .top ul.left { padding: 0; margin: 0; list-style: none; font-family: RobotoC; width: 100%; float: left;color: #000}
+#footer .top ul.left li { margin-bottom: 5px; float: left; width: calc((100% - 30px) / 4); float: left; margin-right: 10px; text-transform: uppercase;font-size: 13px}
+#footer .top ul.left li:nth-child(4n) { margin-right: 0;}
+.c3a5998 {color: #3a5998}
+#footer .bot .plug { text-align: center}
+#footer .bot .plug a:hover { -webkit-filter: brightness(130%);-moz-filter:brightness(130%)}
+#footer .bot {padding: 15px 0}
+#footer .bot .left {margin-top: 20px}
+#footer .bot .left,#footer .bot .right { width: 50%; float: left}
+ 

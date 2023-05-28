@@ -1,0 +1,52 @@
+﻿@using Web.Model;
+@{
+    ViewBag.Title = "FileTailieu";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+    var lstmodel = (List<tbl_DanhMucTaiLieu>)TempData["condanhmuc"];
+}
+@model List<tbl_TaiLieu>
+<div class="body-content ">
+    <div class="content-right col-md-12 col-xs-12 col-sm-12 bordernone">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Danh Sách Tài Liệu</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <ul class="ulsilarist">
+                                @foreach (var item in lstmodel)
+                                {
+                                    <li class="li_filetailieu">
+                                        <a href="/noibo/filetailieu/@item.ID"><img src="/assets/images/folder_icon.png" width="15" height="15" /> <span>@item.Name</span></a>
+                                    </li>
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <li class="li_filetailieu">
+                                        <a href="@item.LinkFile"><img src="/Images/IconFile/WordIcon.png" width="15" height="15" /> <span>@item.NameFile</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <button class="btn btn-primary" onclick="window.history.back()">Quay lại</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .ulsilarist {
+        padding-left: 20px;
+    }
+    .li_filetailieu{
+        padding-bottom:5px;
+        padding-top:5px;
+    }
+</style>

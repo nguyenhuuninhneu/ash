@@ -1,0 +1,113 @@
+﻿
+@using Web.Model.CustomModel
+@model List<Web.Model.tbl_UserAdmin>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var lstUser = (List<Web.Model.tbl_UserAdmin>)TempData["lstUser"];
+    int isCTV = Convert.ToInt32(Request["IsCTV"]);
+    //var isCTV = (int)TempData["IsCTV"];
+}
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            @if (isCTV == 0)
+            {
+                <th>Đăng nhập</th>
+            }
+
+            <th>Họ và tên</th>
+            @if (isCTV == 0)
+            {
+                <th>Thời gian</th>
+                <th>IP đăng nhập</th>
+            }
+            else
+            {
+                <th>Email</th>
+                <th>Số điện thoại</th>
+            }
+            <th>Trạng thái</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in lstUser)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                @if (isCTV == 0)
+                {
+                    <td style="vertical-align: middle;">@item.UserName</td>
+                }
+                <td style="vertical-align: middle;">@item.FullName</td>
+                @if (isCTV == 0)
+                {
+                    <td style="vertical-align: middle;">@string.Format("{0:dd/MM/yyyy}", item.TimeLogin)</td>
+                    <td style="vertical-align: middle;">@item.IPLogin</td>
+                }
+                else
+                {
+                    <td style="vertical-align: middle;">@item.Email</td>
+                    <td style="vertical-align: middle;">@item.Phone</td>
+                }
+                <td style="vertical-align: middle;">@Html.Raw(item.Active ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                @*<td style="vertical-align: middle;"><a href="#" onclick="account.oneditStatus(@item.ID) ">@Html.Raw(item.IsCTV ? "<i class='fa fa-check' style='color:green'></i>" : "<i class='fa fa-times' style='color:red;'></i>")</a></td>*@
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (isCTV == 0)
+                        {
+
+                            if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                            {
+                                <a href="#" class="btn btn-warning btn-bordered" onclick="account.loadfrmReset(@item.ID) " title="Reset mật khẩu"><i class="fa fa-key"></i></a>
+                            }
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="account.loadfrmEdit(@item.ID) " title="Sửa"><i class="glyphicon glyphicon-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-success btn-bordered" onclick="account.active(@item.ID,'Active') " title="@(item.Active ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="account.ondelete(@item.ID) " title="Xóa">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').dataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/Vietnamese.json"
+                },
+            }
+        );
+    });
+</script>

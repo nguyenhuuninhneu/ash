@@ -1,0 +1,112 @@
+body .container,
+body .span12,
+body .row {
+    max-width: 1026px !important;
+    margin: auto;
+}
+
+.container-fluid {
+    margin: 0px;
+    padding: 0px!important;
+}
+
+.returnhome{color: #fff;height: 32px;line-height: 32px;}
+.returnhome:hover{color: #fff;}
+.block-news .block-title{ margin-top: 0;}
+.block-news .block-title a, .block-news .block-title span {
+    font-size: 22px;
+    padding-bottom: 5px;
+    display: block;
+    border-bottom: solid thin #dfdfdf;
+    color: #00568f;
+    text-decoration: none;
+}
+.swiper-slide img{    
+    border: #d2d2d2 solid 3px;
+    margin-bottom: 5px;
+}
+.text-bold{ font-weight: bold;}
+.lbnr label{ font-weight: normal;color: #a94442;}
+.view-more{ margin-bottom: 5px;}
+/* Large Devices, Wide Screens */
+
+@media only screen and (max-width: 1200px) {}
+
+
+/* Medium Devices, Desktops */
+
+@media only screen and (max-width: 992px) {
+	
+}
+
+/* Small Devices, Tablets */
+
+@media only screen and (max-width: 768px) {
+    .logo,
+    .logo img {
+        height: 70px;
+    }
+    .logo-text {
+        padding-top: 35px;
+        padding-left: 10px;
+    }
+    .logo-text h3 {
+        font-size: 15px;
+    }
+    .logo-text h4 {
+        font-size: 13px;
+    }
+    .navbar-default,.navbar-nav {
+    	padding:0px;
+    	margin:0px;
+    }
+
+    .swiper-slide .caption {
+        font-size: 14px;
+        padding:5px;
+    }
+    .footer .right-align {
+        text-align: center;
+    }
+
+    .list-category .block-news .left-news .thumb {
+        font-size: 13px;
+    }
+    .list-category .block-news .left-news .desc {
+        font-size: 12px;
+    }
+
+    .left-search {
+        margin: auto;
+        width: 217px;
+        text-align: center;
+    }
+
+    .list-btn-course {
+        padding:0px;
+    }
+  
+}
+
+
+/* Extra Small Devices, Phones */
+
+@media only screen and (max-width: 480px) {
+    .swiper-slide .caption {
+        font-size: 11px;
+    }
+    .view-cat {
+        display: none;
+    }
+}
+
+
+/* Custom, iPhone Retina */
+
+@media only screen and (max-width: 320px) {
+    .product-block .product-thumb .sale {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+    }
+}

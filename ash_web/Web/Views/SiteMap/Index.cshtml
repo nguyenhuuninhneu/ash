@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Sơ đồ cổng thông tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dothtml = ".html";
+}
+
+@using Web.Core
+@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model List<Web.Model.tbl_HomeMenu>
+    
+
+        <div class="colleft">
+            <p class="fRobotoB pb10 fs20">@ConfigTextController.GetValueCFT("sodowebsite")</p>
+            <ol>
+                @{
+                    var lstParents = Model.Where(g => g.ParentID == 0).ToList();
+                    foreach (var parent in lstParents)
+                    {
+                        var lstChild = Model.Where(g => g.ParentID == parent.ID).ToList();
+                        <li>
+                            @if (parent.LinkType == 2)
+                            {
+                                <a href="@parent.Url" @(parent.isNewsTab ? "target='_blank'" : "")>@parent.Name</a>
+                            }
+                            else
+                            {
+                                <a href="/pages/category/@parent.ID/@HelperString.RemoveMark(parent.Name)@dothtml" @(parent.isNewsTab ? "target='_blank'" : "")>@parent.Name</a>
+                            }
+                            @if (lstChild.Any())
+                            {
+                                <ul>
+                                    @foreach (var child in lstChild)
+                                    {
+                                        var lstChildHood = Model.Where(g => g.ParentID == child.ID).ToList();
+
+                                        <li>
+                                            @if (child.LinkType == 2)
+                                            {
+                                                <a href="@child.Url" @(child.isNewsTab ? "target='_blank'" : "")>@child.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/pages/category/@child.ID/@HelperString.RemoveMark(child.Name)@dothtml" @(child.isNewsTab ? "target='_blank'" : "")>@child.Name</a>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                        </li>
+
+                    }
+                }
+            </ol>
+        </div>
+       

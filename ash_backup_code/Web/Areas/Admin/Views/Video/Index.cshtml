@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Quản lý video";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var languages = (List<tbl_Languages>)TempData["Languages"];
+    var lstpageElements = (List<tbl_PageElement>)TempData["PageElement"];
+    var lstCateVideo = (List<tbl_VideoCategory>)TempData["lstCateVideo"];
+}
+@using Web.Model
+@using Web.Model.CustomModel
+@model List<Web.Model.tbl_Video>
+<script src="~/AppJs/video.js"></script>
+@using (Ajax.BeginForm("ListData", "Video", null, new AjaxOptions
+{
+    HttpMethod = "Post",
+    OnSuccess = "video.onSearchSuccess",
+}, new { @id = "frmSearch" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="panel-title">Danh sách Video</h3>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="Tìm tên video">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <select name="CateVideo" id="CateVideo" class="form-control select">
+                                <option value="">---Chọn danh mục---</option>
+                                @foreach (var cate in lstCateVideo)
+                                {
+                                    <option value="@cate.ID">@cate.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="input-group">
+                                <input type="text" name="NgayDang" id="NgayDang" class="clear form-control datepicker-mask" placeholder="Từ Ngày"/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="input-group">
+                                <input type="text" name="NgayKet" id="NgayKet" class="form-control datepicker-mask" placeholder="Đến Ngày"/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+
+                            </div>
+                            <p style="color: red" id="show_error" hidden>Ngày kết thúc phải nhỏ hơn ngày bắt đầu</p>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" id="btnSearch" class="btn btn-purple waves-effect waves-light">Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        @if (lstAction != null && lstAction.Contains((int) EnumHelper.Action.Add))
+                        {
+                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="video.loadfrmAdd()"><i class="fa fa-plus"></i> Thêm mới</button>
+                        }
+                        <button type="button" class="btn btn-success waves-effect waves-light" onclick="video.onupdateposittion() "><i class="fa fa-refresh"></i> Cập nhật vị trí</button>
+
+                        <button type="button" class="btn btn-danger waves-effect waves-light" onclick="video.onmultidelete() "><i class="fa fa-trash-o"></i> Xóa nhiều</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive" id="gridData">
+
+                        </div>
+                        <div class="col-md-12" id="paginationholder">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        video.loadData(1);
+        $(".select").select2({ "width": "100%" });
+        $("#frmSearch #LangCode").change(function () {
+            $.get("/Admin/PageElement/GetAllByLangCode?LangCode=" + $(this).val(), function (res) {
+                var html = "<option>--Chọn trang--</option>";
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + res[i].Name + '</option>';
+                }
+                $("#PageElementId").html(html);
+            });
+        });
+        $("#NgayKet").change(function () {
+            var ngayBatDau = $("#NgayDang").val();
+            var ngayKetthuc = $("#NgayKet").val();
+            if (ngayKetthuc < ngayBatDau) {
+                $("#show_error").show();
+                $("#btnSearch").attr("disabled", true);
+            }
+            else {
+                $("#show_error").hide();
+                $("#btnSearch").attr("disabled", false);
+            }
+        });
+    });
+</script>
+

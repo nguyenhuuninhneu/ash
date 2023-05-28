@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Cấu hình lưu ý";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="~/AppJs/confignote.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+@using System.Web.UI.WebControls
+@model Web.Model.tbl_configLuuY
+<div class="row content-space">
+    <div class="col-md-12 col-xs-12">
+        <div class="content-qa col-md-12">
+            <form action="~/ConfigNote/Edit" method="post" id="basicForm">
+                @Html.HiddenFor(g => g.ID)
+                @Html.HiddenFor(g => g.LuuYToGiac)
+                <div class="form-group lbnr">
+                    <label class="control-label col-md-2">Lưu ý hỏi đáp</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(g => g.LuuYHoiDap, new { @class = "form-control" })
+                    </div>
+                </div>
+                @*<div class="form-group lbnr">
+                    <label class="control-label col-md-2">Lưu ý tố giác</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(g => g.LuuYToGiac, new { @class = "form-control" })
+                    </div>
+                </div>*@
+                <div class="form-group lbnr">
+                    <label class="control-label col-md-2 mt10">Email nhận ý kiến</label>
+                    <div class="col-md-10 mt10">
+                        @Html.TextAreaFor(g => g.EmailNhanYKien, new { @class = "form-control", PlaceHolder = "Ngăn cách bởi dấu ; . Ví dụ: email1@gmail.com; email2@gmail.com" })
+                    </div>
+                </div>
+                <div class="form-group lbnr">
+                    <label class="control-label col-md-2 mt10">&nbsp;</label>
+                    <div class="col-md-10 mt10">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+            {
+                LuuYHoiDap:
+                {
+                    required: true
+                },
+                //LuuYToGiac:
+                //{
+                //    required: true
+                //}
+            },
+            messages:
+            {
+                LuuYHoiDap:
+                {
+                    required: "Bạn phải nhập trường này"
+                },
+                //LuuYToGiac:
+                //{
+                //    required: "Bạn phải nhập trường này"
+                //}
+            },
+        });
+        CKEDITOR.replace("LuuYHoiDap", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 250
+        });
+        //CKEDITOR.replace("LuuYToGiac", {
+        //    language: 'vi',
+        //    filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+        //    filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+        //    filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+        //    height: 250
+        //});
+    })
+</script>
+<style>
+    .text-bold {
+        font-weight: bold;
+    }
+
+    .lbnr{
+       padding-bottom:10px;
+    }
+
+    .content-qa .form-group {
+        width: 100%;
+    }
+</style>

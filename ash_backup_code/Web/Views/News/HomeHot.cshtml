@@ -1,0 +1,36 @@
+﻿@using Web.Core
+@model List<Web.Model.view_NEWS_LISTDATA>
+@{
+    Layout = null;
+    var dothtml = ".html";
+}
+<div class="col-md-12 col-xs-12 banner-content homehot hidden-xs">
+    <div class="carosel-bottom">
+        <ul class="owl-carousel">
+            @foreach (var item in Model)
+            {
+                <li class="item">
+                    <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml" class="title-content-top" title="">
+                        @{
+                            var imgshow = item.CropImage;
+                            if (string.IsNullOrEmpty(imgshow))
+                            {
+                                imgshow = item.FeautureImage;
+                            }
+                            if (string.IsNullOrEmpty(imgshow))
+                            {
+                                imgshow = item.CatImage;
+                            }
+                            if (string.IsNullOrEmpty(imgshow))
+                            {
+                                imgshow = "/Content/Site/images/noimage.png";
+                            }
+                        }
+                        <img class="img-responsive" src="@imgshow" alt="">
+                    </a>
+                    <a class="title-crs" href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml" title="@item.Title">@HelperString.TruncateByWord(item.Title, 65)</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

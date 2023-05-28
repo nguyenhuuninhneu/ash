@@ -1,0 +1,32 @@
+﻿@using Web.Model;
+@using Web.Core;
+@using Web.Areas.Admin.Controllers
+@{
+    ViewBag.Title = "";
+    var dothtml = ".html";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";  
+}
+  
+    <div>
+        <div class="colleft">
+            <div id="new">
+                <div class="newest">
+                    @{ Html.RenderAction("NewsPart1", "News"); } 
+                </div>
+            </div>
+            @{ Html.RenderAction("AdvHome1", "AdvHome"); } 
+            @{ Html.RenderAction("NewsPart2", "News"); }
+        </div>
+        <div class="colright">
+            @{ Html.RenderAction("Right", "Video", new { right = 1 }); }
+            @{ Html.RenderAction("AdvRight1", "AdvHome"); }
+            <!--Bên phải 1-->
+            @{ Html.RenderAction("BanCanBiet", "News"); }
+            <div class="cb h10"></div>
+            @{ Html.RenderAction("SuKienNoiBat", "News"); }
+            @{ Html.RenderAction("AdvRight2", "AdvHome"); }
+            @{ Html.RenderAction("ThuVienAnh", "Image"); } 
+            @{ Html.RenderAction("Index", "LinkWebsite"); }
+        </div>
+        <div class="cb"></div>
+    </div> 

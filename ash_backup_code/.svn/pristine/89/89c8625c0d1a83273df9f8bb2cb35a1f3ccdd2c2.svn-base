@@ -1,0 +1,91 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Web.Model.CustomModel
+@using Web.Model
+@model List<tbl_NewsVersion>
+
+@{ 
+    var selected1 = 0;
+    var selected2 = 0;
+    if (Model.Count == 1)
+    {
+        selected1 = Model.First().Version;
+        selected2 = selected1;
+    }
+    if (Model.Count > 1)
+    {
+        selected1 = Model[Model.Count - 2].Version;
+        selected2 = Model[Model.Count - 1].Version;
+    }
+}
+<input type="hidden" id="id" value="@TempData["id"]" />
+<div class="form-group row">
+    <label class="col-md-2 control-label mt5">Chọn Version:</label>
+    <div class="col-md-4">
+        <select class="form-control" id="version1" onchange="checkselect()">
+            @foreach (var item in Model.OrderBy(p=>p.Version))
+            {
+                <option value="@item.Version" @(selected1 == item.Version ? "selected":"")>Version @item.Version</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select class="form-control" id="version2">
+            @foreach (var item in Model.OrderBy(p => p.Version))
+            {
+                <option value="@item.Version" @(selected2 == item.Version ? "selected":"")>Version @item.Version</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2" >
+        <button type="button" onclick="GetData()" class="btn btn-primary waves-effect waves-light">So sánh</button>
+    </div>
+</div>
+<div class="form-group row" id="DivChange">
+
+</div>
+<script>
+    function GetData() {
+        debugger;
+        $('#DivChange').html('<i style="text-align: center;">Đang so sánh...</i>');
+        var ver1 = $('#version1').val();
+        var ver2 = $('#version2').val();
+        if (ver1 != null && ver2 != null) {
+            AjaxService.GET("/Admin/HistoryNews/Viewchange", {id: $('#id').val(), oldId: ver1, newId : ver2 }, function (res) {
+                $('#DivChange').html(res);
+                //compare();
+            });
+        }
+    }
+    function checkselect() {
+        var v1 = parseInt($('#version1').val());
+        $('#version2 option').show();
+        for (var i = v1; i >= 0; i--) {
+            $('#version2 option[value=' + i + ']').hide();
+        }
+    }
+
+    //var dmp = new diff_match_patch();
+
+    //function launch(tag) {
+    //    debugger;
+    //    var text1 = $('#' + tag + '1').html();
+    //    var text2 = $('#' + tag + '2').html();
+    //    dmp.Diff_Timeout = 5;
+    //    dmp.Diff_EditCost = 4;
+    //    var d = dmp.diff_main(text1, text2);
+    //    dmp.diff_cleanupSemantic(d);
+    //    var ds = dmp.diff_prettyHtml(d);
+    //    var a = $('<textarea/>').html(ds).text();
+    //    $('#' + tag + '3').html(a.replace(/¶<br>/g, ''));
+    //}
+    //function compare() {
+    //    launch('Title');
+    //    launch('Description');
+    //    launch('Details');
+    //    launch('Author');
+    //    launch('Tags');
+    //}
+    GetData();
+    checkselect();
+</script>
+

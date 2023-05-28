@@ -1,0 +1,104 @@
+﻿@using Web.Model
+@model Web.Model.tbl_DonViTTHC
+@using (Ajax.BeginForm("Add", "DonViTTHC", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "donvitthc.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+    var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LangCode, new SelectList(languages, "Code", "Name"), new { @class = "form-control" })
+        </div>
+    </div>*@
+        
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên đơn vị TTHC</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên đơn vị TTHC" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đơn vị cấp cha</label>
+        @{
+    var lstmenu = (List<tbl_DonViTTHC>)TempData["DonViTTHC"];
+            lstmenu.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.ParentID, new SelectList(lstmenu, "ID", "Name"), "-- Chọn Đơn vị cấp cha --", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Mô tả</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Description, new { @class = "form-control", placeholder = "Mô tả", rows = 3 })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Thứ tự</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "Thứ tự...", Value = "0" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Active" name="Active" type="checkbox" checked="" value="true">
+                <label for="Active">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            },            
+            Ordering:
+            {
+                required: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên đơn vị TTHC"
+                },               
+                Ordering:
+               {
+                   required: "Yêu cầu không để trống"
+               }
+            }
+        });        
+     
+
+        $("#basicForm #LangCode").change(function () {            
+            $.get("/donvitthc/GetAllByLangCode?LangCode=" + $("#basicForm #LangCode").val(), function (res) {
+                var html = '<option value="">--Chọn đơn vị cấp cha--</option>';
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + res[i].Name + '</option>';
+                }
+                $("#basicForm #ParentID").html(html);
+            });
+        });       
+    });
+</script>

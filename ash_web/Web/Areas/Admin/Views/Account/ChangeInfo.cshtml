@@ -1,0 +1,66 @@
+﻿@using Web.Model
+@model Web.Model.tbl_UserAdmin
+@using (Ajax.BeginForm("ChangeInfo", "Account", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "account.onChangePassSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g => g.ID)
+
+    <div class="form-group">
+        <label class="col-md-4 control-label">Ảnh dại diện</label>
+        <div class="col-md-8">
+            @Html.Partial("_Attachment", new { Name = "Photo", Multiple = false, Type = "FileImg", Value = Model.Photo }) 
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Họ và tên</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.FullName, new { @class = "form-control", placeholder = "Họ và tên" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Địa chỉ</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Số điện thoại</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.Phone, new { @class = "form-control", placeholder = "Số điện thoại" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Số tài khoản</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.SoTaiKhoan, new { @class = "form-control", placeholder = "Số tài khoản" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Chi nhánh</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.NganHang, new { @class = "form-control", placeholder = "Chi nhánh" })
+        </div>
+    </div>
+
+    <div class="col-md-8 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+}
+
+<script>
+    $(document).ready(function() {
+        $("#BrowserPhoto").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Photo").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+    })
+</script>

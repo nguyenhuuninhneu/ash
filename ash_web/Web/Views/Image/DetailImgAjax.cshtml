@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Core
+@model List<Web.Model.tbl_ImagesCategory>
+@{
+    var dothtml = ".html";
+    string link = "";
+}  
+
+<div id="mygallery"> 
+    @foreach (var item in Model)
+    {
+        link = "/pages/images/" + item.ID + "/" + HelperString.RemoveMark(item.Name) + dothtml;
+        <a href="@link" title="@item.Name">
+            <img alt="@item.Name" src="@item.Image" /> 
+        </a>  
+    }
+</div> 
+
+

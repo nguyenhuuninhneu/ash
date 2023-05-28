@@ -1,0 +1,118 @@
+﻿<link rel="stylesheet" href="/Content/Admin/assets/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="/Content/Admin/assets/colorpicker/js/colorpicker.js"></script>
+<script src="/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+<script src="/Scripts/jquery.validate.min.js"></script>
+@using Web.Model
+@model tbl_UserAdmin
+@{
+    var lstPageElements = (List<tbl_PageElement>)TempData["PageElement"];
+    var lstGroupUser = (List<tbl_GroupUser>)TempData["lstGroupUser"];
+}
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-md-2 control-label">Họ và tên :</label>
+        <div class="col-md-10 userInfo">
+            @if (Model.FullName != null)
+            {
+                @Model.FullName
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Địa chỉ :</label>
+        <div class="col-md-10 userInfo">
+            @if (Model.Address != null)
+            {
+                @Model.Address
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Số điện thoại :</label>
+        <div class="col-md-10 userInfo">
+            @if (Model.Phone != null)
+            {
+                @Model.Phone
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Số tài khoản :</label>
+        <div class="col-md-10 userInfo">
+            @if (Model.SoTaiKhoan != null)
+            {
+                @Model.SoTaiKhoan
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngân hàng - Chi nhánh Ngân hàng :</label>
+        <div class="col-md-10 userInfo">
+            @if (Model.NganHang != null)
+            {
+                @Model.NganHang
+            }
+        </div>
+    </div>
+    <div class="col-md-10 text-center">
+        <button class="btn btn-default" data-dismiss="modal" type="button">Đóng</button>
+    </div>
+</div>
+<style>
+    .userInfo{
+        margin-top:7px
+    }
+</style>
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+            {
+                UserName:
+                {
+                    required: true
+                },
+                Password:
+                {
+                    required: true,
+                    minlength: 6,
+                },
+                FullName:
+                {
+                    required: true
+                },
+                Email:
+                {
+                    email: true,
+                    required: true
+                }
+            },
+            messages:
+            {
+                UserName:
+                {
+                    required: "Chưa nhập tên đăng nhập"
+                },
+                Password:
+                {
+                    required: "Chưa nhập mật khẩu",
+                    minlength: "Mật khẩu tối thiểu 6 ký tự"
+                },
+                FullName:
+                {
+                    required: "Chưa nhập Họ tên"
+                },
+                Email:
+                {
+                   email: "Email không đúng định dạng",
+                   required: "Chưa nhập email"
+                }
+            }
+        });
+        account.initcheckall();
+        $('#pagemanager').slimScroll({
+            height: '300px',
+        });
+    });
+</script>

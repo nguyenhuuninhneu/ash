@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Danh sách tin theo chuyên mục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc
+@using Web.Core
+@using Web.Model
+@model IPagedList<Web.Model.view_News>
+<div class="row content-space">
+    <div class="leftmenu-responsive">
+        @{Html.RenderAction("Index", "LeftMenu");}
+    </div>
+    <div class="col-md-9 col-xs-12">
+
+        <div class="breadcrumb">
+            <ul>
+                <li>
+                    <a href="/"><i class="glyphicon glyphicon-home"> </i></a> <i class="glyphicon glyphicon-menu-right
+    "></i>
+                </li>
+                <li>
+                    <a href="/News/GetAllNewsByZoneId?zoneid=@ViewBag.ZoneId">
+                        @ViewBag.ZoneName
+                    </a> <i class="glyphicon glyphicon-menu-right
+    "></i>
+                </li>
+            </ul>
+        </div>
+        @foreach (var news in Model)
+        {
+            <div class="content-block-news">
+                <div class="thumb">
+                    <a href="/News/Details/@news.ID?zoneid=@ViewBag.ZoneId"><img class="img-responsive" src="@Common.Replace2Thumb(news.FeautureImage)" alt=""></a>
+                </div>
+                <h2 class="title"><a href="/News/Details/@news.ID?zoneid=@ViewBag.ZoneId">@news.Title</a></h2>
+                <p class="desc">@HelperString.TruncateByWord(news.Description, 255)</p>
+                <p class="time">@string.Format("{0:dd/MM/yyyy}", news.CreatedDate)</p>
+                <div class="clear"></div>
+            </div>
+        }
+        <div class="center-align">
+            @if (Model.PageCount > 1)
+            {
+                @Html.PagedListPager(Model, page => Url.Action("GetAllNewsByZoneId", new { page, zoneid = ViewBag.ZoneId }))
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@using System.Web.UI.WebControls
+@using Newtonsoft.Json
+@using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+@using Web.Model
+@model tbl_UserAdmin
+@{
+    Layout = null; 
+    string img = "/Content/Admin/images/staff.png";
+    if (!String.IsNullOrEmpty(Model.Photo))
+    {
+        img = Model.Photo;
+    }
+}
+ 
+<div class="infoacount">
+    <img src="@img" alt="">
+    <div class="item">
+        <span>Họ tên: </span><span>@Model.FullName</span>
+    </div>
+    <div class="item">
+        <span>Tài khoản: </span><span>@Model.UserName</span>
+    </div>
+    <div class="item">
+        <span>Email: </span><a href="mailto:@Model.Email">@Model.Email</a>
+    </div>
+    <div class="item">
+        <span>Địa chỉ: </span><span>@Model.Address</span>
+    </div>
+    <div class="item">
+        <span>Điện thoại: </span><a href="tel:@Model.Phone">@Model.Phone</a>
+    </div>
+    <div class="item">
+        <span>Số tài khoản: </span><span>@Model.SoTaiKhoan</span>
+    </div>
+    <div class="item">
+        <span>Ngân hàng: </span><span>@Model.NganHang</span>
+    </div>
+</div>

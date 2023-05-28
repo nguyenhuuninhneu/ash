@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{844E2603-CF17-4581-858D-13A3B3A61088}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web.Repository.Entity</RootNamespace>
+    <AssemblyName>Web.Repository.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Web.Core">
+      <HintPath>..\Web.Core\bin\Debug\Web.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessViewRepository.cs" />
+    <Compile Include="ConfigRepository.cs" />
+    <Compile Include="CusGroupRepository.cs" />
+    <Compile Include="ConfigTextRepository.cs" />
+    <Compile Include="DanhMucCha_Repository.cs" />
+    <Compile Include="DanhMucCon_Repository.cs" />
+    <Compile Include="AdvertCategory_Repository.cs" />
+    <Compile Include="Advert_Category_Module_Repository.cs" />
+    <Compile Include="ContactCategory_Repository.cs" />
+    <Compile Include="Entity_Repository.cs" />
+    <Compile Include="FaqCategory_Repository.cs" />
+    <Compile Include="SurveyCategory_Repository.cs" />
+    <Compile Include="GuideCategory_Repository.cs" />
+    <Compile Include="NewsCategory_Repository.cs" />
+    <Compile Include="TestCategory_Repository.cs" />
+    <Compile Include="Support_Category_Module_Repository.cs" />
+    <Compile Include="SupportCategory_Repository.cs" />
+    <Compile Include="DocumentCategory_Repository.cs" />
+    <Compile Include="DocumentPublisher_Repository.cs" />
+    <Compile Include="DocumentPrice_Repository.cs" />
+    <Compile Include="Module_Repository.cs" />
+    <Compile Include="SubeMagazineRepository.cs" />
+    <Compile Include="FieldFileRep.cs" />
+    <Compile Include="ImageCategoryRepository.cs" />
+    <Compile Include="AdvRepository.cs" />
+    <Compile Include="eMagazineRepository.cs" />
+    <Compile Include="ImagesRepository.cs" />
+    <Compile Include="LimitRepository.cs" />
+    <Compile Include="MagazineRepository.cs" />
+    <Compile Include="ChatRepository.cs" />
+    <Compile Include="ModuleCateRepository.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="TopicRepository.cs" />
+    <Compile Include="PositionRepository.cs" />
+    <Compile Include="ProcessRepository.cs" />
+    <Compile Include="ThamDoYKienIpRepository.cs" />
+    <Compile Include="AccessOnlineRepository.cs" />
+    <Compile Include="TaiLieuRepository.cs" />
+    <Compile Include="DanhMucTaiLieuRepository.cs" />
+    <Compile Include="DMNhomRepository.cs" />
+    <Compile Include="ContactInfoRepository.cs" />
+    <Compile Include="DonViTTHCRepository.cs" />
+    <Compile Include="LinhVucTTHCRepository.cs" />
+    <Compile Include="FooterRepository.cs" />
+    <Compile Include="QALinhVucRepository.cs" />
+    <Compile Include="ConfigNoteRepository.cs" />
+    <Compile Include="NewsPaperRepository.cs" />
+    <Compile Include="ThamDoYKienRepository.cs" />
+    <Compile Include="ToGiacRepository.cs" />
+    <Compile Include="TTHCRepository.cs" />
+    <Compile Include="AdminMenuRepository.cs" />
+    <Compile Include="BoxNewsConfigRepository.cs" />
+    <Compile Include="TruyNaRepository.cs" />
+    <Compile Include="CategoryRepository.cs" />
+    <Compile Include="ChucVuRepository.cs" />
+    <Compile Include="CoQuanBanHanhReporitory.cs" />
+    <Compile Include="GroupUserRepository.cs" />
+    <Compile Include="HomeMenuRepository.cs" />
+    <Compile Include="ILichCongTacRepository.cs" />
+    <Compile Include="LanguagesRepository.cs" />
+    <Compile Include="LichCongTacRepository.cs" />
+    <Compile Include="LinhVucVanBanRepository.cs" />
+    <Compile Include="CalendarRepository.cs" />
+    <Compile Include="LinkWebsiteRepository.cs" />
+    <Compile Include="LoaiVanBanRepository.cs" />
+    <Compile Include="LogRepository.cs" />
+    <Compile Include="NewsHistoryRepository.cs" />
+    <Compile Include="NewsRepository.cs" />
+    <Compile Include="PageElementRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContactReporitory.cs" />
+    <Compile Include="FeedBackReporitory.cs" />
+    <Compile Include="QAReporitory.cs" />
+    <Compile Include="qProcedureRepository.cs" />
+    <Compile Include="SlideImagesRepository.cs" />
+    <Compile Include="UserAdminRepository.cs" />
+    <Compile Include="UserRepository.cs" />
+    <Compile Include="DMChungRepository.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="VanBanRepository.cs" />
+    <Compile Include="OnlineRepository.cs" />
+    <Compile Include="CountAccessRepository.cs" />
+    <Compile Include="VideoCategoryRepository.cs" />
+    <Compile Include="VideoRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\nunit_random_seed.tmp" />
+    <None Include="bin\Debug\Web.Model.dll.config" />
+    <None Include="obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Release\Web.Repository.Entity.csprojResolveAssemblyReference.cache" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Web.Model\Web.Model.csproj">
+      <Project>{74ea7220-24ba-4c21-a243-2abc6703e908}</Project>
+      <Name>Web.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Repository\Web.Repository.csproj">
+      <Project>{d0436499-f74c-4776-af8c-3e76ad2c8869}</Project>
+      <Name>Web.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\EntityFramework.dll" />
+    <Content Include="bin\Debug\EntityFramework.xml" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\Web.Core.dll" />
+    <Content Include="bin\Debug\Web.Core.pdb" />
+    <Content Include="bin\Debug\Web.Model.dll" />
+    <Content Include="bin\Debug\Web.Model.pdb" />
+    <Content Include="bin\Debug\Web.Repository.dll" />
+    <Content Include="bin\Debug\Web.Repository.Entity.dll" />
+    <Content Include="bin\Debug\Web.Repository.Entity.pdb" />
+    <Content Include="bin\Debug\Web.Repository.pdb" />
+    <Content Include="bin\Release\EntityFramework.dll" />
+    <Content Include="bin\Release\EntityFramework.xml" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.xml" />
+    <Content Include="bin\Release\Web.Core.dll" />
+    <Content Include="bin\Release\Web.Core.pdb" />
+    <Content Include="bin\Release\Web.Model.dll" />
+    <Content Include="bin\Release\Web.Model.pdb" />
+    <Content Include="bin\Release\Web.Repository.dll" />
+    <Content Include="bin\Release\Web.Repository.Entity.dll" />
+    <Content Include="bin\Release\Web.Repository.Entity.pdb" />
+    <Content Include="bin\Release\Web.Repository.pdb" />
+    <Content Include="obj\Release\Web.Repository.Entity.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Release\Web.Repository.Entity.dll" />
+    <Content Include="obj\Release\Web.Repository.Entity.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Release\TempPE\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

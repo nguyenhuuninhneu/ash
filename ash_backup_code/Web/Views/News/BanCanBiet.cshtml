@@ -1,0 +1,30 @@
+﻿@using Web.Model;
+@using Web.Core;
+@using Web.Areas.Admin.Controllers
+@model tbl_Category
+@{
+    ViewBag.Title = "";
+    var dothtml = ".html";
+    Layout = null;
+    var lstNewRight1 = (List<tbl_News_Custom>)TempData["lstNewRight1"];
+    var link = "";
+}
+
+@if (Model != null && lstNewRight1 != null)
+{  
+    <div id="bancanbiet">
+        @{ 
+            link = "/pages/category/"+ Model.ID + "/" + @HelperString.RemoveMark(Model.Name) + ".html"; 
+            <a href="@link" title="@Model.Name" class="title">
+                <p>@Model.Name</p>
+            </a>
+            <ul>
+                @foreach (var item in lstNewRight1)
+                {
+                    <li><a href="/pages/detail/@Model.ID/@item.ID/@HelperString.RemoveMark(item.Title)@dothtml" title="">@item.Title</a></li>
+                }
+            </ul>
+            <div class="pb10"></div>
+        } 
+    </div> 
+} 

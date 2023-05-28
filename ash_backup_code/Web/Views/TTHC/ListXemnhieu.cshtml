@@ -1,0 +1,30 @@
+﻿@using Web.Core
+@using Web.Model
+@model List<tbl_TTHC>
+@{
+    ViewBag.Title = "ListXemnhieu";
+    Layout = null;
+    var dothtml = ".html";
+}
+
+@if (ViewBag.lstXemnhieu != null)
+{
+    var lstXemNhieu = (List<tbl_TTHC>)ViewBag.lstXemnhieu;
+    <div class="right_panel">
+        <div class="right_panel_title">
+            <a href="#" title="TTHC Nhiều người xem">TTHC Nhiều người xem</a>
+        </div>
+        <div class="bgrightTTHC">
+            <div class="right_panel_content right_panel_ctdm">
+                <ul class="list-news listTTHC viewTTHC">
+                    @foreach (var item in lstXemNhieu)
+                    {
+                        <li class="list">
+                            <a class="fwnormal" href="/pages/service/@item.ID/@HelperString.RemoveMark(@item.Tieude)@dothtml">@item.Tieude</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}

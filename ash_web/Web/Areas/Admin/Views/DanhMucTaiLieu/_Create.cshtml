@@ -1,0 +1,59 @@
+﻿@using Web.Model
+@model Web.Model.tbl_DanhMucTaiLieu
+@{
+    var lstParent = (List<tbl_DanhMucTaiLieu>)TempData["lstParent"];
+    lstParent.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + " " + g.Name);
+}
+<script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+<style>
+    .select2-container .select2-choice .select2-arrow b {
+        background: none;
+    }
+</style>
+@using (Ajax.BeginForm("Add", "DanhMucTaiLieu", null,
+            new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "dmtailieu.onAddSuccess"
+            },
+            new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Danh mục cha</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(g => g.ParentID, new SelectList(lstParent, "ID", "Name"), "--- Danh mục cha ---", new { @class = "form-control selectAdd" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", @placeholder = "Thứ tự...", value = "0" })
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input type="checkbox" id="Status" name="Status" checked="" value="true">
+                <label for="Status"> Kích hoạt</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $('#ParentID').select2();
+    });
+</script>

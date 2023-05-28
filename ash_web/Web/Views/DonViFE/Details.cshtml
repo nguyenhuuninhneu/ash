@@ -1,0 +1,284 @@
+﻿@using System.Configuration
+@using Web.Model
+@using Web.Core
+@using Web.Areas.Admin.Controllers
+@model Web.Model.tbl_DMChung
+@{
+    ViewBag.Title = @ViewBag.Title;
+    Layout = "~/Views/Shared/_LayoutVanBan.cshtml";
+}
+@{
+    var lstDMChung = (List<tbl_DMChung>)TempData["lstDMChung"];
+    var lstDMNhom = (List<tbl_DMNhom>)TempData["lstDMNhom"];
+    var dothtml = ".html";
+}
+<style>
+    .font32 {
+        font-size: 13px;
+    }
+</style>
+<div class="row content">
+    <div class="col-md-12">
+        <div class="detail-donvi">
+            <h1 class="title">@Model.Ten</h1>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("cd_banchaphanh")</td>
+                        <td>@Model.BCHName</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("cd_Sodienthoai")</td>
+                        <td>@Model.Phone</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("cd_diachi")</td>
+                        <td>@Model.Address</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("cd_nhom")</td>
+                        <td>
+                            @{
+                                var objDMChung = lstDMNhom.FirstOrDefault(g => g.ID == @Model.CatID);
+                                if (objDMChung != null)
+                                {
+                                    @objDMChung.Name;
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("cd_website")</td>
+                        <td>
+                            @if (Model.Url != null)
+                            {<a href="@Model.Url" target="_blank">@Model.Url</a>}
+                            else
+                            { <a>&nbsp;</a>}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-bold">@ConfigTextController.GetValueCFT("cd_gtchung"):</div>
+            @Html.Raw(Model.Details)
+            @*@if (lstDMChung.Count(g => g.ParentID == Model.ID) > 0)
+            {
+                var i = 0;
+                <hr />
+                <h4 class="detail-sum font32">Các đơn vị trực thuộc @Model.Ten</h4>
+                <table class="table cabn_datatable table-bordered lstdonvi">
+                    <thead>
+                        <tr class="bg-danger" style="font-weight:bold">
+                            <th style="width: 20px; text-align: center;">TT</th>
+                            <th style="width:200px;">Tên đơn vị</th>
+                            <th style="width:165px;">Ban chấp hành</th>
+                            <th style="width:165px;">Số điện thoại</th>
+                            @if (User != null)
+                            {
+                                <th style="width:165px;">Di động</th>
+                            }
+                            <th style="width:65px;">Website</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item2 in lstDMChung.Where(g => g.ParentID == Model.ID))
+                        {
+                            i++;
+                            var link_detail = "/DonViFE/Details/" + item2.ID + "?code=" + Request["code"];
+                            <tr class="bg-info">
+                                <td style="vertical-align: middle;">@i</td>
+                                <td style="vertical-align: middle;">
+                                    <a style="text-decoration: none;" href="@link_detail">@item2.Ten</a>
+                                </td>
+                                <td style="vertical-align: middle;">@item2.BCHName</td>
+                                <td style="vertical-align: middle;">@item2.Phone</td>
+                                @if (User != null)
+                                {
+                                    <td style="vertical-align: middle;">@item2.DiDong</td>
+                                }
+                                <td style="vertical-align: middle; text-align:left">
+                                    @if (item2.Url != null)
+                                    {
+                                        <a href="@item2.Url" target="_blank">@item2.Url</a>
+                                    }
+
+                                </td>
+                            </tr>
+                                    var isChild = lstDMChung.Count(g => g.ParentID == item2.ID);
+                                    if (isChild > 0)
+                                    {
+                                        var j = 0;
+                                        foreach (var itemc in lstDMChung.Where(g => g.ParentID == item2.ID))
+                                        {
+                                            j++;
+                                            var link_detailc = "/DonViFE/Details/" + itemc.ID + "?code=" + Request["code"];
+                                            <tr class="bg-child">
+                                                <td style="vertical-align: middle;">@i@Html.Raw(".")@j</td>
+                                                <td style="vertical-align: middle;">
+                                                    <a style="text-decoration: none;" href="@link_detailc">@itemc.Ten</a>
+                                                </td>
+                                                <td style="vertical-align: middle;">@itemc.BCHName</td>
+                                                <td style="vertical-align: middle;">@itemc.Phone</td>
+                                                @if (User != null)
+                                                {
+                                                    <td style="vertical-align: middle;">@itemc.DiDong</td>
+                                                }
+                                                <td style="vertical-align: middle; text-align: left">
+                                                    @if (itemc.Url != null)
+                                                    {
+                                                        <a href="@itemc.Url" target="_blank">@itemc.Url</a>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                                    var isGrand = lstDMChung.Count(g => g.ParentID == itemc.ID);
+                                                    if (isGrand > 0)
+                                                    {
+                                                        var k = 0;
+                                                        foreach (var itemk in lstDMChung.Where(g => g.ParentID == itemc.ID))
+                                                        {
+                                                            k++;
+                                                            var link_detailk = "/DonViFE/Details/" + itemk.ID + "?code=" + Request["code"];
+                                                            <tr>
+                                                                <td style="vertical-align: middle;">@i@Html.Raw(".")@j@Html.Raw(".")@k</td>
+                                                                <td style="vertical-align: middle;">
+                                                                    <a style="text-decoration: none;" href="@link_detailk">@itemk.Ten</a>
+                                                                </td>
+                                                                <td style="vertical-align: middle;">@itemk.BCHName</td>
+                                                                <td style="vertical-align: middle;">@itemk.Phone</td>
+                                                                @if (User != null)
+                                                                {
+                                                                    <td style="vertical-align: middle;">@itemk.DiDong</td>
+                                                                }
+                                                                <td style="vertical-align: middle; text-align: left">
+                                                                    @if (itemk.Url != null)
+                                                                    {
+                                                                        <a href="@itemk.Url" target="_blank">@itemk.Url</a>
+                                                                    }
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                        }
+                                    }
+                        }
+                    </tbody>
+                </table>
+            }
+            <hr />
+            <h4 class="detail-sum font32">Các đơn vị trong @objDMChung.Name</h4>
+            <table class="table cabn_datatable table-bordered lstdonvi">
+                <thead>
+                    <tr class="bg-danger" style="font-weight:bold">
+                        <th style="width: 20px; text-align: center;">TT</th>
+                        <th style="width:200px;">Tên đơn vị</th>
+                        <th style="width:165px;">Ban chấp hành</th>
+                        <th style="width:165px;">Số điện thoại</th>
+                        @if (User != null)
+                        {
+                            <th style="width:165px;">Di động</th>
+                        }
+                        <th style="width:65px;">Website</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (lstDMChung.Count(g => g.ParentID == 0 && g.ID != Model.ID && g.CatID == Model.CatID) > 0)
+                    {
+                        var i = 0;
+                        foreach (var item2 in lstDMChung.Where(g => g.ParentID == 0 && g.ID != Model.ID && g.CatID == Model.CatID))
+                        {
+                            i++;
+                            var link_detail = "/DonViFE/Details/" + item2.ID + "?code=" + Request["code"];
+                            <tr class="bg-info">
+                                <td style="vertical-align: middle;">@i</td>
+                                <td style="vertical-align: middle;">
+                                    <a style="text-decoration: none;" href="@link_detail">@item2.Ten</a>
+                                </td>
+                                <td style="vertical-align: middle;">@item2.BCHName</td>
+                                <td style="vertical-align: middle;">@item2.Phone</td>
+                                @if (User != null)
+                                {
+                                    <td style="vertical-align: middle;">@item2.DiDong</td>
+                                }
+                                <td style="vertical-align: middle; text-align:left">
+                                    @if (item2.Url != null)
+                                    {
+                                        <a href="@item2.Url" target="_blank">@item2.Url</a>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>*@
+        </div>
+    </div>
+
+</div>
+<style>
+    .detail-content table td {
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        padding: 5px 10px;
+        vertical-align: middle;
+        text-align: center;
+        border: none;
+    }
+
+        .detail-content table td p {
+            margin-bottom: 0;
+        }
+
+        .detail-content table td:last-child {
+            border-right: 1px solid #ccc;
+            border: none;
+        }
+
+    .detail-content table tr:last-child td {
+        border-bottom: 1px solid #ccc;
+        border: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("table").css("width", "100%");
+        $("#comment").validate({
+            rules: {
+                FullName: {
+                    required: true
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                NoiDung: {
+                    required: true
+                }
+            },
+            messages: {
+                FullName: {
+                    required: "Bạn chưa nhập họ và tên"
+                },
+                Email: {
+                    required: "Bạn chưa nhập Email",
+                    email: "Email không đúng định dạng"
+                },
+                NoiDung: {
+                    required: "Bạn chưa nhập nội dung"
+                }
+            }
+        });
+        $(document).on('click', '#replyComment', function () {
+            $("#displayContentReply").remove();
+            $(this).toggleClass("openrep");
+            if ($(this).hasClass("openrep")) {
+                $(this).parent().parent().parent().append("<div id='displayContentReply'></div>");
+                var id = $(this).attr("data-id");
+                $("#parentCommentId").val(id);
+                var templateReply = $("#formReplyComment").html();
+                $(this).parent().parent().parent().find("#displayContentReply").html(templateReply);
+            }
+        });
+    })
+</script>

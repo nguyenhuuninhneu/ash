@@ -1,0 +1,60 @@
+﻿
+@using Web.Model
+@model List<Web.Model.tbl_UserAdmin>
+@{
+    Layout = null; 
+    var currentid = (tbl_UserAdmin) TempData["currentid"];
+    var lstchat = (List<tbl_Chat>) TempData["lstchat"]; 
+    var timeout = (int) TempData["timeout"];
+    var onoff = "";
+    var objchat = new tbl_Chat();
+}
+@*account.loadfrmViewInfo(@User.ID)*@ 
+@if (Model.Count > 0)
+{
+    <ul class="list-group contacts-list" id="listacount">
+        @foreach (var item in Model)
+        {
+            objchat = lstchat.Where(g => g.ListIdUser.Split(',').Contains(item.ID.ToString())).OrderByDescending(g=>g.Date).FirstOrDefault();
+            if (!Convert.ToBoolean(item.isOnline))
+            {
+                onoff = "offline";
+            }
+            else
+            {
+                if (item.LastOnline != null && DateTime.Now.Subtract(item.LastOnline.Value).TotalSeconds > timeout)
+                {
+                    onoff = "offline";
+                }
+                else
+                {
+                    onoff = "online";
+                }
+            }
+            string img = "/Content/Admin/images/staff.png";
+            if (!String.IsNullOrEmpty(item.Photo))
+            {
+                img = item.Photo;
+            }
+                <li class="list-group-item @onoff" style="cursor: pointer;">
+                    <a href="#"  onclick="chat.openchat(@currentid.ID,@item.ID,'@currentid.FullName','@item.FullName',true,true)">
+                        <div class="avatar"> 
+                            <img src="@img" class="img-circle thumb-md" alt="">
+                            @if (objchat != null && objchat.IdLast != null && objchat.IdLast != currentid.ID)
+                            {
+                                <span id="countchat_@currentid.ID@item.ID" class="countchat">@objchat.Count</span> 
+                            }
+                        </div>
+                        <span class="name">@item.FullName</span>
+                        <i class="fa fa-circle @onoff"></i>
+                    </a>
+                    <span class="clearfix"></span>
+                    <div class="list-btn">
+                        <a href="javascript://" title="Thông tin" class="btn-chat" onclick="chat.loadfrmDetail(@item.ID)"><i class="fa fa-user" aria-hidden="true"></i> Thông tin</a>
+                        <a href="javascvript://" title="Trò chuyện" class="btn-chat" onclick="chat.openchat(@currentid.ID,@item.ID,'@currentid.FullName','@item.FullName',true,true)"><i class="fa fa-comments" aria-hidden="true"></i> Trò chuyện</a>
+                        <div class="clearfix"></div>
+                    </div>
+            </li>
+            }  
+    </ul>
+ } 

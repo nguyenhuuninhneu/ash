@@ -1,0 +1,6 @@
+<svg class="visually-hidden">
+      <linearGradient id="rating-star-gradient-half">
+        <stop offset="50%" stop-color="rgb(var(--product-star-rating))"></stop>
+        <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4"></stop>
+      </linearGradient>
+    </svg>

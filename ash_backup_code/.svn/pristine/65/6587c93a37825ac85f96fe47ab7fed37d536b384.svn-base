@@ -1,0 +1,31 @@
+﻿@using Web.Model.CustomModel
+@model List<Web.Model.CustomModel.tbl_ContentLogs>
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Người Dùng</th>
+            <th>Hành động</th>
+            <th>Thời gian</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var i = 0;}
+        @foreach (var item in Model)
+        {
+            i++;
+            <tr>
+                <td>@i</td>
+                <td style="vertical-align: middle;">
+                    @item.ActionBy
+                </td>
+                <td style="vertical-align: middle;width: 500px;">
+                    @item.Contents
+                </td>
+                <td style="vertical-align: middle;">
+                    @string.Format("{0: dd/MM/yyyy HH:mm:ss}", item.ActionTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

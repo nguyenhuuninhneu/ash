@@ -1,0 +1,227 @@
+﻿<link rel="stylesheet" href="/Content/Admin/assets/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="/Content/Admin/assets/colorpicker/js/colorpicker.js"></script>
+<script src="/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+@{
+    var lstCategory = (List<tbl_HomeMenu>)TempData["HomeMenu"];
+    lstCategory.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+}
+@using Web.Model
+@model Web.Model.tbl_HomeMenu
+@using (Ajax.BeginForm("Add", "HomeMenu", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "homemenu.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+    var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownList("LangCode", new SelectList(languages, "Code", "Name"), new { @class = "form-control" })
+        </div>
+    </div>*@
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Thuộc trang</label>
+        @{
+    var lstpageElements = (List<tbl_PageElement>)TempData["PageElement"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.PageElementId, new SelectList(lstpageElements, "ID", "Name"), "--- Chọn trang ---", new { @class = "form-control" })
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên menu</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên menu" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Menu cha</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.ParentID, new SelectList(lstCategory, "ID", "Name"), "Chọn menu cha", new { @class = "form-control width300" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        <div class="col-md-10 pull-right">
+            <div class="radio radio-info radio-inline" onclick="$('.externallink').hide(); $('.internallink').show();">
+                <input type="radio" id="internallink" value="1" name="linktype" checked="">
+                <label for="internallink"> Liên kết trong </label>
+            </div>
+            <div class="radio radio-info radio-inline" onclick="$('.externallink').show(); $('.internallink').hide();">
+                <input type="radio" id="externallink" value="2" name="linktype">
+                <label for="externallink"> Liên kết ngoài </label>
+            </div>
+        </div>
+    </div>*@
+    <input type="hidden" id="internallink" value="1" name="linktype" checked="checked">
+    <div class="form-group externallink">
+        <label class="col-md-2 control-label">Đường dẫn</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Url, new { @class = "form-control", placeholder = "Đường dẫn" })
+        </div>
+    </div>
+    @*<div class="internallink">
+        <div class="form-group">
+            <label class="col-md-2 control-label">Danh mục</label>
+            <div class="col-md-10">
+                <select name="CategoryId" id="CategoryId" class="form-control">
+                    <option value="">--Chọn danh mục--</option>
+                    @foreach (var item in lstCategory)
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>*@
+    
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ảnh đại diện</label>
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.FeautureImage)
+            <a id="Browser" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+            </a>
+            <div class="mt10" id="previewthumbnail"></div>
+        </div>
+    </div>*@
+    
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Thứ tự</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "Thứ tự...", Value = "0" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" checked="" value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="isNewsTab" name="isNewsTab" type="checkbox" value="true">
+                <label for="isNewsTab">
+                    Chuyển tab mới
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsMenu" name="IsMenu" type="checkbox" value="true">
+                <label for="IsMenu">
+                    Hiển thị menu
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsHome" name="IsHome" type="checkbox" value="1">
+                <label for="IsHome">
+                    Hiển thị trang chủ
+                </label>
+            </div>
+        </div>
+    </div>
+    @*<div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsPermAdd" name="IsPermAdd" type="checkbox" value="true" checked >
+                <label for="IsPermAdd">
+                    Cho phép đăng tin
+                </label>
+            </div>
+        </div>
+    </div>*@
+    
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" onclick="return Validate();" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>   
+
+    var Validate = function () {
+        if ($("#basicForm #Name").val() == "") {
+            $("#basicForm #Name").attr("style", "border:1px solid red");
+            alertmsg.error("Bạn chưa nhập tên menu");
+            return false;
+        }
+        else {
+            $("#basicForm #Name").attr("style", "");
+        }
+        //if ($('#internallink').is(':checked')) {
+        //    if ($("#basicForm #CategoryId").val() == "" || $("#CategoryId").val() == undefined) {
+        //        $("#basicForm #CategoryId").attr("style", "border:1px solid red");
+        //        alertmsg.error("Bạn chưa chọn danh mục");
+        //        return false;
+        //    }
+        //    else {
+        //        $("#basicForm #CategoryId").attr("style", "");
+        //    }
+        //} else {
+        //    if ($("#Url").val() == "" || $("#Url").val() == undefined) {
+        //        $("#basicForm #Url").attr("style", "border:1px solid red");
+        //        alertmsg.error("Bạn chưa chọn đường dẫn");
+        //        return false;
+        //    }
+        //    else {
+        //        $("#basicForm #Url").attr("style", "");
+        //    }
+        //}
+        return true;
+    }
+    $(document).ready(function () {
+
+        $("#Browser").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Images").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+
+        $("#basicForm #LangCode").change(function () {
+            homemenu.loadCatbyLang($(this).val());
+            $.get("/Admin/PageElement/GetAllByLangCode?LangCode=" + $(this).val(), function (res) {
+                var html = '<option value="">--Chọn trang--</option>';
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + res[i].Name + '</option>';
+                }
+                $("#basicForm #PageElementId").html(html);
+            });
+        });
+        $("#basicForm #PageElementId").change(function () {
+            $.get("/Admin/Category/GetAllByLangCode?LangCode=" + $("#basicForm #LangCode").val() + "&PageElementId=" + $("#basicForm #PageElementId").val(), function (res) {
+                var html = '<option value="">--Chọn danh mục--</option>';
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + Array(res[i].Level + 1).join("--") + res[i].Name + '</option>';
+                }
+                $("#basicForm #CategoryId").html(html);
+            });
+            $.get("/Admin/HomeMenu/GetAllByPageElementId?PageElementId=" + $(this).val(), function (res) {
+                var html = '<option value="">--Chọn menu cha--</option>';
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + Array(res[i].Level + 1).join("--") + res[i].Name + '</option>';
+                }
+                $("#basicForm #ParentID").html(html);
+            });
+        });
+    });
+</script>

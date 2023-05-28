@@ -1,0 +1,92 @@
+[
+  {
+    "outputFileName": "assets/display/Css/Common.min.css",
+    "inputFiles": [
+      "assets/display/Css/Common.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Css/css_rwd.min.css",
+    "inputFiles": [
+      "assets/display/Css/css_rwd.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Css/css_rwd_common.min.css",
+    "inputFiles": [
+      "assets/display/Css/css_rwd_common.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Css/display.min.css",
+    "inputFiles": [
+      "assets/display/Css/display.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Css/Font/font-awesome.min.css",
+    "inputFiles": [
+      "assets/display/Css/Font/font-awesome.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Css/Font/font.min.css",
+    "inputFiles": [
+      "assets/display/Css/Font/font.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/Common.min.js",
+    "inputFiles": [
+      "assets/display/Js/Common.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Css/animate.min.css",
+    "inputFiles": [
+      "assets/display/Css/animate.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/Owl2/owl.carousel.min.css",
+    "inputFiles": [
+      "assets/display/Js/Owl2/owl.carousel.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/slick/slick.min.css",
+    "inputFiles": [
+      "assets/display/Js/slick/slick.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/Lightbox/lightbox.min.css",
+    "inputFiles": [
+      "assets/display/Js/Lightbox/lightbox.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/ScrollBar/jquery.mCustomScrollbar.min.js",
+    "inputFiles": [
+      "assets/display/Js/ScrollBar/jquery.mCustomScrollbar.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/slick/slick.min.js",
+    "inputFiles": [
+      "assets/display/Js/slick/slick.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/Lightbox/lightbox.min.js",
+    "inputFiles": [
+      "assets/display/Js/Lightbox/lightbox.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/display/Js/jwplayer.min.js",
+    "inputFiles": [
+      "assets/display/Js/jwplayer.js"
+    ]
+  }
+]

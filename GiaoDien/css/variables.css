@@ -1,0 +1,11 @@
+:root {
+    --bg_main_color: rgb(0, 0, 0);
+    --bg_main_color_white: rgb(255, 255, 255);
+    --text_main_color: rgb(40, 40, 40);
+    --text_main_color_white: rgb(255, 255, 255);
+    --base-font-size: 14px;
+    --base-font-size--small: 16px;
+    --base-font-size--xxlarge: 32px;
+    --transform-origin-start: left;
+    --transform-origin-end: right;
+}

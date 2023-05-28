@@ -1,0 +1,291 @@
+﻿@{
+    ViewBag.Title = "tin bài";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var langCode = "vn";
+    if (Session["langCodeDefaut"] != null)
+    {
+        langCode = Session["langCodeDefaut"].ToString();
+    }
+    var lstCategory = (List<tbl_Category>)TempData["CategoryNews"];
+    lstCategory.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+
+    var lststatus = (List<qProcedure>)TempData["Status"];
+    var listPosition = (List<tbl_Position>)TempData["LstPos"];
+    var lstUserAdmin = (List<tbl_UserAdmin>)TempData["lstUserAdmin"];
+
+
+
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var permQuyTrinhXuatBanID = (List<string>)TempData["permQuyTrinhXuatBanID"];
+    var totalNews = (int)TempData["totalNews"];
+    var qProcedureFirst = (int)TempData["qProcedureFirst"];
+    var lstQtxb = (List<qProcedure>)TempData["QuyTrinhXuatBan"];
+    var QtxbID = (lstQtxb.FirstOrDefault(x => x.isPublish) != null ? lstQtxb.FirstOrDefault(x => x.isPublish).ID : 0);
+    var objUser = (tbl_UserAdmin)TempData["objUser"];
+    var code = "news";
+    var lstProcess = (List<qProcess>)TempData["lstProcess"];
+
+    var lstConfig = (List<tbl_Config>)TempData["lstConfig"];
+    var objkhoitao = (qProcedure)TempData["objkhoitao"];
+    var objBienTap = (qProcedure)TempData["objBienTap"];
+
+    var CategoryId = Request["CategoryId"];
+    DateTime now = DateTime.Now;
+    var startDate = new DateTime(now.Year, now.Month, 1);
+    var endDate = startDate.AddMonths(1).AddDays(-1);
+}
+@using Web.Model
+@using Web.Areas.Admin.Controllers
+@using Web.Model.CustomModel
+@using Web.Core
+@model List<tbl_News_Custom>
+    <form method="get" action="/Admin/News/ThongKe" id="FrmNewsThongKe">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <input type="text" id="keySearch" name="keySearch" class="form-control keyEnter" value="@Request["keySearch"]" placeholder="Tìm Tiêu Đề">
+                            </div>
+
+                            <div id="myContent">
+
+                                <div class="form-group col-md-3">
+                                    <select id="luaChon" name="luaChon" class="selectvin">
+                                        <option value="1">Tìm theo Tiêu Đề</option>
+                                        <option value="2">Tìm theo Nội Dung</option>
+                                        <option value="3">Tìm theo Tác Giả</option>
+                                        <option value="4">Tìm theo Nguồn Tin</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.DropDownList("CategoryId", new SelectList(lstCategory, "ID", "Name"), "--- Chuyên Mục ---", new { @class = "selectvin", @value= "@Request['CategoryId']" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.DropDownList("CreatedBy", new SelectList(lstUserAdmin, "ID", "UserName"), "- Người Tạo -", new { @class = "selectvin", @value = "@Request['CreatedBy']" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" name="tuNgay" id="tuNgay" class="form-control datepicker-mask keyEnter" placeholder="Từ Ngày" data-mask="99/99/9999" value="@(string.IsNullOrEmpty(Request["tuNgay"])?HelperDateTime.ConvertDateToString(startDate):Request["tuNgay"])" />
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" name="denNgay" id="denNgay" class="form-control datepicker-mask keyEnter" placeholder="Đến Ngày" data-mask="99/99/9999" value="@(string.IsNullOrEmpty(Request["denNgay"])?HelperDateTime.ConvertDateToString(endDate):Request["denNgay"])"/>
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-purple waves-effect waves-light" type="submit" id="btnSearch">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+  
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Danh sách <span style="margin-bottom: 5px" id="countnews" class="badge badge-primary">@totalNews</span>
+                    </h3>
+                    <div style="top: 8px; position: absolute; right: 40px;" class="pull-right">
+                        <a href="/Admin/News/ExportExcel" class="btn btn-success waves-effect waves-light"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Nhuận bút</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-responsive pt10" id="gridDataThongKe">
+                                <table class="table table-striped cabn_datatable">
+                                    <thead>
+                                        <tr>
+
+                                            @if (User.isAdmin == false)
+                                            {
+                                                if (objUser.QuyTrinhXuatBanID.Contains(QtxbID.ToString()))
+                                                {
+                                                    <th class="">
+                                                        <input type="hidden" id="hdfID" />
+                                                        <div class="checkbox">
+                                                            <input id="chkall" type="checkbox">
+                                                            <label for="chkall"></label>
+                                                        </div>
+                                                    </th>
+                                                }
+                                                else
+                                                {
+                                                    <th></th>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <th class="">
+                                                    <input type="hidden" id="hdfID" />
+                                                    <div class="checkbox">
+                                                        <input id="chkall" type="checkbox">
+                                                        <label for="chkall"></label>
+                                                    </div>
+                                                </th>
+                                            }
+
+                                            <th style="width:160px;">Tên bài viết</th>
+                                            <th class="tieudetin" style="width:160px;">Tác giả</th>
+                                            <th>Số tài khoản</th>
+                                           <th style="width:150px;">Người khởi tạo</th>
+                                            <th style="width:150px;">Người biên tập</th>
+                                            <th>Ngày đăng</th>
+                                            <th style="width:150px;">Loại tin bài</th>
+                                            <th>NB</th>
+                                            <th class="func3but"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            var SoTaiKhoan = "";
+                                            var objUser2 = new tbl_UserAdmin();
+                                            var idTacGia = item.CreatedBy;
+                                            if (item.CTVID > 0)
+                                            {
+                                                idTacGia = item.CTVID;
+                                            }
+                                            objUser2 = lstUserAdmin.FirstOrDefault(g=>g.ID==idTacGia.Value);
+                                            if (objUser2 != null)
+                                            {
+                                                SoTaiKhoan = objUser2.SoTaiKhoan;
+                                            }
+
+                                            var nguoikhoitao = "";
+                                            var objProcess_khoitao = lstProcess.FirstOrDefault(g => g.FKId == item.ID
+                                            && g.FromProcedure == objkhoitao.ID);
+                                            if (objProcess_khoitao != null)
+                                            {
+                                                var objUserkhoitao = lstUserAdmin.FirstOrDefault(g => g.ID == objProcess_khoitao.FromId);
+                                                if (objUserkhoitao != null)
+                                                {
+                                                    nguoikhoitao = objUserkhoitao.FullName;
+                                                }
+                                            }
+                                            var nguoibientap = "";
+                                            var objProcess_bientap = lstProcess.LastOrDefault(g => g.FKId == item.ID && g.ToProcedure == objBienTap.ID);
+                                            if (objProcess_bientap != null)
+                                            {
+                                                var objUserBienTap = lstUserAdmin.FirstOrDefault(g => g.ID == objProcess_bientap.FromId);
+                                                if (objUserBienTap != null)
+                                                {
+                                                    nguoibientap = objUserBienTap.FullName;
+                                                }
+                                            }
+                                            var loaitinbai = "";
+                                            var objLoaiTin = lstConfig.FirstOrDefault(g => item.NewMoney.HasValue&& g.ID == item.NewMoney.Value);
+                                            if (objLoaiTin != null)
+                                            {
+                                                loaitinbai = objLoaiTin.Name;
+                                            }
+
+                                            var objUserChoose = lstUserAdmin.FirstOrDefault(g => item.IdUserChoose != null && item.IdUserChoose == g.ID);
+
+                                            <tr id="rownews_@item.ID">
+                                                @if (User.isAdmin == false)
+                                                {
+                                                    if (objUser.QuyTrinhXuatBanID.Contains(QtxbID.ToString()))
+                                                    {
+                                                        <td style="vertical-align: middle;" align="center">
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                                                                <label for="chk'@item.ID'"></label>
+                                                            </div>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td style="vertical-align: middle;" align="center">
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                                                            <label for="chk'@item.ID'"></label>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                <td style="vertical-align: middle">
+                                                    @item.Title
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    @item.Author
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    @SoTaiKhoan
+                                                </td>
+
+                                                <td style="vertical-align: middle;">@nguoikhoitao</td>
+                                                <td style="vertical-align: middle;">@nguoibientap</td>
+                                                <td style="vertical-align: middle;">@HelperDateTime.ConvertDateToString(item.CreatedDate)</td>
+                                                <td style="vertical-align: middle;">@loaitinbai</td>
+                                                <td style="vertical-align: middle;">@string.Format("{0:0,0}", item.NhuanBut) </td>
+
+                                                <td>
+                                                    <div class="btn-list pull-right mr4">
+                                                        <a href="#" class="btn btn-success btn-bordered" title="Chi tiết bài viết" onclick="news.loadfrmDetail(@item.ID)">
+                                                            <i class="glyphicon glyphicon-search"></i>
+                                                        </a>
+                                                        @*<a href="#" class="btn btn-bordered btn-warning waves-effect waves-light" onclick="process.viewProcess('@Url.Action("ViewProcess","Process",new {FkId=item.ID,Code =code })')" title="Tiến trình xử lý">
+                            <i class="fa fa-line-chart"></i>
+                            </a>*@
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12" id="paginationholder">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="/Content/Admin/assets/select2/select2.min.js"></script>
+<script src="~/Scripts/datepicker.min.js"></script>
+<link href="~/Scripts/datepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/newsIndex.js"></script>
+<script src="~/AppJs/news.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".keyEnter").keypress(function (e) {
+            if (e.which == 13) {
+                return false;
+            }
+        });
+        $('.selectvin').select2();
+        $("#CategoryId").select2('val', @CategoryId);
+        @*var tuNgay = $("#tuNgay").val();
+        var denNgay = $("#denNgay").val();
+        debugger;
+        if((tuNgay==null||tuNgay=="")&&(denNgay==null||denNgay=="")){
+            
+            $("#tuNgay").val('@strStartDate');
+            $("#denNgay").val('@strEndDate');
+            $("#FrmNewsThongKe").submit();
+        }*@
+
+    });
+</script>
+
+
+

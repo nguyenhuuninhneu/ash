@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+}
+
+@using Web.Model
+@using Web.Core
+@{
+    var objvideo = (tbl_Video)TempData["objvideo"];
+    var otherVideo = (List<tbl_Video>)TempData["otherVideo"];
+    var idshow = (int)TempData["idshow"];
+    var dothtml = ".html";
+}
+
+<div id="video">
+    <div class="wrp">
+        <div class="top">
+            <div class="left">
+                @if (objvideo != null)
+                {
+                    string link = "/video/" + objvideo.ID + "/" + HelperString.RemoveMark(objvideo.Title) + dothtml;
+                    <div id="videoPlayer" tabindex="0"></div>
+                    <div class="info">
+                        <a href="@link" title="@objvideo.Title" class="name">@objvideo.Title</a>
+                        @if (objvideo.Description != "")
+                        {
+                            <div class="cont">
+                                @objvideo.Description
+                            </div>
+                        }
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            jwplayer('videoPlayer').setup({
+                                file: "@objvideo.Url",
+                                image: '@objvideo.Images',
+                                title: '@objvideo.Title',
+                                width: '100%',
+                                aspectratio: '16:9',
+                                mute: 'false',
+                                autostart: 'true',
+                                repeat: 'false',
+                                primary: 'html5',
+                                preload: 'auto'
+                            }); 
+
+                            var $dot5 = $('#video .left .cont');
+                            if ($dot5.innerHeight() > 84) {
+                                $dot5.append('<a class="toggle" href="#"><span class="open1"><i class="fa fa-plus-square-o" aria-hidden="true"></i></span><span class="close1"><i class="fa fa-minus-square-o" aria-hidden="true"></i></span></a>');
+                                function createDots() {
+                                    $dot5.dotdotdot({
+                                        after: 'a.toggle'
+                                    });
+                                }
+                                function destroyDots() {
+                                    $dot5.trigger('destroy');
+                                }
+                                createDots();
+                                $dot5.on(
+                                    'click',
+                                    'a.toggle',
+                                    function () {
+                                        $dot5.toggleClass('opened');
+
+                                        if ($dot5.hasClass('opened')) {
+                                            destroyDots();
+                                        } else {
+                                            createDots();
+                                        }
+                                        return false;
+                                    }
+                                );
+                            };
+                        })
+                    </script>
+                }
+            </div>
+            <div class="right">
+                @{
+                    string lstid = "";
+                    var count = otherVideo.Count;
+                    if (otherVideo.Count > 6) { count = 6; }
+                    for (int i = 0; i < count; i++)
+                    {
+                        lstid += otherVideo[i].ID + ",";
+                        string link = "/video/" + otherVideo[i].ID + "/" + HelperString.RemoveMark(otherVideo[i].Title) + dothtml;
+                        <div class="item">
+                            <div class="khungAnh">
+                                <a class="khungAnhCrop" href="@link" title="@otherVideo[i].Title">
+                                    <img src="@otherVideo[i].Images" alt="@otherVideo[i].Title" />
+                                </a> 
+                            </div>
+                            <a href="@link" title="@otherVideo[i].Title" class="name">
+                                <p>@otherVideo[i].Title</p>
+                            </a>
+                            <div class="cb"></div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="cb"></div>
+        </div> 
+        <input type="hidden" id="idshow" value="@idshow" />
+        <input type="hidden" id="ippage" value="0" />
+        
+        <div class="parent" style="margin-bottom: 0">
+            <div class="group">
+                <div id="gridData">
+            
+                </div>
+                <div class="cb"></div>
+            </div>
+        </div> 
+        <a href="javascript://" onclick="loadmore()" class="viewmore" style="">Xem thêm video khác</a>
+    </div>
+</div>
+
+<script>
+    loadmore();
+    function loadmore() {
+        $("#loading").show();
+        var idshow = $('#idshow').val();
+        var page = $('#ippage').val();
+        page = 1 + parseInt(page);
+        $('#ippage').val(page);
+        AjaxService.POST("/Video/DetailAjax", { lstid: "@lstid", idshow: idshow, page: page }, function (res) { 
+            if (res.totalPages === page || res.totalPages === 0) $('.viewmore').fadeOut();
+            $("#gridData").append(res.viewContent);
+            $("#loading").hide();
+            CropImage();
+        });
+    }
+</script>

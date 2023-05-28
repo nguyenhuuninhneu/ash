@@ -1,0 +1,183 @@
+﻿  
+@media (max-width:1023px){
+   .wrp {width: calc(100% - 20px)}
+    #header .top { padding: 12px 0 15px 0; position: relative}
+    #header .logo { float: none; max-width: none; display: block; margin: auto} 
+    #lienketwebsite {display: none}
+    #truyenhinh .right { width: 100%; margin-top: 20px; clear: both}
+    #truyenhinh .right .item{ width: calc((100% - 30px) / 3); float: left; margin-right: 10px;border-bottom: none}
+    #truyenhinh .left { width: 55%;margin: 0}
+    #truyenhinh .mid { width: 43%;float: right}
+    #header .logo img { max-width: 100%; height: auto; display: block; margin: auto}
+    #header .bot .filter .item.search {display: none} 
+    #header .top.active { position: fixed; top: 0; left: 0; z-index: 10; width: 100%;background: #007ebb!important} 
+    .btnmenures { display: block; width: 50px; height: 50px; background: url(Icon/icomenurwd.png) center no-repeat; border-left: 1px solid #cdcdcd; float: right; position: absolute; top: 0; left: 0;z-index: 10;background-size: 20px}
+    .btnmenures.active {background: url(Icon/closemenu.png) center no-repeat;background-size: 20px; position: fixed}
+    #menu { position: fixed; top: 57px; left: -100%; width: 80%; height: calc(100% - 57px); z-index: 10; transition: 0.5s all ease-in-out;-moz-transition: 0.5s all ease-in-out; -webkit-transition: 0.5s all ease-in-out; overflow-y: auto; overflow-x: hidden; background: #fff}
+    #menu.active {left: 0}
+    #menu ul {border-top: 3px solid #007ebb}
+    #menu ul li { float: none; border-bottom: 1px solid #d8d8d8;border-right: 0}
+    #menu .wrp {width: 100%}
+    #menu .item.search { width: calc(100% - 20px); border: 1px solid #d7d7d7; background: #fff; margin: 10px auto; display: table}
+    #menu .item.search input{ border: none; float: left; height: 28px; box-sizing: border-box; padding: 0 10px; width: calc(100% - 25px); outline: none;font-size: 12px}
+    #menu .item.search a.btnsearch{float: right; width: 25px; height: 28px; display: block; background: url(Icon/icon-search.png) center no-repeat}
+    #menu ul li ul { position: relative; top: 5px; background: transparent; left: 0px; min-width: auto;border-top: none}
+    #menu ul li a { display: inline-block; color: #333;font-family: RobotoB}
+    #overlay { position: fixed; width: 100%; height: 100%; z-index: 9; background: rgba(0, 0, 0, 0.8); display: none; top: 0; left: 0}
+    #menu ul li:hover { background:transparent} 
+    #menu ul li:hover a{ color: #333} 
+    #menu ul li ul li { border: none; background: transparent; white-space: inherit; width: auto; line-height: 21px; padding: 0 5px 5px 5px !important;padding-right: 0!important}
+    #menu ul li ul li ul { left: 9px;top: 5px; border: none}
+    #menu ul li.hasChild {background: url(Icon/opensub.png) right 10px top 13px no-repeat}
+    #menu ul li ul li.hasChild {background: url(Icon/opensub.png) right 5px top 10px no-repeat}
+    #menu ul li.hasChild:hover { background: url(Icon/closesub.png) right 10px top 15px no-repeat;padding-bottom: 0}  
+    #menu ul li ul li.hasChild:hover {background: url(Icon/closesub.png) right 5px top 13px no-repeat}  
+    #menu ul li ul li:hover {background: transparent}
+    #menu ul li ul li a {padding:3px 0}
+     
+    #video .top .left,#video .top .right {width: 100%}
+    #video .top .right { background: transparent; margin-top: 15px;padding:0}
+    #video .lst .group .item:nth-child(5) ~.item {display: block}
+    #video .top .right .item,#video .group .item,#video .group .item:nth-child(5n) {width: calc((100% - 30px) / 3);margin-right: 15px;margin-bottom: 15px;float: left; border: none;padding-bottom: 0}
+    #video .top .right .item:nth-child(3n),#video .group .item:nth-child(3n) {margin-right: 0}
+    #video .top .right .item:nth-child(3n + 1),#video .group .item:nth-child(3n + 1) {clear: both}
+    #video .top .right .item .khungAnh,#video .top .right .item .name {width: 100%}
+    #video .top .right .item .khungAnh {border-bottom: 7px solid #ccc;}
+    #video .top .right .item .name { background: #eee; padding: 10px; height: 62px}
+    #video .top .right .item .name p { height: 42px; overflow: hidden}
+    #video .top { padding-bottom: 0; border: none;margin-bottom: 0}
+
+    #video .top .left { padding-bottom: 20px; border-bottom: 1px dashed #eee;margin-bottom: 20px} 
+    #header .bot .select2-container .select2-choice .select2-arrow {top: -12px}
+
+    .wrp .wrp {width: 100%}
+
+    #comment .form .col-md-6:first-child {margin-bottom: 15px}
+    #header .bot {border-top: 1px solid #dcdcdc}
+
+    #newdetail {padding:  0}
+    #sukiennoibat .title a:before,#sukiennoibat .title a:after {display: none}
+}
+
+@media (max-width:991px){ 
+    #truyenhinh .left .cont {max-height: 84px}
+    #footer .bot .left {margin-top: 10px}
+
+    #pta .left {margin-bottom: 20px}
+    #pta .left,#pta .right,#sukiennoibat .group .item .khungAnh,#sukiennoibat .group .item .name {width: 100%}
+    #sukiennoibat .group .item .name {margin-top: 3px}
+}
+
+@media (max-width:767px){ 
+    #footer .top ul.left li { width: calc((100% - 20px) / 3);margin-bottom: 10px;}
+    #footer .top ul.left li:nth-child(4n) {margin-right: 10px}
+    #footer .top ul.left li:nth-child(3n) {margin-right: 0}
+    #new .newest .left {width: 100%}
+    #new .newest .right {width: 100%}
+    #truyenhinh .left {padding: 0}
+    #truyenhinh .right { padding: 0; border: none;clear: both} 
+    #truyenhinh .khungAnh:before {padding-bottom: 74.37%} 
+    #thoisu .right,#thoisu .left {width: 100%}
+    #thoisu .left {margin-top: 15px}
+    #thoisu .left .item { width: calc((100% - 20px) / 2); float: left; margin-right: 20px; border-bottom: none; margin-bottom: 0}
+    #thoisu .left .item:nth-child(2n) {margin-right: 0}
+    #thoisu .left .item .name { max-height: 63px; margin-top: 3px;color: #000}
+    #truyenhinh .right .item { width: calc((100% - 30px) / 2); margin-right: 30px;}
+    #truyenhinh .right .item:nth-child(2) {margin-right: 0}
+    #truyenhinh .right .item:nth-child(2) ~.item {display: none}
+    .bannermid {margin:15px 0}
+     
+    #new .newest .list {display: none}
+    #new .newest .right ul li,#new .newest .right ul li:first-child { width: calc((100% - 30px) / 2); float: left; margin-right: 30px;padding:12px 0}
+    #new .newest .right ul li:nth-child(2n) {margin-right: 0} 
+    #new .newest .right ul li .khungAnh { display: block; float: left;width: 47.3%}
+    #new .newest .right ul li .khungAnh:before {padding-bottom: 62.6%}
+    #new .newest .right ul li .name { width: 48.38%; float: right; line-height: 21px; height: 84px; overflow: hidden;font-family: RobotoB} 
+    #new .newest .right ul li:last-child { padding-bottom: 0; margin-bottom: 0; border: none}
+
+    #lightgallery li { width: calc((100% - 30px) / 3);}
+    #lightgallery li:nth-child(4n) {margin-right: 15px}
+    #lightgallery li:nth-child(3n) {margin-right: 0}
+
+    #new .newest .right ul li:nth-child(4) ~li {display: none}
+
+    #video .top .right .item,#video .group .item,#video .top .right .item ~.item,#video .group .item ~.item {width: calc((100% - 15px) / 2);margin-right: 15px;margin-bottom: 15px;float: left; border: none;padding-bottom: 0}
+    #video .top .right .item:nth-child(2n),#video .group .item:nth-child(2n) {margin-right: 0}
+    #video .top .right .item:nth-child(3n + 1),#video .group .item:nth-child(3n + 1) {clear: none}
+    #video .top .right .item:nth-child(2n + 1),#video .group .item:nth-child(2n + 1) {clear: both} 
+
+    #pageroad {display: none}
+
+    .capcha { width: calc(100% - 15px);}
+    .capcha .dib {display: block}
+    .capcha input { width: calc(100% - 175px); margin-top: 3px}
+    #comment .fr.fsti.lh35.pr20.pt10,#topic .fr.fsti.lh35.pr20.pt10 { width: calc(100% - 120px); line-height: 21px;padding-left: 15px}
+
+    #topic .item { display: table; width: 100%}
+    #topic .item .image { float: left; width: 60px;padding:0}
+    #topic .item .details { float: right; width: calc(100% - 75px);}
+    #topic .item .details::before {left: -3.3em}
+    #topic .item .image > div::after {left: 1.4em}
+    #topic .item .image span {padding:0.5em 0}
+    #topic .item .details > div {padding:1em}
+    #magazine .group { width: 100%; margin-bottom: 0}
+    #magazine .group .khungAnh { width: calc((100% - 140px) / 3); margin-right: 40px;margin-bottom: 40px}
+    #magazine .group .khungAnh:nth-child(3n) {margin-right: 0}
+    #magazine .cb { background: none;padding-bottom: 0}
+
+    #header .logo img{ max-height:70px; display: block; margin: auto}
+
+    #header .top {padding: 10px 0}
+
+    #emagazine .item,#emagazine .item ~.item { width: calc((100% - 20px) / 2); clear: none; margin-right: 20px}
+    #emagazine .item:nth-child(2n) {margin-right: 0}
+    #emagazine .item:nth-child(2n + 1) {clear: both}
+}
+
+@media (max-width:479px){ 
+    #container .colleft,#container .colright {width: 100%}
+    #footer .bot .left, #footer .bot .right { width: 100%; float: left;text-align: left}
+    #footer .bot .right .plug.fr {float: left}
+    #footer .top ul.left li,#footer .top ul.left li:nth-child(3n) { width: calc((100% - 10px) / 2); margin-bottom: 10px;margin-right: 10px}
+    #footer .top ul.left li:nth-child(2n) {margin-right: 0px} 
+    #vande-theoguong .group,#nhipcautuyentruyen .left,#nhipcautuyentruyen .right {width: 100%}
+    #nhipcautuyentruyen .right {margin-top: 15px}
+    #truyenhinh .right .item { width: 100%; padding-bottom: 0; margin-bottom: 15px}
+    #truyenhinh .right .item:nth-child(2) {margin-bottom: 0}
+    #truyenhinh .left,#truyenhinh .mid,#thoisu .left .item {width: 100%}
+    #truyenhinh .right {margin-top: 15px}
+    #truyenhinh .mid { margin-top: 15px; padding-bottom: 10px; border-bottom: 1px dashed #ccc}
+    #new .newest .right { margin-top: 15px;}
+    #header .bot .filter select.item:first-child { width: 95px; margin: 0;}
+    #header .bot .date { text-align: center; width: 100%}
+
+    .thongke { display: table; width: 100%}
+    .thongke-ngay { width: 100%; border-bottom: 7px solid #fff; margin: 0; padding-left: 15px; background-position: left 5px center}
+    .thongke-luotxem {margin-left: 5px} 
+    #CommonCuoiChiTietTin { padding: 0}
+    #CommonCuoiChiTietTin>.fl { width: 100%; border-bottom: 7px solid #fff;padding: 5px}
+    #CommonCuoiChiTietTin>.fr {padding: 5px }
+
+    .Descriptionl,#newdetail .Descriptionr { width: 100% !important; margin-bottom: 10px;padding:0}
+    .Descriptionr img {width: 100%!important}
+
+    #newslist .item {margin-bottom: 20px}
+    #newslist .item .khungAnh,#newslist .item .info {width: 100%}
+    #newslist .item .info {margin-top: 15px}
+    #thoisu .left .item .name {width: 48.38%} 
+    #new .newest .right ul li,#new .newest .right ul li:first-child {width: 100%} 
+    #header .bot .filter { float: none; margin: auto; display: table}
+
+    #lightgallery li { width: calc((100% - 15px) / 2);}
+    #lightgallery li:nth-child(3n) {margin-right: 15px}
+    #lightgallery li:nth-child(2n) {margin-right: 0} 
+     
+    #header .bot .filter .item { width: calc((100% - 10px) / 2); margin-left: 0; margin-right: 10px}
+    #header .bot .filter .item:nth-child(2n) {margin-right: 0}
+    #header .bot .filter .item .select2 {min-width: auto!important}
+
+    #magazine .group .khungAnh, #magazine .group .khungAnh:nth-child(3n) { width: calc((100% - 60px) / 2); margin-right: 40px;margin-bottom: 40px}
+    #magazine .group .khungAnh:nth-child(2n) {margin-right: 0}
+
+    #emagazine .item,#emagazine .item ~.item {width: 100%}
+} 

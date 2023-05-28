@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập tới quản trị";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutLogin.cshtml";
+    var sitekey = (string)ViewData["sitekey"]; 
+    var objrecapcha = (string)ViewData["objrecapcha"];
+    var nof = Session["Messenger"];
+}
+<script src='https://www.google.com/recaptcha/api.js?hl=vi'></script> 
+ 
+@model Web.Model.tbl_User
+<div class="panel panel-color panel-primary panel-pages" style="box-shadow: 1px 30px 48px 5px rgba(142, 142, 142, 0.71); ">
+    <div class="panel-heading bg-img toplogin">
+        @*<img src="/Content/Admin/images/logo.png" />*@ 
+        <h3 class="text-center m-t-10 text-white">Đăng nhập tới Quản Trị <br>Tuyên Giáo VN</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "frm", @class = "form-horizontal m-t-20" }))
+        {
+            @Html.HiddenFor(g=>g.IPLogin)
+            <input type="hidden" name="BrowserType" id="BrowserType" value=""/>
+            <input type="hidden" name="DeviceType" id="DeviceType" value="" />
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    @Html.TextBoxFor(g => g.UserName, new { @class = "form-control input-lg", placeholder = "Tên đăng nhập", required = "" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.PasswordFor(g => g.Password, new { @class = "form-control input-lg", placeholder = "Mật khẩu", required = "" })
+                </div>
+            </div>
+            @*<div class="form-group ">
+                <div class="col-xs-12">
+                    <div class="checkbox checkbox-primary">
+                        <input id="checkbox-signup" type="checkbox">
+                        <label for="checkbox-signup">
+                            Ghi nhớ
+                        </label>
+                    </div> 
+                </div>
+            </div>*@
+            if (objrecapcha == "on")
+             {
+                 <div class="form-group ">
+                     <div class="col-xs-12">
+                         <script type="text/javascript">
+                             var imNotARobot = function() {
+                                 $('#textcheckcapcha').fadeOut();
+                             };
+                         </script>
+                         <div class="g-recaptcha" data-sitekey="@sitekey" data-callback="imNotARobot"></div>
+                         @if (ViewBag.CheckCapcha == "uncheck")
+                         {
+                             <span id="textcheckcapcha" style="color: red; font-weight: bold; font-style: italic; margin-top: 7px">Chưa check capcha</span>
+                         }
+                     </div>
+                 </div> 
+             } 
+            <div>@nof</div>
+            <div class="form-group text-center m-t-40">
+                <div class="col-xs-12">
+                    <button class="btn btn-primary btn-lg w-lg waves-effect waves-light" type="submit">Đăng nhập</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () { 
+        $.getJSON("http://jsonip.com/?callback=?", function (data) {
+            $("#IPLogin").val(data.ip);
+        });
+        var parser = new UAParser();
+        $('#BrowserType').val(parser.getBrowser().name);
+        var widthscreen = $(document).width();
+        if (widthscreen <= 480) {
+            $("#DeviceType").val('Mobile');
+        }
+        if (widthscreen <= 1024 && widthscreen > 480) {
+            $("#DeviceType").val('Tablet');
+        }
+        if (widthscreen > 1024) {
+            $("#DeviceType").val('Desktop');
+        }
+    });
+</script>

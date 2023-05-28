@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = @ViewBag.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+@using Web.Model
+@model Web.Model.tbl_Calendar
+<div class="row content-space vanban">
+    <!-- start right content news -->
+    <div class="col-md-12 col-xs-12">
+        <div class="breadcrumb">
+            <ul>
+                <li>
+                    <a href="/"><i class="glyphicon glyphicon-home"> </i></a> <i class="glyphicon glyphicon-menu-right
+    "></i>
+                </li>
+                <li><a href="/calendar">Lịch công tác</a></li>
+            </ul>
+        </div>
+        <h3>@Model.Name</h3>
+        <div class="detail_date"><i>Ngày đăng:@string.Format("{0:dd/MM/yyyy}", Model.CreatedDate)</i></div>
+        <div class="detail-content">
+            @Html.Raw(Model.Details)
+            @if (Model.Logo != null)
+            {
+                <div>
+                    <a href="@Model.Logo"><span class="glyphicon glyphicon-paperclip"></span> Tải về</a>
+                </div>   
+            }
+        </div>
+        <div class="other-vanban">
+            @{
+                var lstVanBanKhac = (List<tbl_Calendar>)ViewBag.RelatedVB;
+                if (lstVanBanKhac != null && lstVanBanKhac.Any())
+                {
+                    <h5 style="font-weight: bold;">Lịch công tác khác:</h5>
+                    <ul>
+                        @foreach (var tblVanBan in lstVanBanKhac)
+                        {
+                            <li>
+                                <a href="/calendar?id=@tblVanBan.ID">
+                                    @tblVanBan.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+        </div>
+        <div class="visible-xs visible-sm">
+            <button class="btn-toggle-left toggle-button"><strong>☰ Danh mục phụ</strong> (trượt sang phải &rarr; )</button>
+        </div>
+    </div>
+</div>

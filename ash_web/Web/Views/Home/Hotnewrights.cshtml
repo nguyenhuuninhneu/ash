@@ -1,0 +1,208 @@
+﻿@{
+    var dothtml = ".html";
+    var ImgRight = (List<Web.Model.tbl_SlideImages>)ViewBag.ImgRight;
+    var lstGallery = (List<tbl_Gallery>)ViewBag.lstGallery;
+    var homeVideo = (List<tbl_Video>)ViewBag.homeVideo;
+    var tt = 0;
+}
+@using Web.Core
+@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model IEnumerable<Web.Model.tbl_News>
+<link href="/Content/Admin/assets/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+<div class="search hidden-xs">
+    @using (Html.BeginForm("SearchHome", "News", FormMethod.Get, new { id = "frmSrcHome" }))
+    {
+        <input type="text" name="keyword" placeholder="@ConfigTextController.GetValueCFT("timkiem") ..." value="@Request["keyword"]">
+        <img src="/assets/images/kinhlup.png" class="pull-right kinhlup" onclick="$('#frmSrcHome').submit();">
+    }
+</div>
+<div class="col-md-12 box_right">
+    <div class="row">
+        <div id="dosinot">
+            <ul class="nav nav-pills" style="background:#055296;">
+                <li class="active" style="border-left:none;border-right:none;padding-left:2px;">
+                    <a href="/pages/gallery/thu-vien-anh.html">@ConfigTextController.GetValueCFT("thuvienanh")</a>
+                </li>
+            </ul>
+            <div class="tab-content clearfix" id="tinanh">
+                <div class="tab-pane active" id="1d">
+                    @if (ViewBag.GCIcon != null)
+                    {
+                        <div class="imagebig">
+                            <a class="fancybox-effects-d" data-fancybox-group="thumb" onclick="showAlbum(0, @ViewBag.GCID)">
+                                <img src="@ViewBag.GCIcon" class="img-responsive" />
+                            </a>
+                            <p class="bgtiles_qw"></p>
+                            <p class="tiles_qw" onclick="window.location.href='/pages/gallery/@ViewBag.GCID/@HelperString.RemoveMark(@ViewBag.GCName)@dothtml'">@ViewBag.GCName</p>
+                        </div>
+                    }
+                    <div class="box_image">
+                        @if (ViewBag.GCOther != null)
+                        {
+                            foreach (var item in (List<tbl_GalleryCategory>)ViewBag.GCOther)
+                            {
+                                <div class="col-md-6 col-sm-6 col-xs-12 imageicon" style="padding: 0px; padding-right: 5px;">
+                                    <a class="fancybox-effects-d" data-fancybox-group="thumb" onclick="showAlbum(@tt, @item.ID)">
+                                        <img src="@item.Icon" class="img-responsive" />
+                                        <span>@item.Name</span>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" style="border: none; box-shadow: none; top: -13px;">
+                        <div class="modal-content" style="background: none; box-shadow: 0px 0px 5px 5px white; box-sizing: initial; border: none;">
+                            <a title="Close" class="fancybox-item fancybox-close" data-dismiss="modal" aria-label="Close" href="javascript:;"></a>
+                            <div id="Album_html"></div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function showAlbum(tt, AlbumID) {
+                        console.log(tt);
+                        $.ajax({
+                            type: "GET",
+                            url: "/Adv/showAlbum?tt=" + tt + "&AlbumID=" + AlbumID,
+                            dataType: 'json',
+                            success: function (response_text) {
+                                var res = response_text;
+                                $("#Album_html").html(res.viewContent);
+                                $(".bd-example-modal-lg").modal("show");
+                            }
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 box_right">
+    <div class="row">
+        <div id="dosinot">
+            <ul class="nav nav-pills" style="background:#055296;">
+                <li class="active" style="border-left:none;border-right:none;padding-left:2px;">
+                    <a href="#">@ConfigTextController.GetValueCFT("tinnoibat")</a>
+                </li>
+            </ul>
+            <div class="tab-content clearfix" id="tinnoibat">
+                <div class="panel panel-default">
+                    <div class="panel-body longsai">
+                        @foreach (var item in Model)
+                        {
+                            <div class="bo3ro">
+                                <img class="right_img" src="@item.FeautureImage" width="80" height="60" />
+                                <ul class="texttintuc">
+                                    <li>
+                                        <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml">@item.Title</a><br />
+                                        <i>@HelperDateTime.ConvertDateToString(@item.CreatedDate)</i>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 box_right">
+    <div class="row">
+        <div id="dosinot">
+            <ul class="nav nav-pills" style="background:#055296;">
+                <li class="active" style="border-left:none;border-right:none;padding-left:2px;">
+                    <a href="/pages/video.html">@ConfigTextController.GetValueCFT("video")</a>
+                </li>
+            </ul>
+            <div class="tab-content clearfix" id="tinvidepo">
+                @if (homeVideo != null)
+                {
+                    foreach (var item in homeVideo.Take(1))
+                    {
+                        <div class="tab-pane active" id="1d">
+                            @if (item.Type != null && item.Type == 1)
+                            {
+                                <video width="100%" height="100%" controls><source src="@item.Url" type="video/mp4"></video>
+                            }
+                            else
+                            {
+                                var urlyoutube = new Uri(item.Url);
+                                var idyoutube = HttpUtility.ParseQueryString(urlyoutube.Query).Get("v");
+                                var rel0 = "?rel=0";
+                                <iframe width="100%" src="https://www.youtube.com/embed/@idyoutube@rel0" frameborder="0" allowfullscreen></iframe>
+                            }
+
+                        </div>
+                    }
+                    <div class="box_image">
+                        @foreach (var item in homeVideo)
+                        {
+                            tt++;
+                            if (tt > 1)
+                            {
+                                <div class="col-md-12 imageicon" style="padding: 0px; padding-right: 5px;">
+                                    <a class="title_min" href="/pages/video/@item.ID/@HelperString.RemoveMark(@item.Name)@dothtml" title="@item.Name"><i class="fa fa-video-camera" aria-hidden="true"></i> @item.Name</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@{ 
+    Html.RenderAction("HomeLinkWebSite", "LinkWebsite");
+}
+@{ 
+    Html.RenderAction("HomeThamDoYKien", "ThamDoYKien");
+}
+<div class="col-md-12 boxright_qc">
+    <div class="row">
+        @foreach (var itemqc in ImgRight)
+        {
+            var linkimg = "#";
+            var target = "";
+            if (itemqc.Url != null)
+            {
+                linkimg = itemqc.Url;
+                target = "_blank";
+            }
+            <a href="@linkimg" title="" target="@target">
+                <img class="img-responsive" src="@itemqc.Images" alt="">
+            </a>
+        }
+    </div>
+</div>
+
+<style>
+    ul.texttintuc li :hover {
+        color: #055296;
+    }
+
+    .boxright_qc img {
+        margin-bottom: 10px;
+    }
+    .title-thamdo
+    {
+        color:blue;
+         border-bottom:2px solid #00a6e2;
+         line-height:24px;
+         margin-top:0px;
+         text-align:center;
+         padding-bottom:5px;
+    }
+    .button
+    {
+        margin-left:25px;
+    }
+    .radio input
+    {
+        padding-top:10px;
+        padding-right:10px;
+        margin-left:0px;
+        margin-right:10px;
+    }
+</style>

@@ -1,0 +1,22 @@
+﻿@using Web.Model
+@model IEnumerable<tbl_Languages>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ngôn ngữ</th>
+            <th>Code</th>
+            <th>Icon</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">@item.Name</td>
+                <td style="vertical-align: middle;">@item.Code</td>
+                <td style="vertical-align: middle;"><img src="@item.Icon" width="25" height="25"/></td>
+            </tr>
+        }
+    </tbody>
+</table>

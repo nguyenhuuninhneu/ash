@@ -1,0 +1,128 @@
+﻿
+@{
+    Layout = null;
+    var dothtml = ".html";
+    var social = (List<tbl_Advert>)TempData["Banner"];
+    var langCode = "vn";
+    if (Session["langCodeHome"] != null)
+    {
+        langCode = Session["langCodeHome"].ToString();
+    }
+}
+@using Web.Core
+@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model tbl_Footer
+
+@{
+    var checkhome = false;
+    var url = Request.RawUrl;
+    if (url.Trim().ToLower() == "/home" || url.Trim().ToLower() == "" || url.Trim().ToLower() == "/")
+    {
+        checkhome = true;
+    }
+}
+
+<div id="footer">
+    <div class="bot">
+        <div class="wrp">
+            <div class="left fs13 lh21">
+                <div class="info">
+                    @if (Model != null)
+                    {
+                        if (langCode == "vn")
+                        {
+                            @Html.Raw(Model.FooterTextLeft);
+                        }
+                        else
+                        {
+                            @Html.Raw(Model.FooterTextLeftEnglish);
+                        }
+
+                    }
+                </div>
+            </div>
+            <div class="right fs13 tar lh21">
+                <div class="plug fr">
+                    <p class="ttu c3a5998 pb5 tac fRobotoB">@ConfigTextController.GetValueCFT("KetNoiVoiChungToi")</p>
+                    @foreach (var item in social)
+                    {
+                        <a href="@item.Url" @(item.isNewTab ? "target='_blank'" : "") title="@item.Name">
+                            <img src="@item.Image" alt="@item.Name" />
+                        </a>
+                    }
+                </div>
+                <div class="cb"></div>
+                @if (Model != null)
+                {
+                    if (langCode == "vn")
+                    {
+                        @Html.Raw(Model.FooterTextRight);
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.FooterTextRightEnglish);
+                    }
+
+                }
+
+                <a href="javascript://" id="changemode"> 
+                    @if (Session["PC"].ToString() != "1")
+                    {
+                        <span><i class="fa fa-laptop" aria-hidden="true"></i> Phiên bản máy tính</span>
+                    }
+                    else
+                    {
+                        <span><i class="fa fa-mobile" aria-hidden="true"></i> Phiên bản điện thoại</span>
+                    }
+                </a>
+            </div>
+            
+            <script>
+                $(document).ready(function () {
+                    var value = @Session["PC"].ToString();
+                    $('#changemode').click(function() {
+                        AjaxService.POST("/Home/ChangMode", { value: value }, function (res) {
+                            if (res.IsSuccess == true) {
+                                location.reload();    
+                            }
+                        });
+                    });
+
+                    if ($(window).innerWidth() >= 1023) { 
+                        $('#changemode').hide();
+                    }
+                }); 
+            </script>
+
+            <div class="cb"></div>
+        </div>
+    </div>
+</div>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117911752-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-117911752-1');
+</script>
+<script src="/Content/Admin/assets/datatables/jquery.dataTables.min.js"></script>
+<script src="/Content/Admin/assets/datatables/dataTables.bootstrap.js"></script>
+<script src="/Content/Admin/assets/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="/Content/Admin/assets/timepicker/bootstrap-datepicker.js"></script>
+<script src="~/assets/display/Js/Dotdotdot/jquery.dotdotdot.min.js"></script>
+<script src="~/assets/display/Js/Owl2/owl.carousel.min.js"></script>
+<script src="~/assets/display/Js/ScrollBar/jquery.mCustomScrollbar.min.js"></script>
+<script src="~/assets/display/Js/jquery.lazy.min.js"></script>
+<script src="~/assets/display/Js/lightgallery-all.min.js"></script>
+<script src="~/assets/display/Js/slick/slick.min.js"></script>
+<script src="~/assets/display/Js/jwplayer.min.js"></script>
+<script> jwplayer.key = "mGDOS7fVOAOlydlRCHC0GR7sLKgUNTAM1BH6/Q=="; </script>
+<script src="~/assets/display/Js/justifiedGallery.min/jquery.justifiedGallery.min.js"></script>
+<script src="~/assets/display/Js/Lightbox/lightbox.min.js"></script>
+<script src="~/assets/display/Js/Common.js"></script>
+<script src="/Content/Admin/assets/notifications/notify.min.js"></script>
+<script src="/Content/Admin/assets/notifications/notify-metro.js"></script>
+<script src="/Content/Admin/assets/notifications/notifications.js"></script>
+<script src="~/Scripts/jquery.twbsPagination.js"></script>

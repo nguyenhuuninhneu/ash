@@ -1,0 +1,36 @@
+﻿@using Web.Core
+@model List<Web.Model.tbl_News>
+@{
+    Layout = null;
+    var dothtml = ".html";
+}
+<div class=" list-new-image ttmn hidden-xs">
+    <div class="title-new-image">
+        Tin tức mới nhất
+    </div>
+    <ul class="">
+        @foreach (var item in Model)
+        {
+            <li>
+                <a href="pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml" title="@item.Title">@item.Title</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="ovh ttsk_w visible-xs">
+    <div class="ovh ttsk-head">TIN TỨC MỚI NHẤT</div>
+    <ul>
+        @{ var i = 1; }
+        @foreach (var item in Model)
+        {
+            <li>
+                <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml" title="@item.Title">
+                    <span>@i</span>
+                    <h3> @item.Title </h3>
+                </a>
+            </li>
+            i++;
+        }
+    </ul>
+</div>

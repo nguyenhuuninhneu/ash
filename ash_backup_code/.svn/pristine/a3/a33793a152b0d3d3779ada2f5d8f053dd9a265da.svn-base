@@ -1,0 +1,56 @@
+﻿@using Web
+@using Web.Model
+@model Web.Model.tbl_TaiLieu
+@{
+    var lstCategory = (List<tbl_DanhMucTaiLieu>)TempData["Category"];
+}
+@using (Ajax.BeginForm("Edit", "TaiLieu", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "tailieu.onAddSuccess"
+
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g=>g.CreateDate);
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thư mục</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(g => g.CatID, new SelectList(lstCategory, "ID", "Name"), new { @class = "form-control selectCreate", placeholder = "Chọn 1" })
+        </div>
+    </div>
+    <div class="col-md-12 form-group">
+        <label class="col-md-2 control-label">File đính kèm</label>
+        <div class="col-md-10">
+            @{ Html.RenderAction("Index", "UploadTaiLieu", new { id = Model.ID, Multiple = false, type = "document", area = "" }); }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự hiển thị</label>
+        <div class="col-md-2">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", Value = 0 })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" @(Model.Status ? "checked" : "") value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" onclick="return validate();" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $(".selectCreate").select2().change(function () {
+            $(this).valid();
+        });
+    });
+</script>

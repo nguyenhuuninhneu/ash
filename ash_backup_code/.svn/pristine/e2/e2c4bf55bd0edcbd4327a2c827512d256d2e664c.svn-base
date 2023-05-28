@@ -1,0 +1,130 @@
+﻿@using System.Web.UI.WebControls
+@using OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+@using Web.Core
+@using Web.Model
+@model List<Web.Model.tbl_HomeMenu>
+@{
+    ViewBag.Title = "MenuCategory";
+    Layout = null;
+    var dothtml = ".html";
+    Model.ForEach(g => g.Name = g.Name.Replace("--", ""));
+}
+@if (Model != null && Model.Count > 0)
+{
+    <div class="right_panel">
+        <div class="right_panel_title">
+            <a href="/pages/category/@ViewBag.pid/@HelperString.RemoveMark(@ViewBag.pname)@dothtml" title="@ViewBag.pname">@ViewBag.pname</a>
+        </div>
+        <div class="bgrightTTHC">
+            <div class="right_panel_content right_panel_ctdm">
+                <ul class="list-news listTTHC menucatnews">
+                    @foreach (var item in Model)
+                    {
+                        var atcmncat = "";
+                        if (item.ID == ViewBag.catid_act)
+                        {
+                            atcmncat = "atcmncat";
+                        }
+                        <li class="list">
+                            <i class="fa fa-stop">&nbsp</i>
+                            @if (!string.IsNullOrEmpty(item.Url))
+                            {
+                                <a class="fwnormal @atcmncat" href="@item.Url" @(item.isNewsTab ? "target='_blank'" : "")>@item.Name</a>
+                            }
+                            else
+                            {
+                                <a class="fwnormal @atcmncat" href="/pages/category/@item.ID/@HelperString.RemoveMark(@item.Name)@dothtml">@item.Name</a>
+                            }
+                        </li>
+                        @*foreach (var child in Model.Where(g => g.ParentID == item.ID))
+                        {
+                            <li class="list">
+                                <i class="fa fa-stop">&nbsp</i>
+                                <a class="fwnormal" href="/pages/category/@child.ID/@HelperString.RemoveMark(@child.Name)@dothtml">@child.Name</a>
+                            </li>
+                        }*@
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    if (ViewBag.catid_act == 30)
+    {
+        var lstNoiBat = (List<tbl_News>) ViewBag.lstNoiBat;
+        var lstXemNhieu = (List<tbl_News>) ViewBag.lstXemnhieu;
+        if (lstNoiBat != null)
+        {
+            <div class="right_panel">
+                <div class="right_panel_title">
+                    <a href="javascript:void(0)" title="Tin nổi bật">Tin nổi bật</a>
+                </div>
+                <div class="bgrightTTHC">
+                    <div class="right_panel_content right_panel_ctdm">
+                        <ul class="list-news listTTHC menucatnews liplus hotnews_right">
+                            @foreach (var item in lstNoiBat)
+                            {
+                                <li class="list">
+                                    @*<i class="fa fa-stop">&nbsp</i>*@
+                                    <a class="fwnormal" href="/pages/news/@item.ID/@HelperString.RemoveMark(@item.Title)@dothtml">@item.Title</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+        if (lstXemNhieu != null)
+        {
+            <div class="right_panel">
+                <div class="right_panel_title">
+                    <a href="javascript:void(0)" title="Tin xem nhiều">Tin xem nhiều</a>
+                </div>
+                <div class="bgrightTTHC">
+                    <div class="right_panel_content right_panel_ctdm">
+                        <ul class="list-news listTTHC menucatnews liplus hotnews_right">
+                            @foreach (var item in lstXemNhieu)
+                            {
+                                <li class="list">
+                                    @*<i class="fa fa-stop">&nbsp</i>*@
+                                    <a class="fwnormal" href="/pages/news/@item.ID/@HelperString.RemoveMark(@item.Title)@dothtml">@item.Title</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+@*else
+{
+    <div class="banner-warning">
+        <ul id="carousel2">
+            <li class="list">
+                <p class="text-left"> ĐỐI VỚI TỰ MÌNH, PHẢI</p>
+                <p class="text-right">CẦN, KIỆM, LIÊM, CHÍNH</p>
+
+            </li>
+            <li class="list">
+                <p class="text-left">ĐỐI VỚI ĐỒNG SỰ, PHẢI </p>
+                <p class="text-right">THÂN ÁI GIÚP ĐỠ</p>
+            </li>
+            <li class="list">
+                <p class="text-left">ĐỐI VỚI CHÍNH PHỦ, PHẢI </p>
+                <p class="text-right">TUYỆT ĐỐI TRUNG THÀNH</p>
+            </li>
+            <li class="list">
+                <p class="text-left">ĐỐI VỚI NHÂN DÂN, PHẢI</p>
+                <p class="text-right">KÍNH TRỌNG LỄ PHÉP</p>
+            </li>
+            <li class="list">
+                <p class="text-left">ĐỐI VỚI CÔNG VIỆC, PHẢI </p>
+                <p class="text-right"> TẬN TỤY</p>
+            </li>
+            <li class="list">
+                <p class="text-left">ĐỐI VỚI ĐỊCH, PHẢI </p>
+                <p class="text-right"> CƯƠNG QUYẾT KHÔN KHÉO</p>
+            </li>
+        </ul>
+    </div>
+}*@

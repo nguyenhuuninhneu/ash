@@ -1,0 +1,201 @@
+﻿@using Web.Model
+@using Web.Areas.Admin.Controllers
+@using Web.Core
+@model List<tbl_VanBan>
+@{
+    Layout = null;
+    var dothtml = ".html";
+    var link_vanban = "/pages/vanban.html";
+    var lstLinhVucVB = (List<tbl_LinhVucVanBan>)TempData["LinhVucVB"];
+    var lstCoQuanBH = (List<tbl_CoQuanBanHanh>)TempData["CoQuanBanHanh"];
+    var lstLoaiVB = (List<tbl_LoaiVanBan>)TempData["lstLoaiVB"];
+    var TrichYeu = Request["TrichYeu"];
+    var SoHieu = Request["SoHieu"];
+    var LinhVucVanBanId = Request["LinhVucVanBanId"];
+    var CoQuanBanHanhID = Request["CoQuanBanHanhID"];
+    var LoaiVanBanId = Request["LoaiVanBanId"];
+    var NgayBanHanh = Request["NgayBanHanh"];
+}
+<link href="/Content/Admin/assets/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+<link href="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-buttons.css" rel="stylesheet" />
+<link href="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-thumbs.css" rel="stylesheet" />
+<link href="~/Content/Admin/assets/select2/select2-bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Admin/assets/select2/select2.css" rel="stylesheet" />
+<link href="~/Content/Admin/assets/timepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="/Content/Admin/assets/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/jquery.fancybox.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-buttons.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-thumbs.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-media.js"></script>
+<script src="~/Content/Admin/assets/timepicker/bootstrap-datepicker.js"></script>
+<script src="~/Content/Admin/assets/select2/select2.min.js"></script>
+<style>
+    .video-panel, .video-panel .font-heading {
+        background: #dceaee !important;
+    }
+    .vbpl-panel {
+        font: normal 19px Arial, Helvetica, sans-serif;
+    }
+
+    .font-heading a {
+        color: #0076b3 !important;
+        padding-left: 2px;
+    }
+    /*.bgrighttthc{
+            /*border-left:1px solid #e6ebef!important;
+            border-right:1px solid #e6ebef!important;
+        }*/
+    #list_news .list {
+        padding: 0px 0 5px 12px;
+        background: url('/../Content/Admin/images/but.jpg') no-repeat 0 6px;
+    }
+    
+    .list a {
+        color: #898989;
+        text-decoration: none;
+        font: normal 13px Tahoma, Geneva, sans-serif;
+        line-height: 14px;
+        cursor: pointer;
+    }
+     .list a:hover{
+         color:blue;
+     }
+    #imgyoutube {
+        width: 275px;
+    }
+</style>
+@using (Html.BeginForm("GetAllNewsByCat", "VanBanFE", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-md-12" style="margin-top:6px;margin-bottom:-8px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@ConfigTextController.GetValueCFT("vanban_timkiem")</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group full_width" style="margin-bottom: 6px">
+                                <div>
+                                    <input type="text" class="form-control" id="TrichYeu" name="TrichYeu" placeholder="@ConfigTextController.GetValueCFT("vanban_trichyeu")" value="@TrichYeu">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group full_width" style="margin-bottom: 6px ">
+                                <div>
+                                    <input type="text" class="form-control" id="SoHieu" name="SoHieu" placeholder="@ConfigTextController.GetValueCFT("vanban_sokihieu")" value="@SoHieu">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="test">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group full_width" style="margin-bottom: 6px !important">
+                                <div>
+                                    <select class="select2" id="LinhVucVanBanId" name="LinhVucVanBanId">
+                                        <option value="">--- @ConfigTextController.GetValueCFT("vanban_linhvuc") ---</option>
+
+                                        @foreach (var item in lstLinhVucVB)
+                                        {
+                                            if (!string.IsNullOrEmpty(LinhVucVanBanId))
+                                            {
+                                                <option value="@item.ID" @(item.ID == Convert.ToInt32(LinhVucVanBanId) ? "selected" : "")> @item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.ID"> @item.Name</option>
+                                            }
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group full_width" style="margin-bottom: 0px">
+                                <div>
+                                    <select class="select2" id="CoQuanBanHanhID" name="CoQuanBanHanhID">
+                                        <option value="">--- @ConfigTextController.GetValueCFT("vanban_cqbh") ---</option>
+                                        @foreach (var item in lstCoQuanBH)
+                                        {
+                                            if (!string.IsNullOrEmpty(CoQuanBanHanhID))
+                                            {
+                                                <option value="@item.ID" @(item.ID == Convert.ToInt32(CoQuanBanHanhID) ? "selected" : "")>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.ID">@item.Name</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 6px">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group full_width" style="margin-bottom: 0px">
+                                <div>
+                                    <select class="select2" id="LoaiVanBanId" name="LoaiVanBanId">
+                                        <option value="">--- @ConfigTextController.GetValueCFT("vanban_loai") ---</option>
+                                        @foreach (var item in lstLoaiVB)
+                                        {
+                                            if (!string.IsNullOrEmpty(LoaiVanBanId))
+                                            {
+                                                <option value="@item.ID" @(item.ID == Convert.ToInt32(LoaiVanBanId) ? "selected" : "")>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.ID">@item.Name</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:6px;">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group full_width" style="margin-bottom: 6px !important">
+                                <div class="md10">
+                                    <input type="text" class="form-control datepicker-mask" id="NgayBanHanh" name="NgayBanHanh" placeholder="@ConfigTextController.GetValueCFT("vanban_ngaybh")" value="@NgayBanHanh" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="md10" style="margin-bottom: -20px; margin-top:-6px">
+                        <div class="text-center ">
+                            <div class="form-group full_width">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">@ConfigTextController.GetValueCFT("timkiem")</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $(".fancybox").fancybox();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#CoQuanBanHanhID").select2();
+        $("#LinhVucVanBanId").select2();
+        $("#LoaiVanBanId").select2();
+        $.fn.datepicker.defaults.language = 'vi';
+        $('.datepicker-mask').datepicker({
+            format: 'dd/mm/yyyy',
+            mask: '39/19/9999',
+            autoclose: true,
+        });
+    });
+</script>

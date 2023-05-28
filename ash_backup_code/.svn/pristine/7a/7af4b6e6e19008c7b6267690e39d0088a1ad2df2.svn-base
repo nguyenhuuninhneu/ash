@@ -1,0 +1,284 @@
+﻿<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+@using Web
+@using Web.Model
+@model tbl_truyna
+@using (Ajax.BeginForm("Edit", "TruyNaBE", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "truynabe.onEditSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g => g.CreateDate)
+    @Html.HiddenFor(g => g.ID)
+    <div class="form-group">
+        <label class="col-md-2 control-label">Họ và tên</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Họ và tên" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên khác</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.TenKhac, new { @class = "form-control", placeholder = "Tên khác" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ảnh</label>
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.Photo)
+            <a id="Browser" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+            </a>
+            <div class="mt10" id="previewthumbnail">
+                @if (!string.IsNullOrEmpty(Model.Photo))
+                {
+                    <img src="@Model.Photo" width="150" />
+                }
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ảnh khác</label>
+        <div class="col-md-10">
+            @Html.Partial("_AttachmentPhoto", new { Name = "SmallPhoto", Multiple = true, Value = Model.SmallPhoto })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Giới tính</label>
+        <div class="col-md-10">
+            <select class="form-control" id="GioiTinh" name="GioiTinh">
+                <option value="1">Nam</option>
+                <option value="2">Nữ</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Năm sinh</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.NamSinh, new { @class = "form-control", placeholder = "Năm sinh" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Nơi sinh</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.NoiSinh, new { @class = "form-control", placeholder = "Nơi sinh" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Hộ khẩu TT</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.HoKhauTT, new { @class = "form-control", placeholder = "Hộ khẩu thường trú" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Nơi đăng ký TT</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.NoiDKTT, new { @class = "form-control", placeholder = "Nơi đăng ký tạm trú" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Quốc tịch</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.QuocTich, new { @class = "form-control", placeholder = "Quốc tịch" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Dân tộc</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DanToc, new { @class = "form-control", placeholder = "Dân tộc" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên cha</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.TenCha, new { @class = "form-control", placeholder = "Tên cha" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên mẹ</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.TenMe, new { @class = "form-control", placeholder = "Tên mẹ" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Chiều cao</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.ChieuCao, new { @class = "form-control", placeholder = "Chiều cao (cm)" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Màu da</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.MauDa, new { @class = "form-control", placeholder = "Màu da" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Mái tóc</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.MaiToc, new { @class = "form-control", placeholder = "Mái tóc" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Lông mày</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.LongMay, new { @class = "form-control", placeholder = "Lông mày" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đặc điểm mũi</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DacDiemMui, new { @class = "form-control", placeholder = "Đặc điểm mũi" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đặc điểm mắt</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DacDiemMat, new { @class = "form-control", placeholder = "Đặc điểm mắt" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đặc điểm tai</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DacDiemTai, new { @class = "form-control", placeholder = "Đặc điểm tai" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đặc điểm khác</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DacDiemKhac, new { @class = "form-control", placeholder = "Đặc điểm khác" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tội danh</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.ToiDanh, new { @class = "form-control", placeholder = "Tội danh" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Hệ loại tội danh</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.HeLoaiToiDanh, new { @class = "form-control", placeholder = "Hệ loại tội danh" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Loại truy nã</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.LoaiTruyNa, new { @class = "form-control", placeholder = "Loại truy nã" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Phạm vi truy nã</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.PhamViTruyNa, new { @class = "form-control", placeholder = "Phạm vi truy nã" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Quyết định truy nã</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.QuyetDinhTruyNa, new { @class = "form-control", placeholder = "Quyết định truy nã" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Đơn vị ra quyết định</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DonViRaQD, new { @class = "form-control", placeholder = "Đơn vị ra quyết định" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngày truy nã QT</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.NgayTruyNaQT, new { @class = "form-control", placeholder = "Ngày truy nã QT" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Hồ sơ truy nã QT</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.HoSoTruyNaQT, new { @class = "form-control", placeholder = "Hồ sơ truy nã quốc tế" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Quốc gia nghi trốn</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.QuocGiaNghiTron, new { @class = "form-control", placeholder = "Quốc gia nghi trốn" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Báo cho đơn vị</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.BaoChoDonVi, new { @class = "form-control", placeholder = "Báo cho đơn vị" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Điện thoại</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DienThoai, new { @class = "form-control", placeholder = "Điện thoại" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">File QĐ Truy nã</label>
+        <div class="col-md-10">
+            @Html.Partial("_Attachment", new { Name = "AttachmentTN", Multiple = false, Value = Model.AttachmentTN })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">File QĐ Đình nã</label>
+        <div class="col-md-10">
+            @Html.Partial("_Attachment", new { Name = "Attachment", Multiple = false, Value= Model.Attachment })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" @(Model.Status != 0 ? "checked" : "") value="1">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsHome" name="IsHome" type="checkbox" @(Model.IsHome ? "checked" : "") value="true">
+                <label for="IsHome">
+                    Trang chủ
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsDinhNa" name="IsDinhNa" type="checkbox" @(Model.IsDinhNa ? "checked" : "") value="true">
+                <label for="IsDinhNa">
+                    Đã đình nã
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" onclick="return validate();" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#Browser").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Photo").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+    });
+    var validate = function () {
+        if ($("#Photo").val() == "") {
+            alertmsg.error("Bạn chưa chọn ảnh");
+            return false;
+        }
+        return true;
+    }
+</script>

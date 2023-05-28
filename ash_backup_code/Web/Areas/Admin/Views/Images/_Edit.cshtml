@@ -1,0 +1,166 @@
+﻿<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+<script src="/Scripts/jquery.validate.min.js"></script>
+@using Web
+@using Web.Model
+@model Web.Model.tbl_Images
+@using (Ajax.BeginForm("Edit", "Images", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "image.onAddSuccess"
+
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g=>g.LangCode)
+    var languages = (string)TempData["languages"];
+    <script src="~/Scripts/_references.js"></script>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ: </label>
+        <div class="col-md-10">
+            @if (!string.IsNullOrEmpty(languages))
+            {
+                <p style="margin-top:8px;">@languages</p>
+
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tiêu đề</label>
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.ID)
+            @Html.HiddenFor(g => g.CreatedBy)
+            @Html.HiddenFor(g => g.CreatedDate)
+            @Html.TextBoxFor(g => g.Title, new { @class = "form-control", placeholder = "Tên ảnh" })
+        </div>
+    </div>
+    
+    @Html.HiddenFor(g=>g.ImageCategoryId)
+  
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ảnh</label>
+        <div class="col-md-10">
+            @Html.Partial("_Attachment", new { Name = "Images", Multiple = false, Value = Model.Images, Type = "FileImg" }) 
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự</label>
+        <div class="col-md-2 lockChar">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control",@type="number",min=0 })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" @(Model.Status ? "checked" : "") value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 text-center">
+        <button type="submit"   class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+        <button type="button" onclick="modal.hide()" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Đóng</button>
+    </div>
+}
+<style>
+    .asterisk {
+        color: red;
+        font-weight: normal;
+    }
+</style>
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        //var IdHide = $("#IdHide").val();
+        //if (IdHide != "") {
+        //    var arrIdHide = IdHide.split(',');
+        //    $('#ImageCategoryId').val(arrIdHide).trigger('change');
+        //}
+
+        $(".select2").select2({ "width": "100%" });
+        $(".select2Multi").select2({
+            "width": "100%"
+        });
+        $("#Browser").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Images").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+        $('.lockChar').on("keypress", function () {
+            return event.charCode >= 48 && event.charCode <= 57
+        })
+        $(".selectCreate").select2().change(function () {
+            $(this).valid();
+        });
+       //newsimages.initcheckall();
+        //newsimages.initcheckall2();
+    });
+    $("#basicForm").validate({
+        rules:
+        {
+            Title:
+              {
+                  required: true
+              },
+            Description:
+            {
+                required: true
+            },
+
+            ImageCategoryId:
+            {
+                required: true
+            },
+            Images:
+            {
+                required: true
+            },
+        },
+        messages:
+        {
+
+            Title:
+              {
+                  required: "Yêu cầu nhập tiêu đề"
+              },
+            Description:
+                 {
+                     required: "Yêu cầu nhập mô tả chi tiết"
+                 },
+
+            ImageCategoryId:
+            {
+                required: "Yêu cầu chọn danh mục"
+            },
+
+            Images:
+            {
+                required: "Yêu cầu chọn ảnh"
+            },
+        },
+        highlight: function (element) {
+            jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+        },
+        success: function (element) {
+            jQuery(element).closest('.form-group').removeClass('has-error');
+        }
+    });
+    var validate = function () {
+        if ($("#Images").val() == "") {
+            alertmsg.error("Bạn chưa chọn ảnh");
+            return false;
+        }
+        if ($("#typeslide").val() == "") {
+            alertmsg.error("Bạn chưa chọn loại ảnh");
+            return false;
+        }
+        return true;
+    }
+</script>

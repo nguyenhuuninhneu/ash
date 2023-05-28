@@ -1,0 +1,25 @@
+﻿@using Web.Model.CustomModel
+@{var lstAction = (List<int>)HttpContext.Current.Session["Action"];}
+@model List<tbl_Magazine_Content>
+<div class="lstContent">
+    <div class="col-md-12" style="margin: 20px 0">
+        <button onclick="magazine.onupdateposittion(@TempData["MagazineId"])" type="button" class="btn btn-warning waves-effect waves-light">Lưu sắp xếp</button>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-2 col-sm-3 col-xs-6" style="text-align: center;">
+            <img src="@item.Images" width="100%" />
+            <div class="ordering" style="text-align: center">
+                @Html.HiddenFor(g => item.ID)
+                @Html.TextBoxFor(g => item.Page, new { @class = "form-control width50 text-center pull-left" })
+                @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                {
+                    <a style="float: right;margin-top: 10px;" href="#" title="Xóa tạp chí" onclick="magazine.ondeletecontent('@item.ID', @TempData["MagazineId"]) ">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+   
+</div>

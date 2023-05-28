@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+@model List<Web.Model.view_Category_Languages>
+<ul>
+    @foreach (var cat in Model.Where(g => g.ParentID == 0))
+    {
+        <li class="mega-level-0">
+            <span class="fl-img">
+                <img id="imgIcon" src="https://media.shoptretho.com.vn/upload/image/menu/20150803/khuyen-mai-1.png" alt="" style="display: block;">
+            </span>
+            <span class="name-mega-menu">@cat.Name</span>
+            <div class="sub-menu" style="display: none;">
+                <div class="lst-menu">
+                    <ul class="mega-level-1">
+                        @{
+        var lstChild = Model.Where(g => g.ParentID == cat.ID);
+        foreach (var child in lstChild)
+        {
+            <li><a href="@Url.Action("GetAllProductByCat", "Product", new { id = child.ID })">@child.Name</a></li>
+        }
+                        }
+                    </ul>
+                </div>
+                <div class="ads-menu">
+                    <img id="imgBanner" class="image-banner image-banner-hover" src="https://media.shoptretho.com.vn/upload/image/menu/20160705/sua-hipp.jpg" alt="Sữa Hipp">
+                </div>
+            </div>
+        </li>
+    }
+</ul>

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "DonVi";
+    Layout = null;
+    var dothtml = ".html";
+    var child = "";
+}
+@using Web.Core
+@using Web.Model
+@model List<tbl_DonViTTHC>
+@*<div class="right_panel">
+    <div class="right_panel_title"><a href="#" title="Đơn vị thi hành">Đơn vị TTHC</a></div>
+    <div class="bgrightTTHC">
+        <div class="right_panel_content right_panel_ctdm">
+            <ul class="list-news listTTHC">
+                @foreach (var item in Model)
+                {
+                    if (item.Level > 0) { child = "child"; } else { child = ""; }
+                    <li class="list @child">
+                        @if (item.Level > 0)
+                        {
+                            <i class="fa fa-stop">&nbsp</i>
+                        }
+                        <a href="/pages/services/@item.ID/@HelperString.RemoveMark(@item.Name)@dothtml">@item.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>*@

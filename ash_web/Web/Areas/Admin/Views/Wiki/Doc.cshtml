@@ -1,0 +1,11 @@
+﻿@using Web.Markdown
+@model Document
+
+@{
+    ViewBag.Title = "Doc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.Title</h1>
+
+<div>@Html.Raw(Model.Content)</div>

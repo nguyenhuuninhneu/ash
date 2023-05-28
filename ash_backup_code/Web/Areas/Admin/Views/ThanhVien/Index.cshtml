@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Quản lý người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+}
+@using Web.Model.CustomModel
+@model List<Web.Model.tbl_User>
+<script src="~/AppJs/thanhvien.js"></script>
+@using (Ajax.BeginForm("ListData", "ThanhVien", null, new AjaxOptions
+{
+    HttpMethod = "Post",
+    OnSuccess = "thanhvien.onSearchSuccess",
+}, new { @id = "frmSearch" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Tìm kiếm</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Name" name="Name" placeholder="Tên thành viên hoặc tên đăng nhập">
+                            </div>
+                            <button type="submit" class="btn btn-purple waves-effect waves-light">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Danh sách</h3>
+                <div style="top: 8px;position: absolute; right: 40px;" class="pull-right">
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Add))
+                    {
+                        <button type="button" class="btn btn-primary waves-effect waves-light" onclick=" thanhvien.loadfrmAdd() "><i class="fa fa-plus"></i> Thêm mới</button>
+                    }
+                    <a href="/Admin/ThanhVien/ExportExcel" class="btn btn-success waves-effect waves-light"><i class="fa fa-file-excel-o"></i> Xuất Excel</a>
+                    @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                    {
+                        <button type="button" class="btn btn-danger waves-effect waves-light" onclick=" thanhvien.onmultidelete() "><i class="fa fa-trash-o"></i> Xóa nhiều</button>
+                    }
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive" id="gridData">
+
+                        </div>
+                        <div class="col-md-12" id="paginationholder">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        thanhvien.loadData(1);
+    });
+</script>

@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.Title = "Thêm mới bài viết";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var lstUser = (List<tbl_UserAdmin>) TempData["lstUser"];
+}
+ 
+
+@using Web
+@using Web.Model
+@model Web.Model.tbl_Topic
+@using (Html.BeginForm("Add", "Topic", FormMethod.Post, new { id = "frmpost", @class = "form-horizontal", role = "form"}))
+{
+    <input type="hidden" id="isContinue" name="isContinue" value="" />
+    <input type="hidden" value="1" name="Type" id="Type" />
+
+    <input type="hidden" value="0" name="ViewCount" id="ViewCount" />
+    <div class="row">
+        <div class="col-md-10">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Thêm mới chủ đề</h3>
+                </div>
+                <div class="panel-body"> 
+                  @{ var languages = (string)TempData["languages"];}
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ngôn ngữ: </label>
+                        <div class="col-md-10">
+                            @if (!string.IsNullOrEmpty(languages))
+                            {
+                                <p style="margin-top:8px;">@languages</p>
+
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Tiêu đề <span class="asterisk">(*)</span></label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(g => g.Title, new { @class = "form-control" })
+                        </div>
+                    </div>   
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ảnh đại diện <span class="asterisk">(*)</span></label>
+                        <div class="col-md-8">
+                            @Html.HiddenFor(g => g.Photo)
+                            <a id="BrowserPhoto" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+                            </a>
+                            <div class="mt10" id="previewthumbnail"></div>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Upload Slide Ảnh</label>
+                        <div class="col-md-10">
+                            @Html.Partial("_Attachment", new { Name = "ListImgSlide", Multiple = true, Type = "FileImg" }) 
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label style="margin-left:10px" class="control-label">Nội dung</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(g => g.Details, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Upload File</label>
+                        <div class="col-md-10">
+                            @Html.Partial("~/Views/Shared/_JqueryUpload.cshtml", new { changeName = true, auto = false, Name = "Attachment", Multiple = false, Value = "", type = "pdf", setname = "AttachmentName", valueName = "", setSize = "AttachmentSize", valueSize = "" })
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Người tham gia</label>
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(g => g.IdNguoiChon, new SelectList(lstUser, "ID", "FullName"), new { @class = "form-control select2", @multiple = "multiple" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Tags</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(g => g.Tags, new { @class = "form-control",@placeholder="Ngăn cách bởi dấu ;" })
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Trạng thái</label>
+                        <div class="col-md-4">
+                            <div class="checkbox checkbox-primary"> 
+                                <input id="Status" name="Status" type="checkbox" checked="" value="true">
+                                <label for="Status">
+                                    Kích hoạt
+                                </label>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ngày đăng</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" name="EditCreateDate" id="EditCreateDate" class="form-control datepicker-mask1" value="@string.Format("{0: dd/MM/yyyy HH:mm}", DateTime.Now)"/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Thời gian diễn ra</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" name="EditStartDate" id="EditStartDate" class="form-control datepicker-mask1" value=""/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" id="vali" class="btn btn-info waves-effect waves-light" onclick="$('#loading').show();"><i class="fa fa-plus"></i> Lưu lại</button>
+                            <button type="submit" id="validate"  class="btn btn-warning waves-effect waves-light"  onclick="$('#loading').show();"><i class="fa fa-plus"></i> Lưu và thêm tiếp</button>
+                            <button type="button" onclick="location.href='/Admin/Topic'" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Bỏ qua</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .asterisk{
+        color:red;
+        font-weight:normal
+    }
+</style>
+<script src="~/AppJs/topic.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#validate').on('click', function () {
+            $('#isContinue').val("1");
+        })
+        $('.datepicker-mask1').datetimepicker({
+            locale: 'vi',
+            sideBySide: true
+        });
+        $(".select2").select2({ "width": "100%" });
+        $(".select2Multi").select2({
+            "width": "100%"
+        });
+        $("#frmpost").validate({
+            rules:
+            {
+                Description:{
+                    maxlength: 150
+                },
+                SubTitle:{
+                    maxlength: 250
+                },
+                Title:
+                {
+                    required: true,
+                    maxlength: 500
+                },
+                CategoryId:
+                {
+                    required: true
+                },
+                Author:
+                {
+                    required: true
+                },
+                Description:
+                {
+                    required: true
+                },
+                Photo:
+                {
+                    required: true
+                }
+            },
+            messages:
+            {
+                Title:
+                {
+                    required: "Chưa nhập tiêu đề bài viết"
+                },
+                CategoryId:
+                {
+                    required: "Bạn chưa chọn danh mục"
+                },
+                Author:
+                {
+                    required: "Chưa nhập tác giả bài viết"
+                },
+                Description:
+                {
+                    required: "Chưa nhập mô tả bài viết"
+                },
+                Photo:
+                {
+                    required: "Chưa chọn ảnh"
+                }
+            },
+            highlight: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            }
+        });
+
+        CKEDITOR.replace("Details", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 350
+        });
+        $("#BrowserPhoto").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Photo").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+       
+        $("#BrowserNews").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#Images").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+
+        $('#Title').on('change', function () {
+            var author = $('#Title').val();
+            debugger
+            var pattern = new RegExp(/[<>]/);
+           
+            if (pattern.test(author)) {
+                alertmsg.error("Tiêu đề có chứa ký tự đặc biệt !");
+                $('#Title').css('border-color', 'red');
+                $('#validate').hide();
+                $('#vali').hide();
+                return false;
+            }
+            else {
+                $('#Title').css('border-color', '#eee');
+                $('#validate').show();
+                $('#vali').show();
+                return true;
+            }
+
+        })
+    });
+</script>

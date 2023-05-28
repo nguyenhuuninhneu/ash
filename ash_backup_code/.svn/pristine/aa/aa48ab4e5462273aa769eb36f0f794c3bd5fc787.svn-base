@@ -1,0 +1,214 @@
+﻿
+<link rel="stylesheet" href="/Content/Admin/assets/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="/Content/Admin/assets/colorpicker/js/colorpicker.js"></script>
+<script src="/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+@using Web.Model
+@model tbl_UserAdmin
+@{
+    var lstPageElements = (List<tbl_PageElement>)TempData["PageElement"];
+    var lstGroupUser = (List<tbl_GroupUser>)TempData["lstGroupUser"];
+    var arrPageElementsChecked = new List<int>();
+    if (Model.PageElementID != null)
+    {
+        arrPageElementsChecked = Model.PageElementID.Split(',').Select(int.Parse).ToList();
+    }
+    var user = (tbl_UserAdmin)TempData["User"];
+}
+@using (Ajax.BeginForm("Edit", "Account", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "account.onEditSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g => g.ID)
+    //@Html.HiddenFor(g => g.UserType)
+    @Html.HiddenFor(g => g.PageElementID)
+    if (user.IsCTV == false)
+    {
+        <div class="form-group">
+            <label class="col-md-2 control-label">Tên đăng nhập <span class="asterisk">(*)</span></label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(g => g.UserName, new { @class = "form-control ", placeholder = "Tên danh mục", @readonly = true })
+            </div>
+        </div>
+        @Html.HiddenFor(g => g.Password)
+
+    }
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Họ và tên <span class="asterisk">(*)</span></label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.FullName, new { @class = "form-control", placeholder = "Họ và tên" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Email <span class="asterisk">(*)</span></label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Email, new { @class = "form-control ", placeholder = "Email", @readonly = true })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Địa chỉ</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Số điện thoại</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Phone, new { @class = "form-control", placeholder = "Số điện thoại" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Số tài khoản </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.SoTaiKhoan, new { @class = "form-control", placeholder = "Số tài khoản" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Chi nhánh </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.NganHang, new { @class = "form-control", placeholder = "Chi nhánh" })
+        </div>
+    </div>
+    if (user.IsCTV == false)
+    {
+        <div class="form-group">
+            <label class="col-md-2 control-label">Nhóm người dùng</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.GroupUserID, new SelectList(lstGroupUser, "ID", "Name"), new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Duyệt tin</label>
+            <div class="col-sm-10">
+                @{
+                    var lstQuyTrinhXuatBan = (List<qProcedure>)TempData["QuyTrinhXuatBan"];
+                    foreach (var qtxb in lstQuyTrinhXuatBan)
+                    {
+                        var chk = "";
+                        if (!string.IsNullOrEmpty(Model.QuyTrinhXuatBanID))
+                        {
+                            chk = Model.QuyTrinhXuatBanID.Split(',').Contains(qtxb.ID.ToString()) ? "checked" : "";
+                        }
+                        <div class="checkbox checkbox-inline">
+                            <input type="checkbox" id="quytrinh_@qtxb.ID" name="arrquyTrinhXuatBanId" value="@qtxb.ID" @(chk)>
+                            <label for="quytrinh_@qtxb.ID">@qtxb.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 pull-right">
+                <div class="checkbox checkbox-primary">
+                    <input id="IsDuyetComment" name="IsDuyetComment" type="checkbox" value="true" @(Model.IsDuyetComment ? "checked" : "")>
+                    <label for="IsDuyetComment">
+                        Duyệt Comment
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 pull-right">
+                <div class="checkbox checkbox-primary">
+                    <input id="isAdmin" name="isAdmin" type="checkbox" value="true" @(Model.isAdmin ? "checked" : "")>
+                    <label for="isAdmin">
+                        Quản trị tối cao
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="display:none;">
+            <div class="col-sm-10 pull-right">
+                <div class="checkbox checkbox-primary">
+                    <input id="IsCTV" name="IsCTV" type="checkbox" value="true" @(Model.IsCTV == true ? "checked" : "")>
+                    <label for="IsCTV">
+                        Cộng tác viên
+                    </label>
+                </div>
+            </div>
+        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group" style="display:none;">
+                            <div class="col-sm-10 pull-right">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="IsCTV" name="IsCTV" type="checkbox" value="true" @(Model.IsCTV == true ? "checked" : "")>
+                                    <label for="IsCTV">
+                                        Cộng tác viên
+                                    </label>
+                                </div>
+                            </div>
+                        </div> 
+                    }
+
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Active" name="Active" type="checkbox" value="true" @(Model.Active ? "checked" : "")>
+                <label for="Active">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 text-center">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+        <button type="button" onclick="modal.hide()" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Đóng</button>
+    </div>
+                }
+<style>
+    .asterisk {
+        color: red;
+        font-weight: normal;
+    }
+</style>
+<script>
+    $(".select2").select2({ "width": "100%" });
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            UserName:
+            {
+                required: true
+            },
+            Password:
+            {
+                required: true,
+                minlength: 6,
+            },
+            Email:
+            {
+                email: true,
+                required: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên đăng nhập"
+                },
+                Password:
+                {
+                    required: "Chưa nhập mật khẩu",
+                    minlength: "Mật khẩu tối thiểu 6 ký tự"
+                },
+                Ordering:
+               {
+                   email: "Email không đúng định dạng",
+                   required: "Chưa nhập email"
+               }
+            }
+        });
+        account.initcheckall();
+    });
+</script>

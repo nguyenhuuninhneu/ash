@@ -1,0 +1,80 @@
+﻿.vanban h3 {
+    font-size: 17px;
+    border-bottom: 1px solid #0077C4;
+    padding-bottom: 5px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+
+.vanban .detail_date {
+    color: #999999;
+    font-size: 13px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.vanban .other-vanban li {
+    margin-left: 15px;
+    list-style: initial;
+}
+
+.vanban .other-vanban {
+    margin-bottom: 30px;
+}
+
+.tcvb {
+    border: 1px solid #ccc;
+    padding: 20px 0;
+}
+
+#qa-details {
+    float: left;
+}
+
+    #qa-details .qa {
+        float: left;
+    }
+
+        /*#qa-details .qa:nth-child(even) {
+            background: antiquewhite;
+        }
+        #qa-details .qa:nth-child(odd) {
+            background: #ddd;
+        }*/
+
+.qa h1 {
+    margin-top: 0;
+    font-size: 26px;
+    color: #0c82ca;
+    font-weight: bold;
+}
+
+.qa img {
+    width: 80px;
+    float: left;
+    margin-right: 10px;
+}
+
+.qa .details-q {
+    float: left;
+}
+
+.qa .details-a {
+    float: left;
+    margin-top: 10px;
+}
+
+    .qa .details-a img {
+        margin-left: 65px;
+    }
+
+.date-qa {
+    color: #8e8e8e;
+    font-style: italic;
+}
+.actophlu{color: #efaa84 !important}
+.usertopcs{min-width: 0;} 
+.usertopcs li{border-right: 0;}
+.usertopcs li a{color: #fff; padding: 3px 0; width: 100%;}
+.usertopcs li a:hover{background-color: #FA7D37 !important;}

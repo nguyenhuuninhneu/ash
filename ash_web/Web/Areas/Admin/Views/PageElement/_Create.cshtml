@@ -1,0 +1,137 @@
+﻿@using Web.Model
+@model Web.Model.tbl_PageElement
+@using (Ajax.BeginForm("Add", "PageElement", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "pageelement.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+    <script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+    <script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+    var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LangCode, new SelectList(languages, "Code", "Name"), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên trang thành phần</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Khoa công nghệ thông tin ..." })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Subdomain</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Subdomain, new { @class = "form-control", placeholder = "subdomain.localhost" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Area</label>
+        <div class="col-md-10">
+            <select id="Area" name="Area" class="form-control">
+                <option value="">-- Chọn Area --</option>
+                <option value="Admin">Quản trị</option>
+                <option value="Khoa">Khoa</option>
+                <option value="TrungTam">Trung tâm</option>
+                <option value="DoanThanhNien">Đoàn thanh niên</option>
+                <option value="TapChi">Tạp chí</option>
+                <option value="TuyenSinh">Tuyển sinh</option>
+                <option value="GiangVien">Giảng viên</option>
+                <option value="SinhVien">Sinh viên</option>
+                <option value="CuuSinhVien">Cựu sinh viên</option>
+                <option value="DoiTacHopTac">Đối tác hợp tác</option>
+                <option value="LichCongTac">Lịch công tác</option>
+                @*<option value="SinhVienTuongLai">Sinh viên tương lai</option>*@
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Mô tả</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Description, new { @class = "form-control", placeholder = "Mô tả" })
+        </div>
+    </div>
+    @*<div class="form-group">
+            <label class="col-md-2 control-label">Banner</label>
+            <div class="col-md-10">
+                @Html.Partial("_Attachment", new { Name = "Banner", Multiple = false })
+            </div>
+        </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">Footer</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Footer, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "0" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" checked="" value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light" onclick="return validate()">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    function validate() {
+        if ($("#Subdomain").val() != "") {
+            if ($("#Area").val() == "") {
+                $("#Area").css("border", "1px solid red");
+                return false;
+            }
+        }
+        return true;
+    }
+    $(document).ready(function () {
+
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            },
+            LangCode:
+            {
+                required: true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên website"
+                },
+                LangCode: {
+                    required: "Bạn chưa chọn ngôn ngữ"
+                }
+            }
+        });
+    });
+    CKEDITOR.replace("Footer", {
+        language: 'vi',
+        filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+        filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+        filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+        height: 200
+    });
+</script>

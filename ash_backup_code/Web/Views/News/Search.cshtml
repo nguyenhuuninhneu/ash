@@ -1,0 +1,84 @@
+﻿@using System.Configuration
+@using PagedList;
+@using PagedList.Mvc
+@using Web.Core
+@using Web.Model
+@model IPagedList<tbl_News>
+@{
+    ViewBag.Title = @ViewBag.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dothtml = ".html";
+    var DOMAIN_NAME = ConfigurationManager.ConnectionStrings["DOMAIN_NAME"].ConnectionString;
+}
+@{var allPage = (List<tbl_PageElement>)ViewBag.allPage;}
+<div class="row content-space">
+    <div class="col-md-12 col-xs-12">
+
+        <div class="breadcrumbvz" style="margin-bottom: 10px;">
+            <ul>
+                <li>
+                    <a href="/"><i class="glyphicon glyphicon-home"> </i></a> <i class="glyphicon glyphicon-menu-right
+"></i>
+                </li>
+                <li>
+                    <a href="javascript:void(0)">
+                        @if (Session["langcode"] == null || (string)Session["langcode"] == "vn")
+                        {
+                            @Html.Raw("Kết quả tìm kiếm");
+                        }
+                        else
+                        {
+                            @Html.Raw("Result Search");
+                        }
+                    </a>
+                </li>
+            </ul>
+        </div>
+        @foreach (var news in Model)
+        {
+            <div class="content-block-news">
+                <div class="thumb">
+                    <a href="/pages/news/@news.ID/@HelperString.RemoveMark(@news.Title)@dothtml">
+                        @if (!string.IsNullOrEmpty(news.CropImage))
+                        {
+                            <img class="img-responsive" src="@Common.Replace2Thumb(news.CropImage)" alt="">
+                        }
+                        else if (!string.IsNullOrEmpty(news.FeautureImage))
+                        {
+                            <img class="img-responsive" src="@Common.Replace2Thumb(news.FeautureImage)" alt="">
+                        }
+                        else if (!string.IsNullOrEmpty(news.CatImage))
+                        {
+                            <img class="img-responsive" src="@Common.Replace2Thumb(news.CatImage)" alt="">
+                        }
+                        else if (!string.IsNullOrEmpty(news.CatImage2))
+                        {
+                            <img class="img-responsive" src="@Common.Replace2Thumb(news.CatImage2)" alt="">
+                        }
+                        else
+                        {
+                            <img class="img-responsive" src="/Content/Site/images/noimage.png" alt="">
+                        }
+                    </a>
+                </div>
+                <h2 class="title"><a href="/pages/news/@news.ID/@HelperString.RemoveMark(@news.Title)@dothtml">@news.Title</a></h2>
+                <p class="time">@string.Format("{0:dd/MM/yyyy}", news.CreatedDate)</p>
+                <p class="desc">@HelperString.TruncateByWord(news.Description, 255)</p>
+                <div class="clear"></div>
+            </div>
+        }
+        @if (Model.PageCount < 1)
+        {
+            <div class="col-md-12">
+                <div class="text-center">Không có bài viết nào</div>
+                <div class="clear"></div>
+            </div>
+        }
+        <div class="center-align">
+            @if (Model.PageCount > 1)
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Search", new { page, keyword = ViewBag.KeySearch }))
+            }
+        </div>
+    </div>
+</div>

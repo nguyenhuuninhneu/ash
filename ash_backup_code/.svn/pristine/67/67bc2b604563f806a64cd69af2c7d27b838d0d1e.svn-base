@@ -1,0 +1,84 @@
+﻿@using Web.Model
+@using Web.Model.CustomModel
+@model IEnumerable<ThongBao>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    ViewBag.Title = "Thông báo";
+    Layout = null;
+    var objUser = (tbl_UserAdmin)TempData["objUser"]; 
+}
+<style>
+   
+</style>
+<li class="dropdown hidden-xs">
+    <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
+        <i class="md md-notifications"></i> 
+    @if (@ViewBag.TongSoThongBao > 0)
+    {
+        <span class="badge badge-xs badge-danger">@ViewBag.TongSoThongBao</span>
+        }
+    </a>
+    
+    <ul class="dropdown-menu dropdown-menu-lg">
+        <li class="text-center notifi-title">Thông Báo</li>
+        <li class="list-group">
+            <!-- list item-->
+           @foreach (var item in Model)
+           {
+               var link = "#";
+               if (lstAction != null && lstAction.Contains((int) EnumHelper.Action.View) && objUser != null && (objUser.isAdmin || objUser.IsDuyetComment))
+               {
+                   switch (item.Type)
+                   {
+                       case 0:
+                           link = "/Admin/News/Comment/?NewsID=" + item.TypeId + "&idcomment=" + item.ID;
+                           break;
+                       case 1:
+                           link = "/Admin/News/Reply/?commentId=" + item.CommentId;
+                           break;
+                       case 2:
+                           link = "/Admin/TTHC/Comment/?TTHCID=" + item.TypeId;
+                           break;
+                       case 3:
+                           link = "/Admin/TTHC/Reply/?commentId=" + item.CommentId;
+                           break;
+                   }
+               }
+               else
+               {
+                   link = "javascript:alertPermistion()";
+               }
+            <a href="@link" data-id="@item.ID" data-type="@item.Type" id="itemThongBao" class="list-group-item" style="background:@(item.IsView == true ? "#fff" : "#cfd8ec")">
+                <div class="media row">
+                    <div class="col-md-2">
+                        <em class="fa fa-comment fa-2x text-primary"></em>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="media-heading">@item.Title</div>
+                        <p class="m-0">
+                            <small>
+                                @item.Content
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </a>
+           }
+            <!-- last list item -->
+            <a href="/Admin/ThongBao/Comment"class="list-group-item" style="text-align: center;border-top: 1px solid #dadada;padding: 5px;}">
+                <small>Xem tất cả</small>
+            </a>
+        </li>
+    </ul>
+</li>
+<script>
+    $("body").delegate("#itemThongBao", "click", function (e) {
+        var iditem = parseInt($(this).attr("data-id"));
+        var typeitem = $(this).attr("data-type");
+        AjaxService.POST("/Admin/ThongBao/Daxem", { id: iditem, type: typeitem }, function (res) {
+        });
+    });
+    function alertPermistion() {
+        alertmsg.error('Không có quyền truy cập!');
+    }
+</script>

@@ -1,0 +1,11 @@
+﻿
+@using Web.Model
+@using Web.Model.CustomModel
+
+@model tbl_News_Custom
+
+@{ 
+    var lstNews = (List<tbl_News_Custom>)TempData["lstNews"];
+}
+
+@Html.DropDownListFor(g => g.RelatedNews, new SelectList(lstNews, "ID", "Title"), new { @class = "form-control select2", @multiple = "multiple" })

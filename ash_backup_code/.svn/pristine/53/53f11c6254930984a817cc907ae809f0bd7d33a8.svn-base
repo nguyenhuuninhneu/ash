@@ -1,0 +1,222 @@
+﻿@{
+    ViewBag.Title = "Thêm mới tạp chí";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+   
+    var thongbao = TempData["ThongBao"]; 
+    string namefile = "";
+}
+
+
+@using Web
+@using Web.Model
+@model Web.Model.tbl_Magazine
+@using (Html.BeginForm("Edit", "Magazine", FormMethod.Post, new { id = "frmpost", @class = "form-horizontal", role = "form" }))
+{
+    <p style="color:red">@thongbao</p> 
+    <input type="hidden" value="0" name="ViewCount" id="ViewCount" />
+
+    <input type="hidden" id="Con-tent" value="" name="Contents_Process" />
+    <input type="hidden" id="To-id" value="" name="ToId" /> 
+    <input type="hidden" id="code" value="news" name="Code" />
+
+    @Html.HiddenFor(g => g.CreatedBy)
+    @Html.HiddenFor(g=>g.LangCode)
+    <div class="row">
+        <div class="col-md-10">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sửa thông tin tạp chí</h3>
+                </div>
+                <div class="panel-body">
+                   @{ var languages = (string)TempData["languages"];}
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ngôn ngữ: </label>
+                        <div class="col-md-10">
+                            @if (!string.IsNullOrEmpty(languages))
+                            {
+                                <p style="margin-top:8px;">@languages</p>
+
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Năm</label>
+                        <div class="col-md-2 lockChar">
+                            @Html.TextBoxFor(g => g.Year, new { @class = "form-control", Value = Model.Year, @type = "number", min = 1990 })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Tiêu đề <span class="asterisk">(*)</span></label>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(g => g.Title, new {@class = "form-control"})
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ảnh đại diện <span class="asterisk">(*)</span></label>
+                        <div class="col-md-8">
+                            @Html.HiddenFor(g => g.Photo)
+                            <a id="BrowserPhoto" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+                            </a>
+                            <div class="mt10" id="previewthumbnail">
+                                @if (!string.IsNullOrEmpty(Model.Photo))
+                                {
+                                    <img src="@Model.Photo" width="150"/>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @*@if (Model.Attachment != null)
+                    {
+                        string sub = Model.Attachment.Substring(57);
+                        var arrSub = sub.Split('-');
+                        namefile = String.Join(" ", arrSub);
+                    }*@
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Upload File</label>
+                        <div class="col-md-10">
+                            @{
+                                var group_link = (string)TempData["group_link"];
+                                var group_name = (string)TempData["group_name"];
+                                var group_size = (string)TempData["group_size"];
+                            }
+                            @Html.Partial("~/Views/Shared/_JqueryUpload.cshtml", new { changeName = true, auto = false, Name = "Attachment", Multiple = false, Value = group_link, type = "pdf", setname = "ReplaceName", valueName = group_name, setSize = "Size", valueSize = group_size})
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Trạng thái</label>
+                        <div class="col-md-4">
+                            <div class="checkbox checkbox-primary">
+                                <input id="Status" name="Status" type="checkbox" @(Convert.ToBoolean(Model.Status) ? "checked" : "") value="true">
+                                <label for="Status">
+                                    Kích hoạt
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Ngày đăng</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                @Html.HiddenFor(g => g.CreatedDate)
+                                <input type="text" name="EditCreateDate" id="EditCreateDate" value="@string.Format("{0: dd/MM/yyyy HH:mm}", Model.CreatedDate)" class="form-control datepicker-mask1"/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" id="vali" class="btn btn-info waves-effect waves-light"><i class="fa fa-plus"></i> Lưu lại</button>
+                            <button type="button" onclick="location.href = '/Admin/Magazine'" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Bỏ qua</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .asterisk {
+        color: red;
+        font-weight: normal;
+    }
+</style>
+<script src="/Scripts/jquery.validate.min.js"></script>
+<script src="~/AppJs/news.js"></script>
+<script src="~/AppJs/process.js"></script>
+<script>
+
+    $(document).ready(function () {
+  
+        $('.datepicker-mask1').datetimepicker({
+            locale: 'vi',sideBySide: true
+        });
+
+        $(".select2").select2({ "width": "100%" });
+        $(".select2Multi").select2({
+            "width": "100%"
+        });
+         
+        $("#frmpost").validate({
+            rules:
+       {
+           Description: {
+               maxlength: 150
+           },
+           SubTitle: {
+               maxlength: 250
+           },
+           Title:
+           {
+               required: true,
+               maxlength: 500
+           },
+           CategoryId:
+          {
+              required: true
+          },
+           Author:
+         {
+             required: true
+         },
+           Description:
+        {
+            required: true
+        },
+           Photo:
+       {
+           required: true
+       }
+       },
+            messages:
+            {
+                Title:
+                {
+                    required: "Chưa nhập tiêu đề tạp chí"
+                },
+                CategoryId:
+                {
+                    required: "Bạn chưa chọn danh mục"
+                },
+                Author:
+             {
+                 required: "Chưa nhập tác giả tạp chí"
+             },
+                Description:
+             {
+                 required: "Chưa nhập mô tả tạp chí"
+             },
+                Photo:
+            {
+                required: "Chưa chọn ảnh"
+            }
+            },
+            highlight: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            }
+        }); 
+        $("#BrowserPhoto").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Photo").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+        $("#BrowserMagazine").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#Images").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+        $('#process').on('click', function () {
+            debugger;
+            $('#Status').val(status);
+        })
+
+    });
+</script>

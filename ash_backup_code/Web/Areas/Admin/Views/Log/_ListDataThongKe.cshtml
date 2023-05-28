@@ -1,0 +1,64 @@
+﻿@using Web.Model.CustomModel
+@model List<Web.Areas.Admin.Controllers.ThongKeContent>
+    @{ 
+
+
+    }
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="text-align: center;">Ngày</th>
+            <th style="text-align: center;">IE</th>
+            <th style="text-align: center;">FireFox</th>
+            <th style="text-align: center;">Chrome/ Cốc cốc</th>
+            <th style="text-align: center;">Safari</th>
+            <th style="text-align: center;">Opera</th>
+            <th style="text-align: center;">Khác</th>
+            <th style="text-align: center;">Mobile</th>
+            <th style="text-align: center;">Tablet</th>
+            <th style="text-align: center;">Desktop</th>
+            <th style="text-align: center;">Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    @string.Format("{0: dd/MM/yyyy}", item.Date)
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.IE
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Firefox
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Chrome
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Safari
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Opera
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.BrowserKhac
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Mobile
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Tablet
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Desktop
+                </td>
+                <td style="vertical-align: middle;width: 400px; text-align: center;">
+                    @item.Tong
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

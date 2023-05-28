@@ -1,0 +1,6 @@
+﻿@{
+    ViewBag.Title = "Xóa cache hệ thống";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<button type="button" onclick="$.get('/Base/ClearAllCache', function (res) { alertmsg.success(res); })" class="btn btn-primary waves-effect waves-light m-b-5">Xóa cache hệ thống</button>
+

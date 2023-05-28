@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Core
+@using Web.Model
+@model Web.Model.CustomModel.tbl_NewsVersion
+@{
+    var lstPageElements = (List<tbl_PageElement>)TempData["PageElements"];
+    var lstCategory = (List<tbl_Category>)TempData["Category"];
+    var lstLanguages = (List<tbl_Languages>)TempData["Languages"];
+    var langCode = "";
+    if (Session["langCodeDefaut"] != null)
+    {
+        langCode = Session["langCodeDefaut"].ToString();
+    }
+}
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            <td class="col-left">Tiêu đề</td>
+            <td>@Model.Title</td>
+        </tr>
+        <tr>
+            <td class="col-left">Ảnh đại diện</td>
+            <td><img src="@Common.Replace2Thumb(Model.Photo)" width="250" /></td>
+        </tr>
+        <tr>
+            <td class="col-left">Mô tả</td>
+            <td>@Html.Raw(Model.Description)</td>
+        </tr>
+        <tr>
+            <td class="col-left">Nội dung</td>
+            <td id="contentnews">@Html.Raw(Model.Details)</td>
+        </tr>
+        <tr>
+            <td class="col-left">Ngôn ngữ</td>
+            <td>
+                @{
+                    var objLang = lstLanguages.FirstOrDefault(g => g.Code == Model.LangCode);
+                    if (objLang != null)
+                    {
+                        @(objLang.Name)
+                    }
+                }
+            </td>
+        </tr>
+        @*<tr>
+            <td class="col-left">Trang quản lý</td>
+            <td>
+                @{
+                    var objPageElement = lstPageElements.FirstOrDefault(g => g.ID == Model.PageElementId);
+                    if (objPageElement != null)
+                    {
+                        @(objPageElement.Name)
+                    }
+                }
+            </td>
+        </tr>*@
+        <tr>
+            <td class="col-left">Danh mục bài viết</td>
+            <td>
+                @{
+                    var lstCate = lstCategory.Where(g =>Model.CategoryIdStr.Contains(g.ID.ToString())&&g.LangCode== langCode).ToList();
+                    if (lstCate != null)
+                    {
+                        <ul style="padding-left:10px">
+                            @foreach (var cate in lstCate)
+                            {
+                                <li>@cate.Name</li>
+                            }
+                        </ul>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td class="col-left">Tác giả</td>
+            <td>@Model.Author</td>
+        </tr>
+        <tr>
+            <td class="col-left">Tag</td>
+            <td>@Model.Tags</td>
+        </tr>
+        @*<tr>
+            <td class="col-left">Từ khóa</td>
+            <td>@Model.KeyWords</td>
+        </tr>*@
+        <tr>
+            <td class="col-left">Phiên bản</td>
+            <td>@string.Format("{0}.0", Model.Version)</td>
+        </tr>
+    </tbody>
+</table>
+<style>
+    #contentnews img{
+        max-width:100%;
+    }
+    .col-left {
+        width: 135px;
+        vertical-align: middle !important;
+        font-weight: bold;
+    }
+</style>

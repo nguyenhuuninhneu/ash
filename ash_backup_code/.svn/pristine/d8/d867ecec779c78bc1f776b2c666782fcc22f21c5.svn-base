@@ -1,0 +1,65 @@
+﻿@using Web.Model.CustomModel
+@model IEnumerable<Web.Model.tbl_PageElement>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th>Tên trang</th>
+            @*<th>Banner</th>*@
+            <th>Thứ tự</th>
+            <th>SubDomain</th>
+            <th>Trạng thái</th>
+            <th>Ngôn ngữ</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td style="vertical-align: middle;">@item.Name</td>
+                @*<td style="vertical-align: middle;"><img src="@item.Banner" width="200"/> </td>*@
+                <td style="vertical-align: middle;">@item.Ordering</td>
+                <td style="vertical-align: middle;">@item.Subdomain</td>
+                <td style="vertical-align: middle;">@Html.Raw(item.Status ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td style="vertical-align: middle;">@item.LangName</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="pageelement.loadfrmedit(@item.ID) "><i class=" glyphicon glyphicon-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="pageelement.ondelete(@item.ID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+    });
+</script>

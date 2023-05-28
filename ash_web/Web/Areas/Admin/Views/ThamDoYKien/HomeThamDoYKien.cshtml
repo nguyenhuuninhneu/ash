@@ -1,0 +1,131 @@
+﻿@{
+
+    Layout = null;
+    var lstThamDoYKien = (List<tbl_ThamDoYKien>)TempData["lstThamDoYKien"];
+    var lstKetQua = (List<tbl_ThamDoYKien>)TempData["lstKetQua"];
+    string khongBinhChon = ViewBag.KhongBinhChon;
+}
+@using Web.Model
+@model List<Web.Model.tbl_ThamDoYKien>
+@using Web.Areas.Admin.Controllers
+
+<script src="~/AppJs/ThamDoYKien.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+
+
+<div class="col-md-12 box_right">
+    <div class="row">
+        <div id="dosinot">
+            <ul class="nav nav-pills" style="background:#055296;">
+                <li class="active" style="border-left:none;border-right:none;padding-left:2px;">
+                    <a href="#">@ConfigTextController.GetValueCFT("ThamDoYKien")</a>
+                </li>
+            </ul>
+            <div class="tab-content clearfix " id="ThamDo" >
+                @foreach (var item in lstThamDoYKien.Where(g => g.ParentID == 0))
+                {
+                    <h5 class="title-thamdo">@item.Name</h5>
+                    foreach (var item2 in lstThamDoYKien.Where(g => g.ParentID == item.ID))
+                    {
+                        <div class="radio">
+                            <input type="radio" name="radio_@(item.ID)" style="margin-left:0px;" value="@item2.ID" id="@item.ID" />
+                            <label id="@item2.Poll">@item2.Name</label>
+                        </div>
+                    }
+                    <div class="row button" style="margin-bottom:15px;text-align:center; margin-left:0px !important">
+                        @if (!khongBinhChon.Contains(item.ID.ToString()))
+                        {
+                            <input type="button"id="BinhChon_@(item.ID)" class="btn btn-default" onclick="thamDoYKien.BinhChon(@item.ID)" value="Bình chọn" />
+                        }
+                        <input type="button"  class="btn btn-default" value="Kết quả" onclick="showKetQua(@item.ID)"  data-toggle="modal" data-target="#MyModel"/>
+                    </div>
+                    <!-- model popup-->
+
+                    <div class="modal fade" id="MyModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Kết quả thăm dò </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="highchart" style="height: 300px; width:100%;"> </div>
+                                </div>
+                                <div class="modal-footer">
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        $(document).ready(function () {
+                            showKetQua();
+                        });
+                        function showKetQua(pollID) {
+                            $.ajax({
+                                url: "/ThamDoYKien/KetQuaBinhChon",
+                                type: "GET",
+                                dataType: "Json",
+                                data: { id: pollID },
+                                success: function (res) {
+                                    var data = [];
+                                    var lstKetQua = res.lstKetQua;
+                                   
+                                    for (var i = 0; i < lstKetQua.length; i++) {
+                                        var valueToPush = {};
+                                        valueToPush["name"] = lstKetQua[i].Name;
+                                        var pct = lstKetQua[i].Percent;
+                                        pct = parseFloat(pct);
+                                        valueToPush["y"] = pct;
+                                        if (lstKetQua[i].Name)
+                                        {
+                                            data.push(valueToPush);
+                                        }                                        
+                                    }
+                                    var ParentName = res.ParentName;
+                                    console.log(data); //return false;
+                                    //hàm heightchart
+                                    Highcharts.chart('highchart', {
+                                        chart: {
+                                            plotBackgroundColor: null,
+                                            plotBorderWidth: null,
+                                            plotShadow: false,
+                                            type: 'pie'
+                                        },
+                                        title: {
+                                            text: ParentName
+                                        },
+                                        tooltip: {
+                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                        },
+                                        plotOptions: {
+                                            pie: {
+                                                allowPointSelect: true,
+                                                cursor: 'pointer',
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                                    style: {
+                                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                                    }
+                                                }
+                                            }
+                                        },
+                                       
+                                        series: [{
+                                            name: ParentName,
+                                            colorByPoint: true,
+                                            data: data
+                                        }]
+                                    });
+                                }
+                            });
+                        }
+                           
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+</div>

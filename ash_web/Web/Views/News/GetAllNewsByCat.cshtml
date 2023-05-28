@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Danh sách tin theo chuyên mục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dothtml = ".html";
+    var search = Request["search"];
+}
+@using PagedList;
+@using PagedList.Mvc
+@using Web.Core
+@using Web.Model
+@model IPagedList<view_NEWS_LISTDETAIL>
+<div class="row content-space">
+    <div class="col-md-12 col-xs-12">
+        @{ int i = 0;}
+        @foreach (var news in Model)
+        {
+            i++;
+            @*if (i == 1)
+            {
+                <div class="content-block-news">
+                    <div class="thumb thumb-first">
+                        <a href="/pages/news/@news.ID/@HelperString.RemoveMark(@news.Title)@dothtml">
+                            @if (!string.IsNullOrEmpty(news.CropImage))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.CropImage)" alt="">
+                            }
+                            else if (!string.IsNullOrEmpty(news.FeautureImage))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.FeautureImage)" alt="">
+                            }
+                            else if (!string.IsNullOrEmpty(news.CatImage))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.CatImage)" alt="">
+                            }
+                            else if (!string.IsNullOrEmpty(news.CatImage2))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.CatImage2)" alt="">
+                            }
+                            else
+                            {
+                                <img class="img-responsive" src="/Content/Site/images/noimage.png" alt="">
+                            }
+                        </a>
+                    </div>
+                    <p class="time">@string.Format("{0:dd/MM/yyyy}", news.CreatedDate)</p>
+                    <h2 class="title title-first"><a href="/pages/news/@news.ID/@HelperString.RemoveMark(@news.Title)@dothtml">@news.Title</a></h2>
+                    <p class="desc desc-first">@HelperString.TruncateByWord(news.Description, 255)</p>
+                    <div class="clear"></div>
+                </div>
+            }
+            else
+            {*@
+                <div class="content-block-news">
+                    <div class="thumb">
+                        <a href="/pages/news/@news.ID/@HelperString.RemoveMark(@news.Title)@dothtml">
+                            @if (!string.IsNullOrEmpty(news.CropImage))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.CropImage)" alt="">
+                            }
+                            else if (!string.IsNullOrEmpty(news.FeautureImage))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.FeautureImage)" alt="">
+                            }
+                            else if (!string.IsNullOrEmpty(news.CatImage))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.CatImage)" alt="">
+                            }
+                            else if (!string.IsNullOrEmpty(news.CatImage2))
+                            {
+                                <img class="img-responsive" src="@Common.Replace2Thumb(news.CatImage2)" alt="">
+                            }
+                            else
+                            {
+                                <img class="img-responsive" src="/Content/Site/images/noimage.png" alt="">
+                            }
+                        </a>
+                    </div>
+                    <h2 class="title"><a href="/pages/news/@news.ID/@HelperString.RemoveMark(@news.Title)@dothtml">@news.Title</a></h2>
+                    <p class="time">@string.Format("{0:dd/MM/yyyy}", news.CreatedDate)</p>
+                    <p class="desc">@HelperString.TruncateByWord(news.Description, 150)</p>
+                    <div class="clear"></div>
+                </div>
+            @*}*@
+        }
+        <div class="center-align">
+            @if (Model.PageCount > 1)
+            {
+                if (search != null)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("SearchHome", new { page, search }))
+                }
+                else
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("GetAllNewsByCat", new { page, catid = ViewBag.CategoryId }))
+                }
+            }
+            @if (!Model.Any())
+            {
+                <div>Dữ liệu đang được cập nhật</div>   
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+﻿@using Web
+@using Web.Model
+@using Web.Model.CustomModel
+@using Web.Core
+@model IEnumerable<tbl_truyna>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+}
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <td>Ảnh</td>
+            <th>Tên truy nã</th>
+            <th class="wtrangthai">Năm sinh</th>
+            <th>HKTT</th>
+            <th>Ngày tạo</th>
+            <th class="wtrangthai">Trang chủ</th>
+            <th class="wtrangthai">Trạng thái</th>
+            <th class="func3but"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td style="vertical-align: middle;">
+                    <img src="@item.Photo" style="width: 150px;" />
+                </td>
+                <td style="vertical-align: middle;">
+                    @item.Name
+                </td>
+                <td style="vertical-align: middle;">
+                    @item.NamSinh
+                </td>
+                <td style="vertical-align: middle">@item.HoKhauTT</td>
+                <td style="vertical-align: middle">@HelperDateTime.ConvertDateToString(item.CreateDate)</td>
+                <td style="vertical-align: middle">@Html.Raw(item.IsHome != false ? "<span style='color:green'><i class='fa fa-check'></i></span>" : "<span style='color:red'><i class='fa fa-times'></i></span>")</td>
+                <td style="vertical-align: middle;">@Html.Raw(item.Status != 0 ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                       
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="truynabe.loadfrmedit(@item.ID) "><i class=" glyphicon glyphicon-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-success btn-bordered" onclick="truynabe.active(@item.ID) " title="@(item.Status != 0 ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="truynabe.ondelete(@item.ID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').dataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/Vietnamese.json"
+                },
+            }
+        );
+    });
+</script>

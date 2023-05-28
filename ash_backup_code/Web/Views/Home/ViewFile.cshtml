@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Xem chi tiết file";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var linkdown = (string)TempData["linkdown"];
+    var type = linkdown.Split('.').Last();
+}
+
+@if (type == "pdf")
+{
+    <object data="@linkdown" type="application/pdf" style="width: 100%; height: 500px"><embed src="@linkdown" type="application/pdf" style="width: 100%; height: 500px" /></object>
+}
+else
+{
+    var host = HttpContext.Current.Request.Url.Host;//localhost
+    var linkOnline = HttpContext.Current.Request.Url.Scheme + "://" + host + linkdown;
+
+    <iframe src="http://docs.google.com/gview?url=@linkOnline&embedded=true" frameborder="1" onselectstart="return false" oncontextmenu="return false" onload="noMenu()" width="100%" height="500"></iframe>
+}

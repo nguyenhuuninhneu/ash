@@ -1,0 +1,180 @@
+﻿ 
+
+@media (max-width:1199px){
+   .wrp,#menu .wrp { width: calc(100% - 20px)} 
+    .titleCate {margin-bottom: 20px}
+    .desCate1 { width: 100%; margin-bottom: 30px}
+    #productCate .group {width: 100%}
+    #productCate .group .group {width: calc((100% - 10px)/2)}
+    #news.hp .group-right {width: 37%}
+    #news.hp .group-left {margin-top: 51px}
+    #news.hp {padding: 50px 0}
+    #showroom.hp {padding-bottom: 40px}
+    #footer .left {width: 30%}
+    #footer .mid { width: 62%; margin-top: 80px}
+    #footer .right { width: 100%;clear: both}
+
+    #product.list .group .item,#product.list .group .item ~.item { clear: none; width: calc(100% / 3);}
+    #product.list .group .item:nth-child(3n + 1) {clear: both}
+
+    #container .colright.fl {width: calc(100% - 300px)}
+    #product.details .left { padding-right: 0; width: 51%}
+    #product.details .count { width: 100%; margin-bottom: 20px}
+    #product.details .pb25 { padding-bottom: 20px}
+    #product.details .right .uudai .text { height: 29px; overflow: hidden}
+    #product.details .other .item,#product.cart .infoDatHang .group {width: 100%} 
+    #product.cart .infoDatHang .group.fl {margin-bottom: 20px} 
+    #product.cart .tableCart .row1 {display: none}
+
+    #product.cart .tableCart .col { width: calc(100% - 140px); padding-top: 0; text-align: left; line-height: 25px }
+    #product.cart .tableCart .col1 {width: 135px}
+    #product.cart .tableCart .col2 { padding-top: 20px; padding-bottom: 10px}
+    #product.cart .tableCart .col3,#product.cart .tableCart .col4,#product.cart .tableCart .col5 { width: calc((100% - 180px) / 3);}
+    #product.cart .tableCart .col6 {width: 40px}
+
+    #news.list .item,#news.list .item ~.item { width: calc((100% - 30px) / 2); margin-right: 30px;clear: none}
+    #news.list .item:nth-child(2n) {margin-right: 0}
+    #news.list .item:nth-child(2n + 1) {clear: both}
+    #news.list .item .fs13.c666.pt7.pb10 .dnTablet-l {display: inline-block!important}
+
+    #aboutus .group-child .item .icon { display: block; margin: auto; margin-bottom: 20px}
+    #aboutus .group-child .item .text { width: 100%; text-align: center}
+    #aboutus .group-child .item .top {margin-bottom: 20px}
+    #csr.list .row.logo .item .cont { line-height: 21px; max-height: 42px}
+
+    #csr.list .row.video .group .item,#csr.list .row.video .group .item ~.item,#csr.list .row.logo .item1,#csr.list .row.logo .item1 ~.item1 { width: calc((100% - 30px) / 2); margin-right: 30px;clear: none}
+    #csr.list .row.video .group .item:nth-child(2n),#csr.list .row.logo .item1:nth-child(2n) {margin-right: 0}
+    #csr.list .row.video .group .item:nth-child(2n + 1),#csr.list .row.logo .item1:nth-child(2n + 1) {clear: both}
+    #csr.details .row.video .other .item {width: 100%}
+      
+    #menu ul { position: fixed; top: 0; left: -100%; width: 80%; background: #1529a0; z-index: 10; height: 100%; display: block; overflow: auto; transition: 0.5s all ease-in-out;-moz-transition: 0.5s all ease-in-out}
+    #menu.ac .openList { position: relative;z-index: 10}
+    #menu.ac ul {left: 0}
+    #menu .openSub { display: block; color: #fff; font-size: 20px; position: absolute; top: 5px; right: 10px}
+    #menu ul li { width: 100%}
+    #menu ul li a{text-align: left; padding: 10px 20px; box-sizing: border-box}
+    #menu ul li ul { width: 100%; position: static; visibility: visible; opacity: 1; padding-bottom: 10px; display: none; transition: none;-moz-transition: none}
+    #menu .openSub.ac .fas:before {content: "\f056"}
+    #menu ul li ul li { width: calc((100% - 20px) / 2); margin-right: 20px; margin-bottom: 10px}
+    #menu ul li ul li:nth-child(2n) {margin-right: 0}
+    #menu ul li ul li .title {padding: 0}
+    #overlay { position: fixed; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9; display: none; top: 0; left: 0}
+    #menu .openList { width: 40px; height: 40px; float: right; display: block}
+    #menu .openList hr { border: 2px solid #fff; transition: 0.5s all ease-in-out; -moz-transition: 0.5s all ease-in-out; z-index: 98;background: #fff} 
+    #menu .openList.ac hr:nth-child(2) {opacity: 0}
+    #menu .openList.ac hr:nth-child(1) { transform: rotate(135deg) translateX(8px) translateY(-8px); -moz-transform: rotate(135deg) translateX(8px) translateY(-8px); border-bottom-color: #fff; background: #fff}
+    #menu .openList.ac hr:nth-child(3) { transform: rotate(-135deg) translateX(6px) translateY(6px);-moz-transform: rotate(-135deg) translateX(6px) translateY(6px); border-bottom-color: #fff; background: #fff}
+    #menu .menuSub { float: left; font-weight: bold; color: #fff; text-transform: uppercase; line-height: 40px; padding: 0 30px; background: #f80002; display: block; margin-right: 3px}
+    #congnghemayin .group .info {padding: 0 10px}
+    #congnghemayin .group .info .cont {max-height: 63px} 
+    #menu .menuSub.dn {display: none} 
+    #menu .menuSub.dn.dbtablet-l {display: block}  
+
+    .btnsearchOut,#menu .iptsearch .btncloseSearch {display: none!important}
+    #menu .iptsearch { position: static; width: calc(100% - 40px); background: #fff; margin-left: 20px}
+    #menu .iptsearch .btnsearch { color: #333;padding: 0}
+    #menu .iptsearch input { width: calc(100% - 30px);display: block}
+    #overlay-search { position: fixed; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9; display: none; top: 0; left: 0}
+}
+
+@media (max-width:991px){ 
+    #contact .left {width: 50%}
+    #contact .mid { width: 45%; margin: 0; float: right}
+    #contact .right { width: 100%; border-top: 2px solid #ccc; margin-top: 20px; padding-top: 20px; clear: both}
+    #contact .h100 {height: 50px}
+
+    #footer .left {width: 40%}
+    #footer .mid { width: 57%; margin-left: 0; float: right}
+    #footer .titleFoot {font-size: 16px}
+    #news.hp .group-left,#news.hp .group-right {width: 100%}
+    #news.hp .group-left {margin-bottom: 30px}
+
+    #product.list .group .item, #product.list .group .item~.item { width: 50%;clear: none}
+    #product.list .group .item~.item:nth-child(2n + 1) {clear: both}
+ 
+    #container .colright.fl,#product.details .other .item {width: 100%}   
+    #container .colleft.fr { width: 100%; margin-top: 25px}
+    .lstshop,#container .colleft.fr  .relatedNews { width: calc((100% - 30px) / 2); float: left; margin-right: 30px}
+    #container .colleft.fr  .relatedNews {margin-right: 0}
+
+    #product.cart .huongdanmuahang {margin-bottom: 20px}
+    .lstshop1 { width: 100%; margin-bottom: 40px}
+     
+    #container .colleft.dbTablet.fr .relatedNews,#aboutus .main .right {width: 100%}
+    #container .colleft.dbTablet.fr .relatedNews .group .item { width: 50%; float: left; box-sizing: border-box; padding: 0 10px; padding-bottom: 22px}
+
+    #container .colleft.fr.colleftres {margin-top: 0}
+    .menuCateNews ul li:hover, .menuCateNews ul li.active {background: #fff}
+    #aboutus .main .right {margin-top: 30px}
+    #aboutus .group-child .item { width: 50%; margin: 0; padding: 0 10px; margin-bottom: 30px}
+    #aboutus .group-child .item:nth-child(2n) {border: none}
+    .desCate,.desCate1 {width: 100%}
+    #header .fr .btn,#header .fr .hotline {margin-left: 10px}
+    #header .fr .btn {padding: 0 20px}
+    #header .logo {max-width: 300px}
+    #product.details .right .uudai .noidunguudai { left: inherit; right: 0}
+    #news.hp .group-left {margin-top: 0}
+    #service.hp {padding-bottom: 30px} 
+}
+
+@media (max-width:767px){ 
+   .wrp,#menu .wrp { width: calc(100% - 20px)}
+    #header .fr {margin-top: 0}
+    #ytuonglogo .xtc {margin-top: 30px}
+    #ytuonglogo, #congnghemayin,#productCate,#hoatdonggiaitri,#csr .row.video {padding: 40px 0}
+    #csr.hp {padding-top: 30px}
+    #csr .row.logo {margin-bottom: 40px}
+    .xct {margin-top: 10px}
+    #bannerAfterMenu .wImage:before {padding-bottom: 25%}
+    #container .colleft {width: 230px}
+    #container .colright {width: calc(100% - 245px)}
+    #product.list .group .item .info {padding: 10px 5px}
+    #container {padding-top: 0}
+    #product.details .left {width: 40%}
+    #product.details .right {width: 57%}
+    #csr.list .row.video .group .item,#csr.list .row.video .group .item ~.item { width: calc((100% - 10px) / 2);margin-right: 10px}
+    #csr.list .row.video .group .item:nth-child(2n) {margin-right: 0}
+    #csr.list .row.video .group .item .name { padding-left: 0; padding-right: 0}
+    #csr.list .row.video .group .item .name i {display: none}
+    #csr.list .row.video .group .item .name a {width: 100%}
+    #csr.details .row.video .other .item {width: 100%}
+    #header .wrp { padding-left: 0; padding-right: 0}
+    #menu .menuSub.dibmobile-l {display: inline-block}
+}
+
+@media (max-width:479px){ 
+    .titleCate {font-size: 24px} #congnghemayin .group .item,#congnghemayin .group .item1,#productCate .group .group,#productCate .item,#productCate .group1,#news.hp .group-left .item,#news.hp .group-right .item .wImage,#news.hp .group-right .item .info,#footer .left,#footer .mid,#footer .mid .group,#container .colleft,#container .colright,.lstshop, #container .colleft.fr .relatedNews,#product.cart .lstCart ul,#news.list .item,#news.list .item ~.item,#container .colleft.dbTablet.fr .relatedNews .group .item,#csr.list .row.video .group .item,#csr.list .row.video .group .item ~.item,#contact .left,#contact .mid,#contact .titleContact {width: 100%}
+    #productCate .group .group {margin-bottom: 10px}
+    #productCate .item,#productCate .item ~.item {height: 130px}
+    #productCate .item .wrap { width: 100%;text-align: center}
+    #productCate .item .wImage,#productCate .item .name { max-height: 120px; display: inline-block;vertical-align: middle}
+    #productCate .item .wImage {width: 125px}
+
+    .xct {margin-top: 20px}
+    #ytuonglogo .group { display: table; width: 100%}
+    #ytuonglogo .group .cb {display: none}
+    #ytuonglogo .group .item,#ytuonglogo .group .item:nth-child(10) { width: calc((100% - 20px) / 2); margin-right: 5px; margin-left: 5px}
+    #news.hp .group-right .item .info,#showroom.hp .owl-dots,#footer .mid,#footer .mid .group:nth-child(2n) {margin-top: 20px} 
+    .detail {padding: 20px 0}
+    #product.list .group .item .info {padding: 10px 0}
+    #product.details .left,#product.details .right {width: 100%}
+    #product.details .left {padding-bottom: 30px}
+    #product.details .tab-links li,#product.cart .infoDatHang .group .form .item.item1 {width: 100%} 
+    #product.cart .infoDatHang .btnCart {margin-right: 20px}
+    #product.cart .lstCart ul {margin-bottom: 10px}
+    #product.cart .tableCart .col3, #product.cart .tableCart .col4, #product.cart .tableCart .col5 { width: calc(100% - 170px);float: left}
+    #product.cart .tableCart .col6 { width: 35px; float: right;text-align: center}
+    #product.cart .tableCart .col4 {padding: 5px 0}
+    #product.cart .tableCart .col2 {padding-top: 0} 
+    #product.cart .contentUudai {padding: 10px} 
+    #csr.list .row.logo .item1,#csr.list .row.logo .item1 ~.item1 {width: 100%}
+    #csr.list .row.video .group .item .name i {display: inline-block}
+    #csr.list .row.video .group .item .name a {width: calc(100% - 50px)}
+    #contact .mid {margin-bottom: 20px}
+    #contact .right { padding-top: 0; margin-top: 0; border: none}
+    #header .fr { width: 100%; margin-top: 10px; float: none; text-align: center} 
+    #header .fr .hotline p {display: inline-block}
+    #header .fr .hotline p:first-child {margin-right: 5px}
+    #commontop .fr { width: 100%; margin-top: 5px}
+    #congnghemayin .group .item1 .wImage:before {padding-bottom: 66.66%}
+}    

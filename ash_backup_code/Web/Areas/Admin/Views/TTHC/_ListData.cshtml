@@ -1,0 +1,125 @@
+﻿@using Web.Model
+@using Web.Model.CustomModel
+@model IEnumerable<tbl_TTHC>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var lstLangs = (List<tbl_Languages>)TempData["Languages"];
+    var lstLinhVuc = (List<tbl_LinhVucTTHC>)TempData["LinhVuc"];
+    var lstDonVi = (List<tbl_DonViTTHC>)TempData["DonVi"];
+}
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th>Tiêu đề</th>
+            <th>Lĩnh vực</th>
+            <th>Đơn vị thực hiện</th>
+            <th class="wtrangthai">Trạng thái</th>
+            <th class="func3but"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td style="vertical-align: middle;width: 250px;">@item.Tieude</td>
+                <td style="vertical-align: middle;">
+                    @{
+                        var objLinhVuc = lstLinhVuc.FirstOrDefault(g => g.ID == item.LinhVucId);
+                        if (objLinhVuc != null)
+                        {
+                            @objLinhVuc.Name
+                        }
+                    }
+                </td>
+                <td style="vertical-align: middle;">
+                    @{
+                        var objDonVi = lstDonVi.FirstOrDefault(g => g.ID == item.DonViId);
+                        if (objDonVi != null)
+                        {
+                            @objDonVi.Name
+                        }
+                    }
+
+                </td>
+
+                @*<td style="vertical-align: middle;">
+                        @{
+                            var objLang = lstLangs.FirstOrDefault(g => g.Code == item.LangCode);
+                            if (objLang != null)
+                            {
+                                @objLang.Name
+                            }
+                        }
+                    </td>*@
+                <td style="vertical-align: middle;">@Html.Raw(item.Status == 1 ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (item.AllowComment == 1)
+                        {
+                            if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.View))
+                            {
+                                <a href="/TTHC/Comment/?TTHCID=@item.ID" title="Danh sách bình luận" class="btn btn-primary btn-bordered"><i class="fa fa-comment"></i></a>
+                            }
+                        }
+                        else
+                        {
+                            if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.View))
+                            {
+                                <a href="/TTHC/Comment/?TTHCID=@item.ID" title="Danh sách bình luận" class="btn btn-primary btn-bordered" style="visibility: hidden"><i class="fa fa-comment"></i></a>
+                            }
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="tthc.loadfrmedit(@item.ID) "><i class="glyphicon glyphicon-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-success btn-bordered" onclick="tthc.active(@item.ID) " title="@(item.Status != 0 ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="tthc.ondelete(@item.ID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+                        }
+    </tbody>
+</table>
+<style>
+    .mr5 {
+        width: 168px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').dataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/Vietnamese.json"
+                },
+            }
+        );
+    });
+</script>

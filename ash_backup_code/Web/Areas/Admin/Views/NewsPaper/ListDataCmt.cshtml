@@ -1,0 +1,84 @@
+﻿@using Web.Model
+@using Web.Model.CustomModel
+@using Web.Core
+@model IEnumerable<Web.Model.tbl_NewsPaperComment>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var cmtIDz = (int)TempData["cmtIDz"];
+    var title = TempData["Title"];
+}
+<div style="padding-bottom:15px"><b>Tiêu đề : </b>@title</div>
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <td colspan="7" align="right"><a href="/NewsPaper" style="font-size:15px;"><i class="fa fa-reply mr5" aria-hidden="true" ></i> Quay lại</a></td>
+        </tr>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+
+            <th width="150">Người gửi</th>
+            <th>Email</th>
+            <th>Ngày gửi</th>
+            <th width="500">Nội dung</th>
+            <th width="110"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            item.NoiDung = HttpUtility.HtmlDecode(item.NoiDung);
+            var noidung = "";
+            if (item.NoiDung.Count() > 200)
+            {
+                noidung = item.NoiDung.Substring(0, 199) + "...";
+            }
+            else { noidung = item.NoiDung; }
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td style="vertical-align: middle;">@item.FullName</td>
+                <td style="vertical-align: middle;">@item.Email</td>
+                <td style="vertical-align: middle;">@HelperDateTime.ConvertDateToString(item.CreateDate)</td>
+                <td style="vertical-align: middle;">@noidung</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.View))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="newspaperCMT.loadDetailCmt(@item.ID) "><i class=" fa fa-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="newspaperCMT.ondeleteCmt(@item.ID,@item.NewsPaperID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').dataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/Vietnamese.json"
+                },
+            }
+        );
+    });
+</script>

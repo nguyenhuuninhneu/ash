@@ -1,0 +1,177 @@
+﻿
+<script src="/Content/Admin/assets/select2/select2.min.js"></script>
+<script src="/Scripts/jquery.validate.min.js"></script>
+@using Web
+@using Web.Model
+@model  tbl_Advert
+@{ 
+    var langCode = "vn";
+    if (Session["langCodeDefaut"] != null)
+    {
+        langCode = Session["langCodeDefaut"].ToString();
+    }
+    var lst = (List<tbl_Position>)TempData["LstPos"];
+    lst.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+}
+@using (Ajax.BeginForm("Edit", "Adv", null,
+                                        new AjaxOptions
+                                        {
+                                            HttpMethod = "POST",
+                                            OnSuccess = "adv.onAddSuccess"
+                                        },
+                                        new { @id = "frmpost", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g=>g.LangCode)
+    var languages = (string)TempData["languages"];
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ: </label>
+        <div class="col-md-10">
+            @if (!string.IsNullOrEmpty(languages))
+            {
+                <p style="margin-top:8px;">@languages</p>
+
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tiêu đề <span class="asterisk">(*)</span></label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tiêu đề quảng cáo" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Link Website</label>
+        <div class="col-md-8">
+            @Html.TextBoxFor(g => g.Url, new { @class = "form-control", placeholder = "Đường dẫn website liên kết" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ảnh <span class="asterisk">(*)</span></label>
+        <div class="col-md-8">
+            @Html.HiddenFor(g => g.Image)
+            <a id="Browser" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+            </a>
+            <div class="mt10" id="previewthumbnail">
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <img src="@Model.Image" width="150" />
+                }
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Vị trí quảng cáo <span class="asterisk">(*)</span></label>
+        <div class="col-md-4">
+            <input type="hidden" value="@Model.Position" id="IdHide" />
+            @Html.DropDownListFor(g => g.Position, new SelectList(lst, "Code", "Name"), new { @class = "form-control select2" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự hiển thị</label>
+        <div class="col-md-2 lockChar">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", Value =Model.Ordering, @type = "number", min = 0 })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" @(Model.Status?"checked":"") value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="isNewTab" name="isNewTab" type="checkbox" @(Model.isNewTab ? "checked" : "") value="true">
+                <label for="isNewTab">
+                    Chuyển Tab
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 text-center">
+        <button type="submit" onclick="return validate();" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+        <button type="button" onclick="modal.hide()" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Đóng</button>
+    </div>
+}
+<style>
+    .asterisk {
+        color: red;
+        font-weight: normal;
+    }
+</style>
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        var IdHide = $("#IdHide").val();
+        if (IdHide != "") {
+            var arrIdHide = IdHide.split(',');
+            $('#position').val(arrIdHide).trigger('change');
+        }
+        $(".select2").select2({ "width": "100%" });
+        $(".select2Multi").select2({
+            "width": "100%"
+        });
+        $("#Browser").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Image").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+
+        $('.lockChar').on("keypress", function () {
+            return event.charCode >= 48 && event.charCode <= 57
+        })
+        $("#frmpost").validate({
+            rules:
+            {
+                Name:
+               {
+                   required: true
+               },
+                Image:
+                {
+                    required: true
+                }
+            },
+            messages:
+            {
+                Name:
+               {
+                   required: "Yêu cầu nhập tiêu đề"
+               },
+
+                Image:
+                {
+                    required: "Bạn chưa chọn ảnh"
+                }
+            },
+            highlight: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            }
+        });
+        //newsimages.initcheckall();
+        //newsimages.initcheckall2();
+    });
+
+    var validate = function () {
+
+        if ($("#Image").val() == "") {
+            alertmsg.error("Bạn chưa chọn ảnh");
+            return false;
+        }
+
+        return true;
+
+    }
+</script>

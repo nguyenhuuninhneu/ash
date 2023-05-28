@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+}
+@using Web.Areas.Admin.Controllers
+@using Web.Core
+@using Web.Model
+@model List<tbl_Video>
+
+@{
+    var objcatename = (string)TempData["objcatename"];
+    var dothtml = ".html";
+}
+
+<div id="video">
+    <div class="wrp"> 
+        <div class="parent">
+            <a href="javascript://" title="" class="title">
+                <p class="name">@objcatename</p>
+                <div class="cb"></div>
+            </a>
+            <div class="group">
+                @if (Model.Count > 0)
+                {
+                    string linkvideo = "";
+                    foreach (var item in Model)
+                    {
+                        linkvideo = "/video/" + item.ID + "/" + Web.Core.HelperString.RemoveMark(item.Title) + dothtml;
+                        <div class="item">
+                            <div class="khungAnh">
+                                <a class="khungAnhCrop" href="@linkvideo" title="@item.Title">
+                                    <img src="@item.Images" alt="@item.Title" />
+                                </a>
+                                <div class="over">
+                                    <div>
+                                        <p><i class="fa fa-clock-o" aria-hidden="true"></i> 4:30</p>
+                                        <p><i class="fa fa-eye" aria-hidden="true"></i> 1.234 @(ConfigTextController.GetValueCFT("LuotXemHome"))</p>
+                                    </div>
+                                </div>
+                                <a class="time">
+                                    4:30
+                                </a>
+                            </div>
+                            <div class="info">
+                                <div class="info1">
+                                    <a href="@linkvideo" title="" class="name">@item.Title</a>
+                                    @*<div class="cont dotdotdot"></div>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                } 
+                <div class="cb"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

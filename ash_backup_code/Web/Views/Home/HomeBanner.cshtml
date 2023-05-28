@@ -1,0 +1,186 @@
+﻿@{
+    Layout = null;
+    var langCode = "vn";
+    if(Session["langCodeHome"]!=null)
+    {
+        langCode = Session["langCodeHome"].ToString();
+    }
+    var banner = (tbl_Advert)TempData["Banner"];
+    var bannerdautrang = (tbl_Advert)TempData["bannerdautrang"];
+    var lstModulesPa = Model.Where(g => g.cate.ParentID == 0 && g.cate.Position != null && g.cate.Position.Trim().Contains("main_menu")&& g.cate.LangCode==langCode);
+
+    var lstmagazineTitle = (List <string>) TempData["lstmagazineTitle"];
+    var lstmagazineYearFirst = 0;
+    if (TempData["lstmagazineYearFirst"] != null)
+    {
+        lstmagazineYearFirst = (int) TempData["lstmagazineYearFirst"];}
+    var lstmagazineYearLast = 0;
+    if (TempData["lstmagazineYearLast"] != null)
+    {
+        lstmagazineYearLast = (int) TempData["lstmagazineYearLast"];}
+    var controler = Request.RequestContext.RouteData.Values["controller"].ToString();
+}
+<script src="~/AppJs/categoryHome.js"></script>
+@using Web.Core
+@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model List<tbl_CategoryJson>
+
+<input type="hidden" id="AlertThongBao" value="@ConfigTextController.GetValueCFT("thongbao","Thông báo")" />
+<div id="header">
+    <div style="background:url(@(banner != null && banner.Image != null ? banner.Image : "")) center no-repeat; background-size: cover; background: none" class="top">
+        <div class="wrp">
+            @if (banner != null)
+            {
+                <a href="@banner.Url" target="@(banner.isNewTab ? "_blank" : "")"  title="" class="logo dnTablet-l">
+                    <img src="@banner.Image"/>
+                </a>
+                <a href="@banner.Url" target="@(banner.isNewTab ? "_blank" : "")" title="" class="logo dn dbtablet-l">
+                    <img src="@banner.Image" />
+                </a>
+            } 
+            <a href="#" title="" class="btnmenures dn dbtablet-l"></a>
+            @if (bannerdautrang != null)
+            {
+                <div class="khungAnh bannerright dnTablet-l">
+                    <a class="khungAnhCrop" href="@bannerdautrang.Url" target="@(bannerdautrang.isNewTab ? "_blank" : "")" title="">
+                        <img src="@bannerdautrang.Image"/>
+                    </a>
+                </div>
+            }
+            <div class="cb"></div>
+        </div>
+    </div>
+    <div id="menu">
+        <div class="wrp">
+            <div class="item search dn dbtablet-l">
+                <input type="text" class="rightSearch" value="" placeholder="Từ khóa tìm kiếm" />
+                <a href="/Home/Search/" class="btnsearch"></a>
+                <div class="cb"></div>
+            </div>
+            <ul>
+                <li>
+                    <a href="/Home" title="">
+                        <img src="~/assets/display/Css/Icon/icon-home.png" class="dnTablet-l" />
+                        <p class="dn dbtablet-l">Trang chủ</p>
+                    </a>
+                </li>
+
+                @ShowTree(lstModulesPa)
+            </ul>
+        </div>
+    </div>
+    @helper ShowTree(IEnumerable<tbl_CategoryJson> lstModulesPa, int level = 0, int pid = 0)
+    {
+        lstModulesPa = lstModulesPa.Where(g => g.cate.ParentID == pid).OrderBy(g => g.cate.Ordering);
+        if (lstModulesPa != null && lstModulesPa.Count() > 0)
+        {
+            string link = "";
+            @Html.Raw(level > 0 ? "<ul>" : "")
+            foreach (var item in lstModulesPa)
+            {
+                link = "/pages/category/"+ item.cate.ID + "/" + @HelperString.RemoveMark(item.cate.Name) + ".html";
+                if (!String.IsNullOrEmpty(item.cate.Url)) link = item.cate.Url;
+                var hasChild = item.listChildren;
+                <li class="@(hasChild.Count() > 0 ? "hasChild" : "")">
+                        <a title="@item.cate.Name" href="@link"  @(item.cate.isNewTab ? "target='_blank'" : "")><i class="fa fa-angle-double-right" aria-hidden="true"></i> @item.cate.Name</a>
+                    @if (hasChild.Count() > 0)
+                    {
+                        level++;
+                        @ShowTree(hasChild, level, item.cate.ID);
+                    }
+                </li> 
+            }
+            @Html.Raw(level > 0 ? "</ul>" : "")
+         } 
+    }
+    <div class="bot">
+        <div class="wrp">
+            @{
+                DateTime day = DateTime.Now;
+                string dayS = day.DayOfWeek.ToString();
+                int dayI = ((int)day.DayOfWeek);
+
+                string daynow = "";
+                switch (dayI)
+                {
+                    case 0:
+                        daynow = "Chủ nhật";
+                        break;
+                    case 1:
+                        daynow = "Thứ hai";
+                        break;
+                    case 2:
+                        daynow = "Thứ ba";
+                        break;
+                    case 3:
+                        daynow = "Thứ tư";
+                        break;
+                    case 4:
+                        daynow = "Thứ năm";
+                        break;
+                    case 5:
+                        daynow = "Thứ sáu";
+                        break;
+                    case 6:
+                        daynow = "Thứ bảy";
+                        break;
+                }
+
+                if (langCode == "vn")
+                {
+                    daynow = daynow + ", " + day.ToString("d/M/yyyy");
+                }
+                else
+                {
+                    daynow = daynow + ", " + day.ToString("d/MMM/yyyy");
+                }
+
+                var url = Request.RawUrl;
+            }
+            @if (url.Trim().ToLower() == "/home" || url.Trim().ToLower() == "" || url.Trim().ToLower() == "/")
+            {
+                <div class="date"> @daynow</div>
+            }
+            else
+            {
+                Html.RenderAction("PathWay", "Home");
+            }
+            <div class="filter">
+                @if (controler.ToLower() == "magazine")
+                {
+                    <div class="item">
+                        <select id="chooseyearmagazine" class="select2" style="min-width: 142px">
+                            <option value=0>@ConfigTextController.GetValueCFT("NamHome")</option>
+                            @for (int i = lstmagazineYearLast; i >= lstmagazineYearFirst; i--)
+                            {
+                                <option value="@i" @(i == DateTime.Now.Year ? "selected":"")>@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="item">
+                        <select id="choosetitlemagazine" class="select2" style="min-width: 155px">
+                            <option value="">@ConfigTextController.GetValueCFT("TapChiHome")</option>
+                            @foreach (var item in lstmagazineTitle)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <a href="/pages/tap-chi.html" title="Tạp chí tuyên giáo in" class="gotomagazine"><img src="/assets/images/book-open.png" alt="" /> Tạp chí tuyên giáo in</a>
+                    <div class="item search">
+                        <input type="text" class="btnsearch" id="Search" value="" placeholder="Từ khóa tìm kiếm..."/>
+                        <a href="javascript://" title="Tìm kiếm" id="btnSearch" class="btnsearch"></a>
+                        <div class="cb"></div>
+                    </div>
+                } 
+                
+                <div class="cb"></div>
+            </div>
+            <div class="cb"></div>
+        </div>
+    </div>
+</div>

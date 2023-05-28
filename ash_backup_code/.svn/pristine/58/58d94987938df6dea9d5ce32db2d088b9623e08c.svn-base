@@ -1,0 +1,107 @@
+﻿@using Web.Model
+@model Web.Model.tbl_BoxNewsConfig
+@using (Ajax.BeginForm("Edit", "BoxNewsConfig", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "boxnewsconfig.onEditSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+    var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.LangCode)
+            @{ var objLang = languages.FirstOrDefault(g => g.Code == Model.LangCode);}
+            <input type="text" disabled="disabled" class="form-control" value="@objLang.Name" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thuộc trang</label>
+        @{
+    var lstpageElement = (List<tbl_PageElement>)TempData["PageElement"];
+        }
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.PageElementId)
+            @{ var objPageElement = lstpageElement.FirstOrDefault(g => g.ID == Model.PageElementId);}
+            <input type="text" disabled="disabled" class="form-control" value="@objPageElement.Name" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Code</label>
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.Code)
+            <input type="text" disabled="disabled" class="form-control" value="@Model.Code" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Name</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tiêu đề của zone sẽ hiển thị" })
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+            {
+                Name:
+                {
+                    required: true
+                },
+                Code:
+                {
+                    required: true
+                },
+                LangCode:
+                {
+                    required: true
+                },
+                PageElementId:
+                {
+                    required: true
+                }
+            },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên hiển thị"
+                },
+                Code:
+                {
+                    required: "Chưa nhập code"
+                },
+                LangCode: {
+                    required: "Bạn chưa chọn ngôn ngữ"
+                },
+                PageElementId: {
+                    required: "Bạn chưa chọn trang"
+                }
+            }
+        });
+        $("#basicForm #LangCode").change(function () {
+            if ($(this).val() == "") {
+                $("#basicForm #PageElementId").html('<option value="">-- Chọn trang --</option>');
+                $("#basicForm #PageElementId").prop("disabled", true);
+            } else {
+                $.get("/PageElement/GetAllByLangCode?LangCode=" + $(this).val(), function (res) {
+                    var html = '<option value="">-- Chọn trang --</option>';
+                    for (var i = 0; i < res.length; i++) {
+                        html += '<option value="' + res[i].ID + '">' + res[i].Name + '</option>';
+                    }
+                    $("#basicForm #PageElementId").html(html);
+                    $("#basicForm #PageElementId").prop("disabled", false);
+                });
+            }
+        });
+    });
+</script>

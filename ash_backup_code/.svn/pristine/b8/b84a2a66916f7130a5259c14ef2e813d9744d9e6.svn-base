@@ -1,0 +1,177 @@
+﻿@{
+    var dothtml = ".html";
+    ViewBag.Title = "DetailImg";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+    var lstImg = (List<tbl_Images>)TempData["LstImg"];
+    var id = (int) TempData["id"];
+} 
+
+@using Web.Core;
+@using Web.Model;
+@using Web.Areas.Admin.Controllers;
+@model tbl_ImagesCategory
+
+<div id="pta">
+    <div class="left">
+        <p class="name">@Model.Name</p>
+        <div class="datetime">
+            <p><i class="fa fa-calendar" aria-hidden="true"></i> @ConfigTextController.GetValueCFT("ngaydang"): @Model.CreatedDate.ToString("dd/MM/yyyy").Replace("-", "/")</p>
+            <p><i class="fa fa-eye" aria-hidden="true"></i> @ConfigTextController.GetValueCFT("luotxem"): @HelperNumber.ConvertToThousand64(Model.ViewNumber)</p>
+        </div>
+        <div class="cont">
+            @Model.Description
+        </div>
+    </div>
+    <div class="right">
+        <div class="demo-gallery">
+            <ul id="lightgallery" class="slider-for">
+                @foreach (var item in lstImg)
+                {
+                    <li data-src="@item.Images" data-sub-html="@item.Description">
+                        <div class="khungAnh">
+                            <a class="khungAnhCrop0" href="javascript://" title="@item.Title">
+                                <img alt="@item.Title" data-lazy="@item.Images" src="@item.Images" />
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <ul id="lightgallery1" class="slider-nav">
+                @foreach (var item in lstImg)
+                {
+                    <li>
+                        <div class="khungAnh">
+                            <a class="khungAnhCrop0" href="javascript://" title="@item.Title">
+                                <img alt="@item.Title" data-lazy="@item.Images" />
+                            </a>
+                            <a class="over">
+                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    $('#lightgallery').lightGallery();
+                    if ($('#lightgallery li').size() > 5) {
+                        $('.slider-for').slick({
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            arrows: true,
+                            fade: true,
+                            asNavFor: '.slider-nav',
+                            infinite: true,
+                            lazyLoad: 'ondemand',
+                            //autoplay: true,
+                            //autoplaySpeed: 3000,
+                            //speed: 1000,
+                        });
+                        $('.slider-nav').slick({
+                            slidesToShow: 5,
+                            slidesToScroll: 1,
+                            asNavFor: '.slider-for',
+                            focusOnSelect: true,
+                            infinite: true,
+                            arrows: false,
+                            centerMode: false,
+                            lazyLoad: 'ondemand',
+                            wipeToSlide: true,
+                            responsive: [
+                                {
+                                    breakpoint: 991,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 1,
+                                    }
+                                },
+                                {
+                                    breakpoint: 767,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 1
+                                    }
+                                },
+                                {
+                                    breakpoint: 479,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 1
+                                    }
+                                }
+                            ]
+                        });
+                    } else {
+                        $('.slider-for').slick({
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            arrows: false,
+                            fade: true,
+                            asNavFor: '.slider-nav',
+                            infinite: true,
+                            lazyLoad: 'ondemand',
+                            touchThreshold: 1,
+                            responsive: [
+                                {
+                                    breakpoint: 479,
+                                    settings: {
+                                        arrows: true,
+                                    }
+                                }
+                            ]
+                        });
+                        $('.slider-nav').slick({
+                            slidesToShow: 5,
+                            slidesToScroll: 1,
+                            asNavFor: '.slider-for',
+                            focusOnSelect: true,
+                            infinite: true,
+                            arrows: false,
+                            touchThreshold: 1,
+                            lazyLoad: 'ondemand',
+                            wipeToSlide: true,
+                            responsive: [
+                                {
+                                    breakpoint: 991,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 1,
+                                    }
+                                },
+                                {
+                                    breakpoint: 767,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 1
+                                    }
+                                },
+                                {
+                                    breakpoint: 479,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 1,
+                                    }
+                                }
+                            ]
+                        });
+                    }
+
+                    $('#pta .left .cont').mCustomScrollbar();
+                });
+            </script>
+        </div>
+    </div>
+    <div class="cb"></div>
+    <input type="hidden" id="idshow" value="@id" />
+    <input type="hidden" id="ippage" value="0" />
+    <div class="parent">
+        <div class="fs20 fRobotoB pb10">@ConfigTextController.GetValueCFT("ThuVienKhacHome")</div>
+        <div class="group">
+            <div id="gridData">
+                @{ Html.RenderAction("DetailImgAjax", "Image");}
+            </div>
+            <div class="cb"></div>
+        </div>
+    </div> 
+</div> 

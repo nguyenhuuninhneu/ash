@@ -1,0 +1,209 @@
+﻿@using System.Configuration
+@using Web.Model
+@using Web.Areas.Admin.Controllers
+@using Web.Core
+@model Web.Model.tbl_VanBan
+@{
+    ViewBag.Title = @ViewBag.Title;
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+}
+@{
+    var lstCqbh = (List<tbl_CoQuanBanHanh>)TempData["Coquanbanhanh"];
+    var lstLoaiVanBan = (List<tbl_LoaiVanBan>)TempData["Loaivanban"];
+    var lstLinhVucVabBan = (List<tbl_LinhVucVanBan>)TempData["Linhvucvanban"];
+    var lstVanBan = (List<tbl_VanBan>)TempData["Vanban"];
+    var dothtml = ".html";
+}
+<style>
+    .font32 {
+        font-size: 13px;
+    }
+</style>
+<div class="row content">
+    <!-- start right content news -->
+    <div class="col-md-8">
+        <div class="detail-news">
+            <h1 class="title" style="font-size:13px">@Model.TrichYeu</h1>
+            <div class="detail-info">
+                @ConfigTextController.GetValueCFT("dangvao") @string.Format("{0:dd/MM/yyyy}", Model.CreatedDate)
+            </div>
+            <h4 class="detail-sum font32">@ConfigTextController.GetValueCFT("ctvb"):</h4>
+
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="detail-sum font32" style="width: 170px;">@ConfigTextController.GetValueCFT("vanban_sokihieu")</td>
+                        <td>@Model.SoHieu</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("vanban_ngaybh")</td>
+                        <td>@string.Format("{0: dd/MM/yyyy}", @Model.NgayBanHanh)</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("ctvb_ngayhieuluc")</td>
+                        <td>@string.Format("{0: dd/MM/yyyy}", @Model.NgayHieuLuc)</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("ctvb_nguoiky")</td>
+                        <td>@Model.NguoiKy</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("vanban_cqbh")</td>
+                        <td>
+                            @{
+                                    var objCqbh = lstCqbh.FirstOrDefault(g => g.ID == @Model.CoQuanBanHanhId);
+                                    if (objCqbh != null)
+                                    {
+                                @objCqbh.Name;
+                                    }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("vanban_loai")</td>
+                        <td>
+                            @{
+                                    var objLoaiVB = lstLoaiVanBan.FirstOrDefault(g => g.ID == @Model.LoaiVanBanId);
+                                    if (objLoaiVB != null)
+                                    {
+                                @objLoaiVB.Name;
+                                    }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("vanban_linhvuc")</td>
+                        <td>
+                            @{
+                                    var objLinhVucVB = lstLinhVucVabBan.FirstOrDefault(g => g.ID == @Model.LinhVucVanBanId);
+                                    if (objLinhVucVB != null)
+                                    {
+                                @objLinhVucVB.Name;
+                                    }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detail-sum font32">@ConfigTextController.GetValueCFT("ctvb_trangthai")</td>
+                        @if (Model.HetHieuLuc == true)
+                            {
+                            <td>@Html.Raw("<span style='color:red'>" + @ConfigTextController.GetValueCFT("ctvb_hetHL") + "</span>")</td>
+                            }
+                            else if (Model.NgayHieuLuc.Value.Date > DateTime.Now.Date)
+                            {
+                            <td>@Html.Raw("<span style='color:green'>"+@ConfigTextController.GetValueCFT("ctvb_chuaHL")+"</span>")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("<span style='color:green'>" + @ConfigTextController.GetValueCFT("ctvb_coHL") + "</span>")</td>
+                            }
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="detail-sum font32">
+                <i class="fa fa-file" aria-hidden="true"></i> @ConfigTextController.GetValueCFT("ctvb_tepdinhkem") :
+                @if (!string.IsNullOrEmpty(Model.Attachment))
+                    {
+                        if (User == null)
+                        {
+                            <a style="text-decoration: none;" href="/User/Login"> @ConfigTextController.GetValueCFT("vanban_taive")</a>
+                        }
+                        else
+                        {
+                            <a style="text-decoration: none;" href="@Model.Attachment"> @ConfigTextController.GetValueCFT("vanban_taive")</a>
+                        }
+                    }
+            </h5>
+            <br />
+            @*<h4 class="detail-sum font32">Các văn bản khác:</h4>
+            <hr />*@
+
+            @*<ul style="list-style-type: none;">*@
+            @*@foreach (var items in lstVanBan)
+                {
+                <li style="list-style-type: none;">
+                    <i class="fa fa-file-o"></i><a style="text-decoration:none; font-size:13px" href="/pages/vanban/@items.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@items.TrichYeu), 150)@dothtml">
+                        @items.TrichYeu
+                    </a><span class="detail-info">
+                        (@string.Format("{0:dd/MM/yyyy}", @items.CreatedDate))
+                    </span>
+
+                </li>
+
+                }*@
+            @*</ul>*@
+        </div>
+    </div>
+
+    <!-- search and list-->
+    <div class="col-md-4">
+        @{ Html.RenderAction("searchVanBan", "VanBanFE"); ;}
+        @*@{ Html.RenderAction("lstVanBan", "VanBanFE"); ;}*@
+    </div>
+</div>
+<style>
+    .detail-content table td {
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        padding: 5px 10px;
+        vertical-align: middle;
+        text-align: center;
+        border: none;
+    }
+
+        .detail-content table td p {
+            margin-bottom: 0;
+        }
+
+        .detail-content table td:last-child {
+            border-right: 1px solid #ccc;
+            border: none;
+        }
+
+    .detail-content table tr:last-child td {
+        border-bottom: 1px solid #ccc;
+        border: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("table").css("width", "100%");
+        $("#comment").validate({
+            rules: {
+                FullName: {
+                    required: true
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                NoiDung: {
+                    required: true
+                }
+            },
+            messages: {
+                FullName: {
+                    required: "Bạn chưa nhập họ và tên"
+                },
+                Email: {
+                    required: "Bạn chưa nhập Email",
+                    email: "Email không đúng định dạng"
+                },
+                NoiDung: {
+                    required: "Bạn chưa nhập nội dung"
+                }
+            }
+        });
+        $(document).on('click', '#replyComment', function () {
+            $("#displayContentReply").remove();
+            $(this).toggleClass("openrep");
+            if ($(this).hasClass("openrep")) {
+                $(this).parent().parent().parent().append("<div id='displayContentReply'></div>");
+                var id = $(this).attr("data-id");
+                $("#parentCommentId").val(id);
+                var templateReply = $("#formReplyComment").html();
+                $(this).parent().parent().parent().find("#displayContentReply").html(templateReply);
+            }
+        });
+    })
+</script>

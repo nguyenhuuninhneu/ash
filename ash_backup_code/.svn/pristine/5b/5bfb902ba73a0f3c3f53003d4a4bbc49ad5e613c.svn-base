@@ -1,0 +1,83 @@
+﻿@using Web.Model
+@using Web.Model.CustomModel
+@model IEnumerable<View_Gallery_Category>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var lstLangs = (List<tbl_Languages>)TempData["Languages"];
+    var lstPageElements = (List<tbl_PageElement>)TempData["PageElement"];
+}
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th>Tên ảnh</th>
+            <th style="min-width: 160px;">Danh mục</th>
+            <th>Ảnh</th>
+            <th>Ngày Đăng</th>
+            <th class="wtrangthai">Trạng thái</th>
+            <th class="func3but"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td>
+                    @item.Name
+                    @Html.HiddenFor(g => item.ID)
+                </td>
+                <td>@item.CatName</td>
+                <td><img src="@item.Images" style="width: 100px;" /></td>
+                <td style="vertical-align: middle;">
+                    @string.Format("{0:dd/MM/yyyy}", item.CreatedDate)
+                </td>
+                <td>@Html.Raw(item.Status ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td>
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="Gallery.loadfrmedit(@item.ID) " title="Sửa"><i class=" glyphicon glyphicon-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-success btn-bordered" onclick="Gallery.active(@item.ID) " title="@(item.Status ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="Gallery.ondelete(@item.ID) " title="Xóa">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').DataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/Vietnamese.json"
+                }
+            });
+    });
+</script>

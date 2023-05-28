@@ -1,0 +1,103 @@
+﻿@using System.Web.UI.WebControls
+@using Web.Core
+@using Web.Model
+@model List<view_NEWS_LISTDATA>
+@{
+    Layout = null;
+    var dothtml = ".html";
+    var rightSlideNews = (List<view_NEWS_LISTDATA>)ViewBag.rightSlideNews;
+}
+<div class="col-md-7">
+    <div class="row">
+        <div class="content-top col-xs-12 col-sm-12 padtop0">
+            <div id="carousel-id" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @{var icount = 0;}
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            icount++;
+                            var cssAtive = "";
+                            if (icount == 1)
+                            {
+                                cssAtive = "active";
+                            }
+                            <div class="item @cssAtive">
+                                <div class="img-shadow">
+                                    <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml" class="title-content-top" title="">
+                                        @{
+                            var imgshow = item.CropImage;
+                            if (string.IsNullOrEmpty(imgshow))
+                            {
+                                imgshow = item.FeautureImage;
+                            }
+                            if (string.IsNullOrEmpty(imgshow))
+                            {
+                                imgshow = item.CatImage;
+                            }
+                            if (string.IsNullOrEmpty(imgshow))
+                            {
+                                imgshow = "/Content/Site/images/noimage.png";
+                            }
+                                        }
+                                        <img class="img-responsive" src="@imgshow" alt="">
+                                    </a>
+                                </div>
+                                <div class="carousel-caption">
+                                    <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml" class="title-content-top" title="@item.Title">@HelperString.TruncateByWord(item.Title, 85)</a>
+                                    <p>
+                                        @HelperString.TruncateByWord(item.Description, 200)
+                                    </p>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                </div>
+                <a class="left carousel-control" href="#carousel-id" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                <a class="right carousel-control" href="#carousel-id" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="row">
+        <div class="panel boteosx box_rightslide">
+            @*<div class="panel-heading">
+                <h4 class="panel-title" style="color:#055296;">Tin Tức - Sự Kiện</h4>
+            </div>*@
+            <div class="panel-body longsai">
+                @if (Model != null)
+                {
+                    foreach (var item in rightSlideNews)
+                    {
+                        <div class="bo3ro">
+                            <img class="right_img" src="@item.FeautureImage" width="80" height="60" />
+                            <ul class="texttintuc">
+                                <li>
+                                    <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml">@item.Title</a><br />
+                                    <i>@HelperDateTime.ConvertDateToString(@item.CreatedDate)</i>
+                                </li>
+                            </ul>
+                        </div>
+                        @*<div class="tintuctext2">
+                            <img src="@item.FeautureImage" width="100" height="80" />
+                            <ul class="tintuchome">
+                                <li>
+                                    <a href="/pages/news/@item.ID/@HelperString.RemoveMark(@item.Title)@dothtml">@HelperString.TruncateByWord(item.Title, 80)</a><br />
+                                    <p><i class="fa fa-eye" aria-hidden="true"></i> @item.ViewCount</p>
+                                </li>
+                            </ul>
+                        </div>*@
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .tintuchome li :hover{
+        color:#055296;
+    }
+</style>

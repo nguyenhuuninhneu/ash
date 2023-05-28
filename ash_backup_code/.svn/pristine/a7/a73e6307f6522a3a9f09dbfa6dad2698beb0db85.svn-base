@@ -1,0 +1,153 @@
+﻿@using Web.Model;
+@{
+    Layout = null;
+    var useradd = (List<tbl_User>)TempData["lstUserAdded"];
+    var lstIdadded = useradd.Select(s => s.DonviId).ToList();
+    var usernotadd = (List<tbl_User>)TempData["lstUserUnAdd"];
+    var lstIdNoadd = usernotadd.Select(s => s.DonviId).ToList();
+    var lstdonvi = (List<tbl_DMChung>)TempData["donvi"];
+    var lstchucvu = (List<tbl_ChucVu>)TempData["chucvu"];
+    var lstdonvidathem = lstdonvi.Where(s => lstIdadded.Contains(s.ID)).ToList();
+    var lstdonvichuathem = lstdonvi.Where(s => lstIdNoadd.Contains(s.ID)).ToList();
+}
+@using Web.Model
+@model GroupCusUser
+<script src="~/Content/Admin/js/multiselect.min.js"></script>
+@using (Html.BeginForm("AddUserToGroup", "GroupCustomer", FormMethod.Post, new { id = "frmAddUser" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            @Html.HiddenFor(g => g.ID)
+            <input type="text" id="searchBox1" class="search-input opinions form-control" autocomplete="off" placeholder="Tìm kiếm...">
+            <select name="from" id="multiselect" class="form-control notifyi" size="10" multiple="multiple">
+                @foreach (var item in lstdonvichuathem)
+                {
+                    <optgroup label="@item.Ten" style="font-weight:bold;">
+                        @{
+                            var lstnoadd21 = usernotadd.Where(s => s.DonviId == item.ID).ToList();
+                        }
+                        @foreach (var user in lstnoadd21)
+                        {
+                            var chucvumodela = lstchucvu.Where(s => s.ID == user.ChucVuId).SingleOrDefault();
+                            if (chucvumodela != null)
+                            {
+                                <option id="op2" value="@user.ID">@user.FullName+@chucvumodela.Name</option>
+                            }
+                            else
+                            {
+                                <option id="op2" value="@user.ID">@user.FullName+Chưa cập nhật</option>
+                            }
+                        }
+                    </optgroup>
+                            }
+            </select>
+            <h5>Danh sách người dùng</h5>
+        </div>
+        <div class="col-md-2">
+            <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+            <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+            <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+            <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+        </div>
+        <div class="col-md-10">
+            <input type="text" id="searchBox2" class="search-input form-control" autocomplete="off" placeholder="Tìm kiếm...">
+            <select name="to" id="multiselect_to" class="form-control notifyi" size="10" multiple="multiple">
+                @foreach (var item22 in lstdonvidathem)
+                {
+                    <optgroup label="@item22.Ten">
+                        @{
+                            var lstadd32 = useradd.Where(s => s.DonviId == item22.ID).ToList();
+                        }
+                        @foreach (var user in lstadd32)
+                        {
+                            var chucvumodels = lstchucvu.Where(s => s.ID == user.ChucVuId).SingleOrDefault();
+                            if (chucvumodels != null)
+                            {
+                                <option id="op2" value="@user.ID">@user.FullName+@chucvumodels.Name</option>
+                            }
+                            else
+                            {
+                                <option id="op2" value="@user.ID">@user.FullName+Chưa cập nhật</option>
+                            }
+                        }
+                    </optgroup>
+                            }
+            </select>
+            <h5>Danh sách người dùng đã thêm</h5>
+        </div>
+    </div>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+    <button type="submit" id="btnSave" class="btn btn-primary">Lưu lại</button>
+                            }
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $('#multiselect').multiselect();
+    });
+    AjaxService.POSTFORM("/Admin/GroupCustomer/AddUserToGroup", function (result) {
+        if (result.IsSuccess == true) {
+            modal.hide();
+            alertmsg.success(result.Messenger);
+        } else {
+            alertmsg.error(result.Messenger);
+        }
+    });
+    $(document).ready(function () {
+        var spacesToAdd = 5;
+        var biggestLength = 0;
+        $(".notifyi option").each(function () {
+            var len = $(this).text().length;
+            if (len > biggestLength) {
+                biggestLength = len;
+            }
+        });
+        var padLength = biggestLength + spacesToAdd;
+        $(".notifyi option").each(function () {
+            var parts = $(this).text().split('+');
+            var strLength = parts[0].length;
+            for (var x = 0; x < (padLength - strLength) ; x++) {
+                parts[0] = parts[0] + ' ';
+            }
+            $(this).text(parts[0].replace(/ /g, '\u00a0') + parts[1]).text;
+        });
+    });
+</script>
+<style>
+    select {
+        font-family: "Courier New", Courier, monospace;
+    }
+</style>
+<script>
+    jQuery.fn.filterByText = function (textbox, selectSingleMatch) {
+        return this.each(function () {
+            var select = this;
+            var options = [];
+            $(select).find('option').each(function () {
+                options.push({ value: $(this).val(), text: $(this).text() });
+            });
+            $(select).data('options', options);
+            $(textbox).bind('change keyup', function () {
+                var options = $(select).empty().scrollTop(0).data('options');
+                var search = $.trim($(this).val());
+                var regex = new RegExp(search, 'gi');
+                $.each(options, function (i) {
+                    var option = options[i];
+                    if (option.text.match(regex) !== null) {
+                        $(select).append(
+                           $('<option>').text(option.text).val(option.value)
+                        );
+                    }
+                });
+                if (selectSingleMatch === true &&
+                    $(select).children().length === 1) {
+                    $(select).children().get(0).selected = true;
+                }
+            });
+        });
+    };
+    $(function () {
+        $('#multiselect').filterByText($('#searchBox1'), true);
+    });
+    $(function () {
+        $('#multiselect_to').filterByText($('#searchBox2'), true);
+    });
+</script>

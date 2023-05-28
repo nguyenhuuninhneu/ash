@@ -1,0 +1,30 @@
+﻿@{
+    var dothtml = ".html";
+    ViewBag.Title = "DetailImg";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+} 
+
+@using Web.Areas.Admin.Controllers
+@using Web.Core;
+@using Web.Model
+@model tbl_ImagesCategory
+
+<div id="pta">
+    <div class="wrp"> 
+        <input type="hidden" id="idshow" value="0" />
+        <input type="hidden" id="ippage" value="0" />
+        <div class="parent" style="margin-top: 0">
+            <div class="fs20 fRobotoB pb5">@ConfigTextController.GetValueCFT("thuvienanh")</div>
+            <div class="group">
+                <div id="gridData">
+                    @{ Html.RenderAction("DetailImgAjax", "Image");}
+                </div>
+                <div class="cb"></div>
+            </div>
+        </div> 
+    </div>
+</div> 
+
+<style>
+    #container .colright {display: none}
+</style>

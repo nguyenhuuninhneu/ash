@@ -1,0 +1,87 @@
+﻿@using Web.Model
+@using Web.Core
+@model List<tbl_VanBan>
+@{
+    Layout = null;
+    var dothtml = ".html";
+    var link_vanban = "/pages/vanban.html";
+    var lstLinhVucVB = (List<tbl_LinhVucVanBan>)TempData["LinhVucVB"];
+    var lstCoQuanBH = (List<tbl_CoQuanBanHanh>)TempData["CoQuanBanHanh"];
+    var TrichYeu = Request["TrichYeu"];
+    var SoHieu = Request["SoHieu"];
+    var LinhVucVanBanId = Request["LinhVucVanBanId"];
+    var CoQuanBanHanhID = Request["CoQuanBanHanhID"];
+    var NgayBanHanh = Request["NgayBanHanh"];
+}
+<link href="/Content/Admin/assets/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+<link href="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-buttons.css" rel="stylesheet" />
+<link href="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-thumbs.css" rel="stylesheet" />
+<script src="/Content/Admin/assets/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/jquery.fancybox.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-buttons.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-thumbs.js"></script>
+<script src="/Content/Admin/assets/fancybox/source/helpers/jquery.fancybox-media.js"></script>
+<style>
+    .video-panel, .video-panel .font-heading {
+        background: #dceaee !important;
+    }
+    .vbpl-panel {
+        font: normal 19px Arial, Helvetica, sans-serif;
+    }
+    /*.bgrighttthc{
+            /*border-left:1px solid #e6ebef!important;
+            border-right:1px solid #e6ebef!important;
+        }*/
+    #list_news .list {
+        padding: 0px 0 5px 12px;
+        background: url('/assets/images/but.jpg') no-repeat 0 6px;
+    }
+    
+    .list a {
+        color: #898989;
+        text-decoration: none;
+        font: normal 13px Tahoma, Geneva, sans-serif;
+        line-height: 14px;
+        cursor: pointer;
+    }
+     .list a:hover{
+         color:blue;
+     }
+    #imgyoutube {
+        width: 275px;
+    }
+</style>
+<div class="right_panel panel panel-primary">
+    <div class="vbpl-panel right_panel_title panel-heading font-heading" style="background: white !important; border: solid 1px #d5d4d4 !important; ">
+        <a href="@link_vanban" title="VBPL" style="text-decoration: none; color: #0076b3 !important">VĂN BẢN PHÁP LUẬT </a>
+    </div>
+    <div class="bgrightTTHC panel-body" style="border-bottom:0px">
+        <div class="right_panel_content right_panel_ctdm">
+            <ul class="list-news" id="list_news">
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var items in Model)
+                    {
+                        <li class="list">
+                            <a href="/pages/vanban/@items.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@items.TrichYeu), 150)@dothtml" title="@items.TrichYeu">@items.TrichYeu</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div>
+        <a href="@link_vanban"><img src="/assets/images/xemtiep.jpg" /></a>
+    </div>
+    
+</div>
+<script>
+    $(document).ready(function () {
+        $(".fancybox").fancybox();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        InitDatePicker();
+    });
+</script>

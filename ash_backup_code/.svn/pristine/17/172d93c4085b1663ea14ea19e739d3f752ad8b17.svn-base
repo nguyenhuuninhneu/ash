@@ -1,0 +1,231 @@
+﻿
+<link rel="stylesheet" href="/Content/Admin/assets/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="/Content/Admin/assets/colorpicker/js/colorpicker.js"></script>
+@using Web.Model
+@model tbl_document_price
+@{
+    var lstLanguages = (List<tbl_Languages>)TempData["languages"];
+
+}
+@using (Ajax.BeginForm("Edit", "DocumentPrice", null,
+                                                                new AjaxOptions
+                                                                {
+                                                                    HttpMethod = "POST",
+                                                                    OnSuccess = "DocumentPrice.onEditSuccess"
+                                                                },
+                                                                new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(g => g.ID)
+    //@Html.HiddenFor(g => g.UserType)
+    @Html.HiddenFor(g => g.CreatedDate)
+   
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        <div class="col-md-10">
+            <select id="LangCode" name="LangCode" class="form-control select2">
+                @*<option value="">-- Chọn ngôn ngữ --</option>*@
+                @{
+                    foreach (var item in lstLanguages)
+                    {
+                        <option value="@item.Code" @(Model.LangCode == item.Code ? "selected" : "")>@item.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên tài liệu <span class="asterisk">(*)</span></label>
+        <div class="col-md-9">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control ", placeholder = "Tên tài liệu" })
+        </div>
+    </div>
+
+    
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Giá tối thiểu<span class="asterisk">(*)</span></label>
+        <div class="col-sm-9">
+            @Html.TextBoxFor(g => g.Price_min, new { @class = "form-control", placeholder = "Giá tối thiểu" })
+        </div>
+        <div class="col-sm-1">
+            (VNĐ)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Giá tối đa<span class="asterisk">(*)</span></label>
+        <div class="col-sm-9">
+            @Html.TextBoxFor(g => g.Price_max, new { @class = "form-control", placeholder = "Giá tối đa" })
+        </div>
+        <div class="col-sm-1">
+            (VNĐ)
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Thứ tự</label>
+        <div class="col-sm-9">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "Thứ tự" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" value="true" @(Model.Status ? "checked" : "")>
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-10 text-center">
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Cập nhật</button>
+            <button type="button" onclick="modal.hide()" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Đóng</button>
+        </div>
+}
+<style>
+    .asterisk {
+        color: red;
+        font-weight: normal;
+    }
+</style>
+<script src="~/AppJs/documentprice.js"></script>
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("CheckTrung", function (id, value, element) {
+            debugger;
+            var name = $("#Name").val();
+            var id = $("#ID").val();
+            var isSuccess = true;//không trùng
+            $.ajax({
+                async: false,
+                url: "/DocumentPrice/CheckTrung",
+                type: "get",
+                dataType: "json",
+                data: {
+                    id:id,
+                    name: name
+
+                },
+                success: function (res) {
+                    if (res.trungTen == true) {
+                        isSuccess = false;
+                    }
+                }
+            });
+            return isSuccess;
+
+        }, "Tên đã tồn tại");
+        $(document).ready(function () {
+            $("#basicForm").validate({
+                rules:
+                {
+                    Name:
+                    {
+                        required: true,
+                        CheckTrung: true
+                    },
+                    Price_min: {
+                        required: true,
+    
+                    },
+                    Price_max: {
+                        required: true,
+                     
+                    },
+                    Ordering: {
+                        required: true,
+                        digits: true
+                    }
+                },
+                messages:
+                {
+                    Name:
+                    {
+                        required: "Chưa nhập tên tài liệu",
+                        CheckTrung: "Tên đã tồn tại"
+                    },
+                    Price_min: {
+                        required: "Nhập giá tối thiểu",
+                     
+                    },
+                    Price_max: {
+                        required: "Nhập giá tối đa",
+                  
+                    },
+                    Ordering: {
+                        required: "Nhập số thứ tự",
+                        digits: "Nhâp kiểu số"
+                    }
+
+                }
+            });
+            account.initcheckall();
+            $('#pagemanager').slimScroll({
+                height: '300px',
+            });
+            $('.datepicker-mask1').datetimepicker({
+                locale: 'vi',
+                format: 'DD/MM/YYYY'
+            });
+            $(".select").select2();
+            $('#Price_min').on('keyup', function () {
+                debugger;
+                var money = $(this).val();
+                var count = money.length;
+                money = money.replace(".", "");
+                money = money.replace(".", "");
+                if (count > 3) {
+                    var mumber = Math.floor(count / 3);
+                    money = accounting.formatNumber(money)
+                    for (var i = 1; i <= mumber; i++) {
+                        money = money.replace(",", ".");
+                    }
+                }
+                $(this).val(money);
+            });
+            $('#Price_max').on('keyup', function () {
+                debugger;
+                var money = $(this).val();
+                var count = money.length;
+                money = money.replace(".", "");
+                money = money.replace(".", "");
+                if (count > 3) {
+                    var mumber = Math.floor(count / 3);
+                    money = accounting.formatNumber(money)
+                    for (var i = 1; i <= mumber; i++) {
+                        money = money.replace(",", ".");
+                    }
+                }
+                $(this).val(money);
+            })
+        });
+        change_price("Price_min");
+        change_price("Price_max");
+    });
+    function change_price(id) {
+        debugger;
+        var money = $("#" + id).val();
+        var count = money.length;
+        money = money.replace(".", "");
+        money = money.replace(".", "");
+        if (count > 3) {
+            var mumber = Math.floor(count / 3);
+            money = accounting.formatNumber(money);
+            for (var i = 1; i <= mumber; i++) {
+                money = money.replace(",", ".");
+            }
+        }
+        $("#" + id).val(money);
+    }
+</script>
+<script>
+    $(".select2").select2({ "width": "100%" });
+    // Basic Form
+    //$(document).ready(function () {
+
+    //    Customer.initcheckall();
+    //});
+</script>
+

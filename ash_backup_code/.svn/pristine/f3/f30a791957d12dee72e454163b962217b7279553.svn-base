@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Danh sách thủ tục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dohtml = ".html";
+    var lstDonVi = (List<Web.Model.tbl_DonViTTHC>)ViewBag.DonVi;
+    var lstLinhVuc = (List<Web.Model.tbl_LinhVucTTHC>)ViewBag.LinhVuc;
+    int curent_page = Request["page"] != null ? Convert.ToInt32(Request["page"]) : 1;
+}
+@using PagedList;
+@using PagedList.Mvc
+@using Web
+@using Web.Core
+@using Web.Model
+@model IPagedList<Web.Model.tbl_TTHC>
+<form action="" method="GET" class="form-horizontal custom-form" id="frmSrcTTHC">
+    <div class="row">
+        <div class="col-md-12"></div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-md-2 col-sm-2 control-label">Lĩnh vực: </label>
+                <div class="col-md-8 col-sm-8">
+                    @Html.DropDownList("type", new SelectList(lstLinhVuc, "Id", "Name", ViewBag.LinhVucId), "Tất cả", new { @class = "form-control", onchange = "$('#frmSrcTTHC').submit();" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 col-sm-2 control-label">Đơn vị: </label>
+                <div class="col-md-8 col-sm-8">
+                    <select id="unit" name="unit" class="form-control" onchange="$('#frmSrcTTHC').submit();">
+                        <option value="">Tất cả</option>
+                        @foreach (var itemDonVi in lstDonVi)
+                        {
+                            var selected = "";
+                            var showName = "";
+                            if (ViewBag.DonViId == itemDonVi.ID)
+                            {
+                                selected = "selected";
+                            }
+                            else
+                            {
+                                selected = "";
+                            }
+
+                            if (itemDonVi.Level == 0)
+                            {
+                                showName = itemDonVi.Name;
+                            }
+
+                            if (itemDonVi.Level == 1)
+                            {
+                                showName = "--" + itemDonVi.Name;
+                            }
+
+                            if (itemDonVi.Level == 2)
+                            {
+                                showName = "----" + itemDonVi.Name;
+                            }
+                            <option value="@itemDonVi.ID" @selected>@showName</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-md-2 col-sm-2 control-label">Tiêu đề: </label>
+                <div class="col-md-6 col-sm-6">
+                    <input type="text" class="form-control" name="title" placeholder="Tiêu đề TTHC" value="@ViewBag.Tieude">
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <img src="~/assets/images/nuttk.png" class="pull-right nuttk" onclick="$('#frmSrcTTHC').submit();" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="full_width col-md-12 text-center mt10"><h4 class="fwbold fsdstthc">DANH SÁCH THỦ TỤC HÀNH CHÍNH</h4></div>
+        <div class="customer-table" id="gridData">
+            <table class="table table-striped tableTTHC">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tiêu đề</th>
+                        @*<th>Lĩnh vực</th>*@
+                        <th class="mw40">Đơn vị thực hiện</th>
+                    </tr>
+                </thead>
+                @if (Model.Count != 0)
+                {
+                    <tbody>
+                        @{ int i = 0; int ttshow = 0;}
+                        @foreach (var item in Model)
+                        {
+                            i++;
+                            <tr onclick="window.location.href='/pages/service/@item.ID/@HelperString.RemoveMark(item.Tieude)@dohtml'" style="cursor: pointer">
+                                <td align="center">@(i + (curent_page - 1) * Webconfig.RowLimit)</td>
+                                <td>
+                                    <a href="javascript:void(0)">@item.Tieude</a>
+                                </td>
+                                @*<td>
+                                    @{
+                            var objLinhVuc = lstLinhVuc.FirstOrDefault(g => g.ID == item.LinhVucId);
+                            if (objLinhVuc != null)
+                            {
+                                @objLinhVuc.Name
+                            }
+                                    }
+                                </td>*@
+                                <td>
+                                    @{
+                                        var objDonVi = lstDonVi.FirstOrDefault(g => g.ID == item.DonViId);
+                                        if (objDonVi != null)
+                                        {
+                                            @objDonVi.Name
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+
+                @if (Model.Count == 0)
+                {
+                    <tbody>
+                        <td colspan="4" style="text-align: center"> Hiện chưa có thủ tục nào được cập nhật!</td>
+                    </tbody>
+                }
+            </table>
+        </div>
+
+        <div class="col-md-12" id="paginationholder">
+            <div class="center-align">
+                @if (Model.PageCount > 1)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("GetALL", new { page, catid = ViewBag.DonViId }))
+                }
+            </div>
+        </div>
+    </div>
+</div>

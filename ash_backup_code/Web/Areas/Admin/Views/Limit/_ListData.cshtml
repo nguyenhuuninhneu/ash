@@ -1,0 +1,88 @@
+﻿@using Web
+@using Web.Model
+
+@model List<tbl_Limit>
+ 
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th>Tiêu đề</th>
+            <th>Mã vị trí</th>
+            <th>Giá trị</th>
+            <th>Thứ tự</th>
+            @*<th>Ngôn ngữ</th>*@
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var item in Model)
+       {
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@item.ID" id="chk'@item.ID'">
+                        <label for="chk'@item.ID'"></label>
+                    </div>
+                </td>
+                <td style="vertical-align: middle;">@if (item.ParentID != 0) { @Html.Raw("--");}@item.Name
+                    @Html.HiddenFor(g => item.ID)
+                </td>
+                <td style="vertical-align: middle;">
+                   @item.Code
+                </td>
+                <td style="vertical-align: middle;" class="lockChar"> 
+                    @Html.TextBoxFor(g => item.Value, new { @class = "form-control width50 text-center valuelimit"})
+                </td>
+                <td style="vertical-align: middle;" class="lockChar">
+                    @Html.HiddenFor(g => item.ID)
+                    @Html.TextBoxFor(g => item.Ordering, new { @class = "form-control width50 text-center position"})
+                </td>
+                @*<td style="vertical-align: middle;" class="lockChar">
+                    @item.NgonNgu
+                </td>*@
+                <td style="vertical-align: middle;">@Html.Raw(item.Status ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td style="vertical-align: middle;width:132px">
+                    <div class="btn-list pull-right mr5">
+                        
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="limit.loadfrmedit(@item.ID)" title="Sửa"><i class="glyphicon glyphicon-pencil"></i></a>
+                      
+                            <a href="#" class="btn btn-success btn-bordered" onclick="limit.active(@item.ID) " title="@(item.Status ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="limit.ondelete(@item.ID) " title="Xóa">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+        });
+        $('.cabn_datatable').dataTable(
+       {
+           "oLanguage": {
+               "sUrl": "/Content/Vietnamese.json"
+           }
+       });
+        
+        $('.lockChar').on("keypress", function () {
+            return event.charCode >= 48 && event.charCode <= 57
+        })
+         
+    });
+</script>

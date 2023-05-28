@@ -1,0 +1,39 @@
+﻿@using Web.Model;
+@using Web.Areas.Admin.Controllers
+@{
+    ViewBag.Title = "Tài Liệu";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+  var lsttailieu= (List<tbl_TaiLieu>)TempData["Tailieu"] ;
+}
+@model List<tbl_DanhMucTaiLieu>
+<div class="body-content ">
+    <div class="content-right col-md-12 col-xs-12 col-sm-12 bordernone">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">@ConfigTextController.GetValueCFT("tailieu_dm")</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-md-2 col-sm-4 col-xs-6 iconbook">
+                                    <a href="/noibo/filetailieu/@item.ID"><img src="~/assets/images/folder_icon.png" /><span>@item.Name</span></a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .iconbook img{
+        max-width:100%;
+    }
+    .iconbook{
+        text-align:center;
+    }
+</style>

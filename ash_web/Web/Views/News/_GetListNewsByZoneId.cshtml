@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Core
+@model List<Web.Model.view_News>
+
+<div class="block-news">
+    <h2 class="block-title"><a href="/News/GetAllNewsByZoneId?zoneid=@TempData["zoneid"]">@TempData["TitleBoxNews"]</a></h2>
+    @if ((string)TempData["type"] == "thumb")
+    {
+        foreach (var item in Model)
+        {
+
+            <div class="item-news">
+                <a href="/News/Details/@item.ID?zoneid=@TempData["zoneid"]" class="thumb"><img src="@Common.Replace2Thumb(item.FeautureImage)"></a>
+                <h2><a href="/News/Details/@item.ID?zoneid=@TempData["zoneid"]" title="@item.Title">@HelperString.TruncateByWord(item.Title, 65)</a></h2>
+                <div class="time">@string.Format("{0: dd/MM/yyyy}", item.CreatedDate)</div>
+                <div class="clear"></div>
+            </div>
+        }
+    }
+    else if ((string)TempData["type"] == "list")
+    {
+        <ul class="list-news">
+            @foreach (var item in Model)
+            {
+                <li><a href="/News/Details/@item.ID?zoneid=@TempData["zoneid"]" title="@item.Title">@HelperString.TruncateByWord(item.Title, 65)</a></li>
+            }
+        </ul>
+    }
+    @if (Model.Count > 0)
+    {
+        if (Session["langcode"] == null || (string)Session["langcode"] == "vn")
+        {
+            <a href="/News/GetAllNewsByZoneId?zoneid=@TempData["zoneid"]" class="view-more">Xem thêm »</a>
+        }
+        if ((string)Session["langcode"] == "en")
+        {
+            <a href="/News/GetAllNewsByZoneId?zoneid=@TempData["zoneid"]" class="view-more">See more »</a>
+        }
+
+    }
+</div>

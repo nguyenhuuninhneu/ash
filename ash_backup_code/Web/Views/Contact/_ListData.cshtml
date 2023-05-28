@@ -1,0 +1,36 @@
+﻿@model List<Web.Model.tbl_Contact>
+@foreach (var qa in Model)
+{
+    <div class="qa">
+        <div class="details-q">
+            @*<div class="col-md-2">
+                    <div class="Photo">
+                        <img src="~/Content/Site/images/a-Photo.png" />
+                    </div>
+                </div>*@
+            <div class="col-md-12" style="color: blue">
+                <p>
+                    <strong>Câu hỏi: (<strong>@qa.FullNameOfQuestion</strong> - <span>@string.Format("{0: dd/MM/yyyy HH:mm:ss}", qa.CreatedDate)</span>)</strong>
+                </p>
+                <p>
+                    @Html.Raw(qa.Question.Replace(Environment.NewLine, "<br/>"))
+                </p>
+            </div>
+        </div>
+        <div class="details-a">
+            @*<div class="col-md-3">
+                    <div class="Photo">
+                        <img src="~/Content/Site/images/Photo.png" />
+                    </div>
+                </div>*@
+            <div class="col-md-12">                
+                <p>
+                    <strong>Trả lời: (<strong>@qa.UserNameOfAnswer</strong> <span>@string.Format("{0: dd/MM/yyyy HH:mm:ss}", qa.AnswerDate)</span>)</strong>
+                </p>
+                <p style="font-style: italic">
+                    @Html.Raw(qa.Answer.Replace(Environment.NewLine, "<br/>"))
+                </p>
+            </div>
+        </div>
+    </div>
+}

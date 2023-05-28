@@ -1,0 +1,87 @@
+﻿@using Web.Model
+@model Web.Model.tbl_LoaiVanBan
+@using (Ajax.BeginForm("Add", "LoaiVanBan", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "loaivanban.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+            var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LangCode, new SelectList(languages, "Code", "Name"), new { @class = "form-control select2", id= "LangCode" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên loại văn bản</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên loại văn bản" })
+        </div>
+    </div>
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Mô tả</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Description, new { @class = "form-control"})
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", @placeholder = "Thứ tự...", value ="0" })
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input type="checkbox" id="Status" name="Status" checked="" value="true">
+                <label for="Status"> Kích hoạt</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+        {
+            Name:
+            {
+                required: true
+            },
+            LangCode:
+            {
+                required: true
+            },
+            Ordering: {
+                required: true,
+                number:true
+            }
+        },
+            messages:
+            {
+                Name:
+                {
+                    required: "Chưa nhập tên loại văn bản"
+                },
+                LangCode: {
+                    required: "Bạn chưa chọn ngôn ngữ"
+                },
+                Ordering: {
+                    required: "Chưa nhập thứ tự",
+                    number: "Yêu cầu phải là số"
+                }
+            }
+        });
+        $("#LangCode").select2();
+    });
+</script>

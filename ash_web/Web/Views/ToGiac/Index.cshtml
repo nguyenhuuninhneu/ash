@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "Cung cấp thông tin tội phạm";
+    Layout = "~/Views/Shared/_LayoutFull.cshtml";
+    var colshow = "col-md-12";
+    if (ViewBag.ToiPham != null)
+    {
+        colshow = "col-md-5";
+    }
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="~/AppJs/togiac.js"></script>
+@using Web.Core
+@using Web.Model
+@model Web.Model.tbl_ToGiac
+<style>.notifyjs-corner {top: 30% !important;right: calc(50% - 150px) !important;width: 300px !important;}</style>
+@if (Request["success"] == "0")
+{
+    <script>alertmsg.error("Kiểm tra lại các trường thông tin bị lỗi !");</script>
+}
+@if (Request["success"] == "1")
+{
+    <script>alertmsg.success("Đã gửi thông tin. Cảm ơn bạn đã cung cấp !");</script>
+}
+@if (Request["captcha"] == "0")
+{
+    <script>alertmsg.error("Mã bảo mật không đúng !");</script>
+}
+<div class="row content-space">
+    <div class="@colshow col-xs-12 qa pr0">
+        <h3>@ViewBag.Title</h3>
+        <div class="node-qa">
+            @Html.Raw(TempData["Note"])
+        </div>
+        <div class="content-qa col-md-12">
+            @using (Html.BeginForm("Index", "ToGiac", FormMethod.Post, new { @id = "basicForm", @class = "form-horizontal" }))
+            {
+                @Html.HiddenFor(g => g.ToiPhamID, new { Value = TempData["ToiPhamID"] });
+                <div class="form-group lbnr">
+                    <div class="text-bold"><span class="cred">Các trường có dấu (*) là bắt buộc</span></div>
+                </div>
+                <div class="form-group lbnr">
+                    <div class="text-bold">Họ và tên</div>
+                    @Html.TextBoxFor(g => g.FullName, new { @class = "form-control", placeholder = "Họ và tên" })
+                </div>
+                <div class="form-group lbnr">
+                    <div class="text-bold">Số điện thoại</div>
+                    @Html.TextBoxFor(g => g.Phone, new { @class = "form-control", placeholder = "Số điện thoại" })
+                </div>
+                <div class="form-group lbnr">
+                    <div class="text-bold">Địa chỉ</div>
+                    @Html.TextBoxFor(g => g.DiaChi, new { @class = "form-control", placeholder = "Địa chỉ" })
+                </div>
+                <div class="form-group lbnr">
+                    <div class="text-bold">Email</div>
+                    @Html.TextBoxFor(g => g.Email, new { @class = "form-control", placeholder = "Email" })
+                </div>
+                <div class="form-group lbnr">
+                    <div class="text-bold">Nội dung <span class="cred">(*)</span></div>
+                    @Html.TextAreaFor(g => g.NoiDung, new { @class = "form-control", placeholder = "Nội dung tố giác", rows="5" })
+                </div>
+                <div class="form-group lbnr">
+                    <div class="g-recaptcha pull-left" data-sitekey="@ViewBag.PublicKey"></div>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light ml5">Gửi thông tin</button>
+                </div>
+            }
+        </div>
+    </div>
+    @if (ViewBag.ToiPham != null)
+    {
+        // to giac doi tuong truy na thi hien thi thong tin doi tuong do
+        var ToiPham = (tbl_truyna)ViewBag.ToiPham;
+        var dothtml = ".html";
+        <div class="col-md-7 col-xs-12">
+            <div class="col-md-5">
+                <a href="/pages/doi-tuong/@ToiPham.ID/@HelperString.RemoveMark(@ToiPham.Name)@dothtml" style="text-decoration: none;">
+                    <div class="posrel mb10">
+                        <img src="@ToiPham.Photo" class="img-responsive">
+                        @if (ToiPham.IsDinhNa)
+                        {
+                            <div class="dinhna dinhnadetail">ĐÌNH NÃ</div>
+                        }
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-7 pl0">
+                <a href="/pages/doi-tuong/@ToiPham.ID/@HelperString.RemoveMark(@ToiPham.Name)@dothtml" style="text-decoration: none;">
+                    <h3 class="title mt0 pt10">
+                        @ToiPham.Name
+                    </h3>
+                </a>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <h3 style="orphans: 3; widows: 3; page-break-after: avoid; box-sizing: border-box; font-family: tahoma; font-weight: 700; line-height: 1.1; font-size: 15px; text-transform: uppercase; margin: 0px 0px 10px; color: #d52d31; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">Thông tin tội phạm</h3>
+                <table class="table table-bordered" style="border-spacing: 0px; box-sizing: border-box; width: 100%; max-width: 100%; margin-bottom: 17px; border: 1px solid #dddddd; border-collapse: collapse !important; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;">
+                    <tbody>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                Họ và tên
+                            </td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                @ToiPham.Name
+                            </td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Tên gọi khác</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                @(ToiPham.TenKhac != null ? ToiPham.TenKhac : "Không")
+                            </td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Giới tính</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@(@ToiPham.GioiTinh == 1 ? "Nam" : "Nữ")</td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Năm sinh</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@ToiPham.NamSinh</td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Hộ khẩu thường trú</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                @ToiPham.HoKhauTT
+                            </td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Nơi đăng ký tạm trú</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                @ToiPham.NoiDKTT
+                            </td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                @ToiPham.QuocTich
+                            </td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Việt Nam</td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">
+                                Dân tộc
+                            </td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@ToiPham.DanToc</td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Họ và tên Cha</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@ToiPham.TenCha</td>
+                        </tr>
+                        <tr style="page-break-inside: avoid; box-sizing: border-box; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: transparent !important;" bgcolor="transparent !important">
+                            <td style="box-sizing: border-box; width: 167px; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">Họ và tên Mẹ</td>
+                            <td style="box-sizing: border-box; font-size: 13px; padding: 4px; border: 1px solid #dddddd; color: #000000 !important; box-shadow: none !important; text-shadow: none !important; background-color: #ffffff !important;">@ToiPham.TenMe</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+            {
+                Email:
+                {
+                    email: true
+                },
+                NoiDung:
+                {
+                    required: true
+                },
+                Phone: {
+                    digits: true,
+                    maxlength: 11
+                }
+            },
+            messages:
+            {
+                Email:
+                {
+                    email: "Email không đúng định dạng",
+                },
+                NoiDung:
+                {
+                    required: "Bạn chưa nhập Nội dung"
+                },
+                Phone: {
+                    digits: "Số điện thoại phải là số nguyên",
+                    maxlength: "Số điện thoại tối đa 11 ký tự"
+                }
+            },
+            highlight: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                jQuery(element).closest('.form-group').removeClass('has-error');
+            }
+        });
+    })
+</script>
+<style>
+    .text-bold {
+        font-weight: bold;
+    }
+
+    .lbnr label {
+        font-weight: normal;
+        color: #a94442;
+    }
+
+    .content-qa .form-group {
+        width: 100%;
+    }
+</style>

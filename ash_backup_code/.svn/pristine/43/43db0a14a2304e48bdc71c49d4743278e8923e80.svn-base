@@ -1,0 +1,13 @@
+﻿@{
+    Layout = null;
+}
+@model List<Web.Model.tbl_SlideImages>
+@foreach (var slide in Model)
+{
+    <div class="swiper-slide galley-item">
+        <img src="@slide.Images">
+        <div class="caption">@slide.Name</div>
+    </div>
+}
+
+

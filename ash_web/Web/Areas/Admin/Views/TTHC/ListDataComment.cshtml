@@ -1,0 +1,109 @@
+﻿@using Web.Core
+@using Web.Model
+@using Web.Model.CustomModel
+@model IEnumerable<Web.Model.tbl_TTHCComment>
+@{
+    var lstTTHC = (List<tbl_TTHC>)TempData["TTHC"];
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+    var tieude = TempData["tieude"];
+}
+
+<div style="padding-bottom:15px"><b>Thủ tục : </b>@tieude.ToString()</div>
+<table class="table table-striped cabn_datatable">
+    <thead>
+        <tr>
+            <td colspan="7" align="right">
+                <a href="/TTHC" class="pull-right" style="font-size:15px"><i class="fa fa-reply mr5" aria-hidden="true"></i> Quay lại</a>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <input type="hidden" id="hdfID" />
+                <div class="checkbox">
+                    <input id="chkall" type="checkbox">
+                    <label for="chkall"></label>
+                </div>
+            </th>
+            <th class="whoten">Họ và tên</th>
+            <th>Email</th>
+            <th>Ngày gửi</th>
+            <th>Nội dung</th>
+            <th class="wtrangthai">Trạng thái</th>
+            <th class="func3but"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemS in Model)
+        {
+            if (itemS.CommentID == null)
+            {
+                var info = "";
+                if (itemS.NoiDung.Count() > 200)
+                {
+                    info = itemS.NoiDung.Substring(0, 199) + "...";
+                }
+                else { info = itemS.NoiDung; }
+                var firstordefault = lstTTHC.Where(g => g.ID == itemS.TTHCID).FirstOrDefault();
+               
+            <tr>
+                <td style="vertical-align: middle;">
+                    <div class="checkbox">
+                        <input type="checkbox" value="@itemS.ID" id="chk'@itemS.ID'">
+                        <label for="chk'@itemS.ID'"></label>
+                    </div>
+                </td>
+                <td valign="middle" align="left">@itemS.FullName</td>
+                <td valign="middle" align="left">@itemS.Email</td>
+                <td valign="middle" align="left">@string.Format("{0: dd/MM/yyyy HH:mm}", itemS.CreateDate)</td>
+                <td valign="middle" align="left">@info</td>
+                <td style="vertical-align: middle;">@Html.Raw(itemS.Status ? "<span style='color:green'>Kích hoạt</span>" : "<span style='color:red'>Vô hiệu</span>")</td>
+                <td valign="middle" align="center">
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.View))
+                        {
+                            <a href="/TTHC/Reply/?commentId=@itemS.ID" title="Danh sách trả lời" class="btn btn-primary btn-bordered"><i class="fa fa-comment"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.View))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="TTHCcomment.details(@itemS.ID) " title="Chi tiết">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Edit))
+                        {
+                            <a href="#" class="btn btn-success btn-bordered" onclick="TTHCcomment.active(@itemS.ID,@itemS.TTHCID) " title="@(itemS.Status ? "Vô hiệu" : "Kích hoạt" )">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="TTHCcomment.ondelete(@itemS.ID,@itemS.TTHCID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<style>
+    .mr5 {
+            width: 168px;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+            InitClickCheckAllInTable("chkall", function (res) {
+            $("#hdfID").val(res);
+            });
+        $('.cabn_datatable').dataTable(
+            {
+                "oLanguage": {
+                    "sUrl": "/Content/Vietnamese.json"
+                },
+            }
+        );
+        });
+</script>

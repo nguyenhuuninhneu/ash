@@ -1,0 +1,185 @@
+﻿@using Web.Model
+@using Web.Areas.Admin.Controllers
+@model Web.Model.tbl_DMChung
+@{
+    ViewBag.nextOrder = ViewBag.nextOrder ?? 0;
+    var lstDMNhom = (List<tbl_DMNhom>)TempData["lstDMNhom"];
+    var lstUser=(List<tbl_User>)TempData["lstUser"];
+    var lstParent = (List<tbl_DMChung>)TempData["lstParent"];
+    lstParent.ForEach(g => g.Ten = string.Concat(Enumerable.Repeat("--", g.Level)) + " " + g.Ten);
+}
+<script src="~/Content/Admin/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+<script src="~/Content/Admin/assets/ckeditor/config.js"></script>
+<style>
+    .select2-container .select2-choice .select2-arrow b
+    {
+        background:none;
+    }
+    .select2-container-multi .select2-search-choice-close{
+        left:inherit;
+    }
+</style>
+@using (Ajax.BeginForm("Add", "DMChung", null,
+            new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "dmchung.onAddSuccess"
+            },
+            new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <input type="hidden" name="Code" id="CodeHide" value="@ViewBag.Code" />
+    <div class="form-group">
+        <label class="col-md-2 control-label">Nhóm</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(g => g.CatID, new SelectList(lstDMNhom, "ID", "Name"), "--- Danh mục nhóm ---", new { @class = "form-control selectAdd", id = "CatID" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("DonViCha")</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(g => g.ParentID, new SelectList(lstParent, "ID", "Ten"), "--- Đơn vị cha ---", new { @class = "form-control selectAdd", id = "ParentID" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("TenDonVi")</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ten, new { @class = "form-control", placeholder = "Tên đơn vị" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("DuongDan")</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Url, new { @class = "form-control", placeholder = "http://" })
+        </div>
+    </div>
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ban chấp hành</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.BCH, new SelectList(lstUser, "ID", "FullName"), "----- Chọn ban chấp hành ------", new { @class = "form-control width300 select2", id = "BCH", multiple = true })
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">Phone</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Phone, new { @class = "form-control", placeholder = "Số điện thoại" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Di động</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.DiDong, new { @class = "form-control", placeholder = "Di động" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Địa chỉ</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+        </div>
+    </div>
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ảnh</label>
+        <div class="col-md-10">
+            @Html.Partial("_AttachmentPhotoAndCrop", new { Name = "FeatureImage", Multiple = false })
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("NoiDung")</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Details, new { @class = "form-control", placeholder = "Nội dung bài viết" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">@ConfigTextController.GetValueCFT("ThuTu")</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", @placeholder = "Thứ tự...", Value = 0 })
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input type="checkbox" id="Status" name="Status" checked="" value="true">
+                <label for="Status">@ConfigTextController.GetValueCFT("KichHoat")</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">@ConfigTextController.GetValueCFT("ThemMoi")</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+       {
+           CatID: {
+               required:true
+           },
+           Ten:
+           {
+               required: true
+           },
+           BCH:
+           {
+               required: true
+           },
+           Phone:
+           {
+               required: true,
+               number: true
+           },
+           Ordering: {
+               required: true,
+               number: true
+           }
+       },
+            messages:
+            {
+                CatID: {
+                    required: "Chưa nhập đơn vị nhóm"
+                },
+                Ten:
+                {
+                    required: "Chưa nhập tên đơn vị"
+                },
+                BCH:
+           {
+               required: "Chưa nhập ban chấp hành"
+           },
+                Phone:
+                {
+                    required: "Chưa nhập số điện thoại",
+                    number: "Yêu cầu phải là số"
+                },
+                Ordering: {
+                    required: "Chưa nhập thứ tự",
+                    number: "Yêu cầu phải là số"
+                }
+            }
+        });
+        $('#ParentID').select2();
+        $('#CatID').select2();
+        $('#BCH').select2();
+        CKEDITOR.replace("Details", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 350
+        });
+        $("#basicForm #CatID").change(function () {
+            var Code = $("#CodeHide").val();
+            $.get("/DMChung/GetAllParentByCat?Code=" + Code + "&CatID=" + $(this).val(), function (res) {
+                debugger;
+                var html = '<option value="">-- Đơn vị cha --</option>';
+                for (var i = 0; i < res.length; i++) {
+                    html += '<option value="' + res[i].ID + '">' + res[i].Ten + '</option>';
+                }
+                $("#basicForm #ParentID").html(html);
+                $("#basicForm #ParentID").select2();
+            });
+        });
+    });
+</script>

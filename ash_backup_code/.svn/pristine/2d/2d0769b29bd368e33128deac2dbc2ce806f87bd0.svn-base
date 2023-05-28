@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Danh sách văn bản theo trích yếu";
+    Layout = null;
+    var dothtml = ".html";
+    int i = 0;
+    var lstVanBannoibo = (List<tbl_VanBan>)TempData["lstVanBannoibo"];
+}
+@using Web.Areas.Admin.Controllers
+@using Web.Model
+@using Web.Core
+@model List<tbl_VanBan>
+
+<div class="col-md-12 boxhomevz pl0 pr0 homevbz">
+    <ul class="nav nav-tabs">
+        @*@if (ViewBag.Vitri == 1)
+        {
+            <li class="active"><a data-toggle="tab" href="#vb">@ConfigTextController.GetValueCFT("vanban_noibo")</a></li>
+            <li><a data-toggle="tab" href="#noibo">@ConfigTextController.GetValueCFT("vanban_qppl")</a></li>
+        }
+        else
+        {*@
+            <li class="active"><a data-toggle="tab" href="#noibo">@ConfigTextController.GetValueCFT("vanban_qppl")</a></li>
+            @*<li><a data-toggle="tab" href="#vb">@ConfigTextController.GetValueCFT("vanban_noibo")</a></li>
+        }*@
+    </ul>
+    <div class="tab-content">
+        <div id="vb" class="tab-pane fade in active">
+            <div class="table-responsive full_width">
+                <table class="table table-striped cabn_datatable table-bordered">
+                    <thead>
+                        <tr style="font-weight: bold">
+                            <th style="width: 42px;">@ConfigTextController.GetValueCFT("vanban_stt")</th>
+                            <th style="width: 110px;">@ConfigTextController.GetValueCFT("vanban_sokihieu")</th>
+                            <th style="width: 90px;">@ConfigTextController.GetValueCFT("vanban_ngaybh")</th>
+                            <th>@ConfigTextController.GetValueCFT("vanban_trichyeu")</th>
+                            <th style="width: 65px;">@ConfigTextController.GetValueCFT("vanban_taive")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in lstVanBannoibo)
+                    {
+                        i = i + 1;
+                        <tr>
+                            <td style="vertical-align: middle; text-align: center;">@i</td>
+                            <td style="vertical-align: middle;">@item.SoHieu</td>
+                            <td style="vertical-align: middle;">@Web.Core.HelperDateTime.ConvertDateToString(item.NgayBanHanh)</td>
+                            <td style="vertical-align: middle;"><a style="text-decoration: none;" href="/pages/vanban/@item.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@item.TrichYeu), 150)@dothtml">@item.TrichYeu</a></td>
+                            @if (!string.IsNullOrEmpty(item.Attachment))
+                            {
+                                <td style="vertical-align: middle; text-align: center;">
+                                    @if (User == null)
+                                    {
+                                        <a href="/User/Login"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@item.Attachment"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                            <td style="vertical-align: middle; text-align: center;"></td>
+                            }
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @*<div id="noibo" class="tab-pane fade">
+            <div class="table-responsive full_width" id="gridData">
+                <table class="table table-striped cabn_datatable table-bordered">
+                    <thead>
+                        <tr style="font-weight: bold">
+                            <th style="width: 42px;">@ConfigTextController.GetValueCFT("vanban_stt")</th>
+                            <th style="width: 110px;">@ConfigTextController.GetValueCFT("vanban_sokihieu")</th>
+                            <th style="width: 90px;">@ConfigTextController.GetValueCFT("vanban_ngaybh")</th>
+                            <th>@ConfigTextController.GetValueCFT("vanban_trichyeu")</th>
+                            <th style="width: 65px;"@ConfigTextController.GetValueCFT("vanban_taive")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ i = 0; }
+                        @foreach (var item in Model)
+                        {
+                            i = i + 1;
+                            <tr>
+                                <td style="vertical-align: middle; text-align: center;">@i</td>
+                                <td style="vertical-align: middle;">@item.SoHieu</td>
+                                <td style="vertical-align: middle;">@Web.Core.HelperDateTime.ConvertDateToString(item.NgayBanHanh)</td>
+                                <td style="vertical-align: middle;"><a style="text-decoration: none;" href="/pages/vanban/@item.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@item.TrichYeu), 150)@dothtml">@item.TrichYeu</a></td>
+                                @if (!string.IsNullOrEmpty(item.Attachment))
+                                {
+                                    <td style="vertical-align: middle; text-align: center;"><a href="@item.Attachment"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td style="vertical-align: middle; text-align: center;"></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
+    </div>
+</div>
+@*<div class="col-md-12 boxhomevz pl0 pr0">
+        <div class="title_panel" title="Văn bản mới">
+            <a href="/pages/vanban.html">Danh sách văn bản</a>
+        </div>
+        <div class="panel-body pl0 pr0">
+            <div class="table-responsive full_width" id="gridData">
+                <table class="table table-striped cabn_datatable table-bordered">
+                    <thead>
+                        <tr style="font-weight: bold">
+                            <th style="width: 42px;">STT</th>
+                            <th style="width: 100px;">Số ký hiệu</th>
+                            <th style="width: 90px;">Ngày BH</th>
+                            <th>Trích yếu</th>
+                            <th style="width: 65px;">Tải về</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            i = i + 1;
+                            <tr>
+                                <td style="vertical-align: middle; text-align: center;">@i</td>
+                                <td style="vertical-align: middle;">@item.SoHieu</td>
+                                <td style="vertical-align: middle;">@Web.Core.HelperDateTime.ConvertDateToString(item.NgayBanHanh)</td>
+                                <td style="vertical-align: middle;"><a style="text-decoration: none;" href="/pages/vanban/@item.ID/@HelperString.TruncateByChar(@HelperString.RemoveMark(@item.TrichYeu), 150)@dothtml">@item.TrichYeu</a></td>
+                                @if (!string.IsNullOrEmpty(item.Attachment))
+                                {
+                                    <td style="vertical-align: middle; text-align: center;"><a href="@item.Attachment"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td style="vertical-align: middle; text-align: center;"></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>*@

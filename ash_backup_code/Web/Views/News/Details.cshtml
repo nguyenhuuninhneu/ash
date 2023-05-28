@@ -1,0 +1,405 @@
+﻿@using System.Configuration
+@using Web.Model
+@using Web.Core
+@using Web.Areas.Admin.Controllers
+@model Web.Model.tbl_News
+@{
+    var lstcmt = (List<tbl_NewsComment>)TempData["Comment"];
+    var allReply = (List<tbl_NewsComment>)ViewBag.lstReply;
+    var lstbrother = (List<view_NEWS_LISTDATA>)TempData["brothermodel"];
+    var lstallmodel = (List<tbl_News>)TempData["lstallmodel"];
+    var count = lstcmt.Count();
+}
+@{
+    ViewBag.Title = @ViewBag.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var DOMAIN_NAME = ConfigurationManager.ConnectionStrings["DOMAIN_NAME"].ToString();
+    var link_share = DOMAIN_NAME + "/pages/news/" + Model.ID + "/" + Web.Core.HelperString.RemoveMark(Model.Title) + ".html";
+    var img_share = DOMAIN_NAME + Model.FeautureImage;
+    var dothtml = ".html";
+}
+@if (Request["success"] == "0")
+{
+    <script>alertmsg.error("Gửi ý kiến không thành công !");</script>
+}
+@if (Request["success"] == "1")
+{
+    <script>alertmsg.success("Ý kiến của bạn đã được gửi đi, <br> đang chờ quản trị viên xét duyệt !");</script>
+}
+@if (Request["captcha"] == "0")
+{
+    <script>alertmsg.error("Mã bảo mật không đúng !");</script>
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<div class="row content-space">
+    <!-- start right content news -->
+    <div class="col-md-12 col-xs-12">
+        <div class="detail-news">
+            <h1 class="title">@Model.Title</h1>
+            <div class="detail-info">
+                @ConfigTextController.GetValueCFT("dangvao") @string.Format("{0:dd/MM/yyyy}", Model.CreatedDate)
+                <ul class="article-tools">
+                    @if (ConfigTextController.GetValueCFT("showview") == "1")
+                    {
+                        <li>
+                            <a href="#comment">
+                                <i class="glyphicon glyphicon-eye-open"></i>@Model.ViewCount
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href="http://www.facebook.com/sharer/sharer.php?u=@link_share&amp;picture=@img_share&title=@Model.Title&description=@Model.Description&amp;redirect_uri=@link_share&amp;version=v2.3" target="_blank" class="facebookShare"><i class="fa fa-facebook-square" aria-hidden="true"></i>@ConfigTextController.GetValueCFT("tintuc_chiase")</a>
+                    </li>
+                    @if (Model.AllowComment == 1)
+                    {
+                        <li>
+                            <a href="#comment">
+                                <i class="glyphicon glyphicon-comment"> </i>Bình luận
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href="/News/Details/@Model.ID?PrintView=1" target="_blank">
+                            <i class="glyphicon glyphicon-print"> </i>@ConfigTextController.GetValueCFT("tintuc_bandein")
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <div class="detail-info">
+            <div class="addthis_inline_share_toolbox"></div>
+        </div>
+            @if (!string.IsNullOrEmpty(Model.Description) && Model.ID > 12941)
+            {
+                <div class="detail-sum">
+                    @Html.Raw(Model.Description)
+                </div>
+            }
+            <div class="detail-content">
+                @Html.Raw(Model.Details)
+            </div>
+            <div class="detail-author">@Model.Author</div>
+            <div class="block_tag width_common space_bottom_20">
+                @if (!string.IsNullOrEmpty(Model.Tags))
+                {
+                    <div class="txt_tag"><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;Tags</div>
+                    var arrtags = Model.Tags.Split(';');
+                    for (int i = 0; i < arrtags.Length; i++)
+                    {
+                        if (!string.IsNullOrEmpty(arrtags[i]))
+                        {
+                            <a href="/News/SearchHome?tags=1&search=@arrtags[i]" title="arrtags[i]" class="tag_item">@arrtags[i]</a>
+                        }
+                    }
+                }
+            </div>
+            @if (lstbrother != null && lstbrother.Count > 0)
+            {
+                <hr style="border-top: 1px solid #337ab7; width: 100%; float:left" />
+                <div class="col-md-12" style="margin-bottom:20px;">
+                    <div class="row">
+                        <h3 class="panel-title" style="color:#337ab7;font-weight:bold;">@ConfigTextController.GetValueCFT("tintuc_tinkhac")</h3>
+                    </div>
+                </div>
+                <div class="detail-info">
+                    <div id="dosinot">
+                        <div class="tab-content clearfix" id="tinvidepo">
+                            <div>
+                                <div class="longsai">
+                                    @{ int tt = 0; }
+                                    @foreach (var item in lstbrother)
+                                    {
+                                        tt++;
+                                        <div class="bo3ro Other_new">
+                                            <img class="right_img" src="@item.FeautureImage" width="80" height="60"/>
+                                            <ul class="texttintuc">
+                                                <li>
+                                                    <a href="/pages/news/@item.ID/@Web.Core.HelperString.RemoveMark(@item.Title)@dothtml">@item.Title</a><br/>
+                                                    <i>@HelperDateTime.ConvertDateToString(@item.CreatedDate)</i>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        if (tt % 2 == 0)
+                                        {
+                                            <div class="clearfix"></div>
+                                        } 
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*@if (lstbrother != null)
+                        {
+                            foreach (var item in lstbrother)
+                            {
+                                <div class="col-md-3 Other_new">
+                                    <img src="@item.FeautureImage" class="img-responsive" />
+                                    <a class="new_brother_a" href="/pages/news/@item.ID/@HelperString.RemoveMark(item.Title)@dothtml">@item.Title</a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            foreach (var item in lstallmodel)
+                            {
+                                <div class="col-md-3 Other_new">
+                                    <img src="@item.FeautureImage" class="img-responsive" />
+                                    <a class="new_brother_a" href="/pages/news/@item.ID/@HelperString.RemoveMark(item.Title)@dothtml">@item.Title</a>
+                                </div>
+                            }
+                        }*@
+                </div>
+            }
+            @*@if (Model.AllowComment == 1)
+                {
+                    if (count > 0)
+                    {
+                            <div class="detail-comment" id="box_comment">
+                                <div class="full_nofleft"><div class="pull-left"><strong>Ý kiến bạn đọc</strong> (<label id="total_comment">@count</label>) </div></div>
+                                @{ int tt = 1; var cmit = "";}
+                                @foreach (var item in lstcmt)
+                                {
+                                    if (item.CommentID == null)
+                                    {
+                                        if (tt % 2 == 0) { cmit = "hight_light"; } else { cmit = ""; }
+                                        tt++;
+                                        var info = " - " + string.Format("{0: dd/MM/yyyy HH:mm}", item.CreateDate);
+                                <div class="comment_item @cmit" data-time="1488266207">
+                                    <div class="right width_comment_item width_common">
+                                        <div class="width_common">
+                                            <p class="full_content">@Html.Raw(item.NoiDung)</p>
+                                            <div class="user_status width_common" data-user-type="6">
+                                                <span class="pull-left txt_666 txt_11"><a class="nickname txt_666" href="javascript:void(0)" title="" target="_blank"><b>@item.FullName</b></a>@info</span>
+                                                <p class="txt_666 txt_11 pull-right block_like_web"><a id="replyComment" data-id="@item.ID" class="txt_blue txt_11 link_reply" href="javascript:void(0);" rel="20452081" parent="20452081"><span class="icon_portal icon_feedback">&nbsp;</span> <b>Trả lời</b></a></p>
+                                            </div>
+                                        </div>
+
+                                        @{
+                                                    var isCon = allReply.Count(g => g.CommentID == item.ID);
+                                                    if (isCon > 0)
+                                                    {
+                                                        foreach (var itemc in allReply.Where(g => g.CommentID == item.ID).OrderBy(g => g.CreateDate))
+                                                        {
+                                                            var infoc = " - " + string.Format("{0: dd/MM/yyyy HH:mm}", itemc.CreateDate);
+                                                <div class="sub_comment">
+                                                    <div class="subcomment_item width_common">
+                                                        <p class="full_content">@Html.Raw(itemc.NoiDung)</p>
+                                                        <div class="user_status width_common" data-user-type="5">
+                                                            <span class="pull-left txt_666 txt_11"><a class="nickname txt_666" href="javascript:void(0)" title="" target="_blank"><b>@itemc.FullName</b></a>@infoc</span>
+                                                            <p class="txt_666 txt_11 pull-right block_like_web"><a id="replyComment" data-id="@item.ID" class="txt_blue txt_11 link_reply" href="javascript:void(0);"><span class="icon_portal icon_feedback">&nbsp;</span> <b>Trả lời</b></a></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                        }
+                                                    }
+                                        }
+
+                                    </div>
+                                    <div class="clear">&nbsp;</div>
+                                </div>
+                                                        }
+                                                    }
+                            </div>
+                                            }
+
+                                            <div class="detail-sum" style="padding-bottom: 10px">
+                                                <table class="table mb10">
+                                                    <thead>
+                                                        <tr>
+                                                            <th align="left" valign="middle" style="color: #9d234c; background-color: #eee"><b>Bình luận</b></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                                <form action="~/News/Comment" id="comment" method="post">
+                                                    @Html.Hidden("NewsID", Model.ID)
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb10">
+                                                            <div class="text-bold"><span class="cred">Các trường có dấu (*) là bắt buộc</span></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="text-bold">Họ và tên <span class="cred">(*)</span></div>
+                                                            @Html.TextBox("FullName", "", new { @class = "form-control", placeholder = "Họ và tên" })
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="text-bold">Email <span class="cred">(*)</span></div>
+                                                            @Html.TextBox("Email", "", new { @class = "form-control", placeholder = "Email" })
+                                                        </div>
+                                                        <div class="col-md-12 mt10">
+                                                            <div class="text-bold">Nội dung <span class="cred">(*)</span></div>
+                                                            @Html.TextArea("NoiDung", new { @class = "form-control", rows = "5" })
+                                                        </div>
+                                                        <div class="col-md-12 mt10 lbnr">
+                                                            <div class="g-recaptcha pull-left" data-sitekey="@ViewBag.PublicKey"></div><button type="submit" class="btn btn-primary waves-effect waves-light ml5">Gửi bình luận</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            }*@
+            <div id="formReplyComment" style="display:none">
+                <form action="/News/ReplyComment" method="post" id="fcomment">
+                    <input type="hidden" name="CommentID" id="parentCommentId" />
+                    @Html.Hidden("NewsID", Model.ID)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-bold text-right"><span class="cred">Các trường có dấu (*) là bắt buộc</span></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-bold">Họ và tên <span class="cred">(*)</span></div>
+                            @Html.TextBox("FullName", "", new { @class = "form-control", placeholder = "Họ và tên" })
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-bold">Email <span class="cred">(*)</span></div>
+                            @Html.TextBox("Email", "", new { @class = "form-control", placeholder = "Email" })
+                        </div>
+                        <div class="col-md-12 mt10">
+                            <div class="text-bold">Nội dung <span class="cred">(*)</span></div>
+                            @Html.TextArea("NoiDung", new { @class = "form-control", rows = "5" })
+                        </div>
+                        <div class="col-md-12 mt10 lbnr">
+                            <div id="captcha_container"><div class="g-recaptcha pull-left" data-sitekey="@ViewBag.PublicKey"></div></div>
+                            <button type="submit" class="btn btn-default waves-effect waves-light ml5">Trả lời</button>
+                        </div>
+                    </div>
+                </form>
+                <script src="https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer></script>
+                <script>
+                    var loadCaptcha = function () {
+                        grecaptcha.render('captcha_container', {
+                            'sitekey': '@ViewBag.PublicKey',
+                        });
+                    };
+                    $(document).ready(function () {
+                        $("#fcomment").validate({
+                            rules: {
+                                FullName: {
+                                    required: true
+                                },
+                                Email: {
+                                    required: true,
+                                    email: true
+                                },
+                                NoiDung: {
+                                    required: true
+                                }
+                            },
+                            messages: {
+                                FullName: {
+                                    required: "Bạn chưa nhập họ và tên"
+                                },
+                                Email: {
+                                    required: "Bạn chưa nhập Email",
+                                    email: "Email không đúng định dạng"
+                                },
+                                NoiDung: {
+                                    required: "Bạn chưa nhập nội dung"
+                                }
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .detail-content table td {
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        padding: 5px 10px;
+        vertical-align: middle;
+        text-align: center;
+        border: none;
+    }
+
+        .detail-content table td p {
+            margin-bottom: 0;
+        }
+
+        .detail-content table td:last-child {
+            border-right: 1px solid #ccc;
+            border: none;
+        }
+
+    .detail-content table tr:last-child td {
+        border-bottom: 1px solid #ccc;
+        border: none;
+    }
+</style>
+@if (Model.AllowComment == 1)
+{
+    <style>
+        .detail-comment table tbody td {
+            border-top: none !important;
+            padding-left: 0px;
+        }
+
+        .detail-comment table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+            .detail-comment table tbody tr td p {
+                margin-bottom: 0px;
+            }
+
+        .detail-comment table thead tr th {
+            padding: 8px 8px;
+        }
+    </style>
+}
+<script>
+    $(document).ready(function () {
+        $("table").css("width", "100%");
+        $("#comment").validate({
+            rules: {
+                FullName: {
+                    required: true
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                NoiDung: {
+                    required: true
+                }
+            },
+            messages: {
+                FullName: {
+                    required: "Bạn chưa nhập họ và tên"
+                },
+                Email: {
+                    required: "Bạn chưa nhập Email",
+                    email: "Email không đúng định dạng"
+                },
+                NoiDung: {
+                    required: "Bạn chưa nhập nội dung"
+                }
+            }
+        });
+        $(document).on('click', '#replyComment', function () {
+            $("#displayContentReply").remove();
+            $(this).toggleClass("openrep");
+            if ($(this).hasClass("openrep")) {
+                $(this).parent().parent().parent().append("<div id='displayContentReply'></div>");
+                var id = $(this).attr("data-id");
+                $("#parentCommentId").val(id);
+                var templateReply = $("#formReplyComment").html();
+                $(this).parent().parent().parent().find("#displayContentReply").html(templateReply);
+            }
+        });
+    })
+</script>
+<style>
+    .new_brother {
+        padding-bottom: 10px;
+    }
+
+        .new_brother img {
+            max-width: 100%;
+        }
+
+    .new_brother_a {
+        color: #000;
+        font-size: 12px;
+    }
+</style>

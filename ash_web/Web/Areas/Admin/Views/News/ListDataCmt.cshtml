@@ -1,0 +1,54 @@
+﻿@using Web.Model
+@using Web.Model.CustomModel
+@using Web.Core
+@model IEnumerable<Web.Model.tbl_NewsComment>
+@{
+    var lstAction = (List<int>)HttpContext.Current.Session["Action"];
+}
+<table class="table">
+    <thead>
+        <tr>
+            <td colspan="3" style="vertical-align:middle; font-weight:bold" align="center">@*@TempData["Title"].ToString().ToUpper()*@</td>
+            <td colspan="2" align="right"><a href="/News/Comment"><i class="fa fa-reply mr5" aria-hidden="true"></i> Quay lại</a></td>
+        </tr>
+        <tr>
+            <th width="150">Người trả lời</th>
+            <th>Email</th>
+            <th>Ngày gửi</th>
+            <th width="500">Nội dung</th>
+            <th width="110"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            item.NoiDung = HttpUtility.HtmlDecode(item.NoiDung);
+            var noidung = "";
+            if (item.NoiDung.Count() > 200)
+            {
+                noidung = item.NoiDung.Substring(0, 199) + "...";
+            }
+            else { noidung = item.NoiDung; }
+            <tr>
+                <td style="vertical-align: middle;">@item.FullName</td>
+                <td style="vertical-align: middle;">@item.Email</td>
+                <td style="vertical-align: middle;">@HelperDateTime.ConvertDateToString(item.CreateDate)</td>
+                <td style="vertical-align: middle;">@noidung</td>
+                <td style="vertical-align: middle;">
+                    <div class="btn-list pull-right mr5">
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.View))
+                        {
+                            <a href="#" class="btn btn-primary btn-bordered" onclick="newscomment.details(@item.ID) "><i class="fa fa-pencil"></i></a>
+                        }
+                        @if (lstAction != null && lstAction.Contains((int)EnumHelper.Action.Delete))
+                        {
+                            <a href="#" class="btn btn-danger btn-bordered" onclick="newscomment.ondelete(@item.ID,@item.CommentID) ">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

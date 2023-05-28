@@ -1,0 +1,144 @@
+﻿<link rel="stylesheet" href="/Content/Admin/assets/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="/Content/Admin/assets/colorpicker/js/colorpicker.js"></script>
+<script src="/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/_references.js"></script>
+<script src="~/Scripts/datepicker.min.js"></script>
+<link href="~/Scripts/datepicker.min.css" rel="stylesheet" />
+@using Web.Model
+@model Web.Model.tbl_Document_Type
+    @{
+        var lstLanguages = (List<tbl_Languages>)TempData["languages"];
+        var LangCode = (String)Session["LangCode"];
+    }
+    @using (Ajax.BeginForm("Add", "DocumentType", null,
+                                                                        new AjaxOptions
+                                                                        {
+                                                                            HttpMethod = "POST",
+                                                                            OnSuccess = "DocumentType.onAddSuccess"
+                                                                        },
+                                                                        new { @id = "basicForm", @class = "form-horizontal" }))
+    {
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Ngôn ngữ</label>
+            <div class="col-md-9">
+                <select id="LangCode" name="LangCode" class="form-control select2">
+
+                    @{
+
+                        foreach (var item in lstLanguages)
+                        {
+                            <option value="@item.Code" @(LangCode != null && LangCode == item.Code ? "selected" : "")>@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Danh mục cha</label>
+            @{
+                var lstDocumentType = (List<tbl_Document_Type>)TempData["DocumentType"];
+                lstDocumentType.ForEach(g => g.Name = string.Concat(Enumerable.Repeat("--", g.Level)) + g.Name);
+            }
+            <div class="col-md-9">
+                @Html.DropDownListFor(x => x.ParentID, new SelectList(lstDocumentType, "ID", "Name"), "- Chọn danh mục cha -", new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Tiêu đề <span class="asterisk">(*)</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tiêu đề" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Ảnh<span class="asterisk">(*)</span></label>
+            <div class="col-md-9">
+                @Html.HiddenFor(g => g.Photo)
+                <a id="Browser" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                    <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+                </a>
+                <div class="mt10" id="previewthumbnail"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Thứ tự <span class="asterisk">(*)</span></label>
+            <div class="col-sm-9">
+                @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "Thứ tự", Value = "0" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 pull-right">
+                <div class="checkbox checkbox-primary">
+                    <input id="Status" name="Status" type="checkbox" checked="" value="true">
+                    <label for="Status">
+                        Kích hoạt
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-10 text-center">
+            <button type="submit" class="btn btn-primary waves-effect waves-light" style="margin-right: 150px;margin-left: 150px;">Thêm mới</button>
+            <button type="button" onclick="modal.hide()" class="btn btn-default waves-effect waves-light"><i class="glyphicon glyphicon-ban-circle"></i> Đóng</button>
+        </div>
+                        }
+    <style>
+        .asterisk {
+            color: red;
+            font-weight: normal;
+        }
+    </style>
+<script src="~/AppJs/documenttype_validate.js"></script>
+<style>
+    #aTag{
+        color: red;
+        text-decoration: none;
+        padding: 0px;
+        margin: 0px;
+        position:  absolute;
+        z-index:  2;
+        right: -9px;
+        bottom: -12px;
+    }
+    #previewthumbnail{
+       
+        position:  relative;
+        display: table;
+      
+    }
+</style>
+<script>
+    function RemoveImage() {
+        debugger;
+        swal({
+            title: "Bạn có muốn xóa ảnh này không?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $("#image").remove();
+                $("#Photo").val("");
+                $("#aTag").remove();
+            }
+            $("#loading").hide();
+        });
+
+    };
+    $(".select2").select2({ "width": "100%" });
+    $("#Browser").click(function () {
+        var ckfinder = new CKFinder();
+        ckfinder.selectActionFunction = function (fileUrl) {
+            $("#previewthumbnail").html('<a id="aTag" href="#" onclick="RemoveImage()" title="Xóa ảnh"><i class="fa fa-close" style="font-size: 25px;"></i></a>' +
+                '<img id="image" src="' + fileUrl + '" width=150 />');
+            $("#Photo").val(fileUrl);
+        }
+        ckfinder.popup();
+
+    });
+</script>

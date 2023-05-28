@@ -1,0 +1,316 @@
+﻿
+
+@{
+    ViewBag.Title = "Thêm mới bài viết";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var objeMagazine = (tbl_eMagazine)TempData["objeMagazine"];
+    var sc = Request["sc"];
+}
+<script src="/Content/Admin/assets/select2/select2.min.js"></script>
+<script src="/Scripts/jquery.validate.min.js"></script>
+@using Web
+@using Web.Core
+@using Web.Model
+@model  List<tbl_SubeMagazine>
+@using (Html.BeginForm("AddeMagazine", "eMagazine", FormMethod.Post, new { id = "frmpost", @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    <input type="hidden" name="IDParent" id="IDParent" value="@objeMagazine.ID" />
+    <input type="hidden" name="Total" id="Total" value="0" />
+    <input type="hidden" name="isContinue" id="isContinue" value="0" /> 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Thêm mới bài viết</h3>
+                </div>
+                <div class="panel-body"> 
+                    <div class="col-md-11">
+                        <div id="eMagazine_content" style="margin: 20px 0">
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                var count = 0;
+                                foreach (var item in Model)
+                                {
+                                    if (String.IsNullOrEmpty(item.Content))
+                                    {
+                                        <div class="hinhanh form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label class="control-label">Thứ tự</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <input type="number" value="@item.Ordering" min="0" name="ordering_@count" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label">Chọn ảnh</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <input type="file" multiple class="uploadFile" name="fileimg_@count" />
+                                                            <input type="hidden" name="StrPhoto_@count" value="@item.StrPhoto" />
+                                                            <div style="margin: 10px 0">
+                                                                @if (!String.IsNullOrEmpty(item.StrPhoto))
+                                                                {
+                                                                    foreach (var items in item.StrPhoto.Split('|'))
+                                                                    {
+                                                                        <a href="javascript://" class="item_img">
+                                                                            <img src="@items" alt="" />
+                                                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    }
+                                                                    <div style="clear: both"></div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label">
+                                                        <a href="javascript://" title="Nâng cao" class="advance"><i class="fa fa-cog" aria-hidden="true"></i> Nâng cao</a>
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <label class="control-label">
+                                                        <a href="javascript://" title="Xóa" class="delete_image"><i class="fa fa-times" aria-hidden="true"></i> Xóa</a>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 advanceDiv" style="display: none; margin-top: 5px">
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label class="control-label">Vị trí</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <select name="position_@count" class="form-control select2">
+                                                                <option @(item.PositionPhoto == 1 ? "selected" : "") value="1">Giữa</option>
+                                                                <option @(item.PositionPhoto == 2 ? "selected" : "") value="2">Trái</option>
+                                                                <option @(item.PositionPhoto == 3 ? "selected" : "") value="3">Phải</option>
+                                                                <option @(item.PositionPhoto == 4 ? "selected" : "") value="4">Trái nội dung</option>
+                                                                <option @(item.PositionPhoto == 5 ? "selected" : "") value="5">Phải nội dung</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label class="control-label">Số ảnh / dòng</label>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <input type="number" value="@item.NumberPhoto" min="0" class="form-control" name="countimg_@count"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-2"></div>
+                                                    <div class="col-md-10">
+                                                        <div class="checkbox checkbox-primary">
+                                                            <input name="check_@count" type="checkbox" @(item.isFullWidth ? "checked" : "") value="true"><label>Full màn hình</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 dorong">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label class="control-label">Độ rộng (%)</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <input type="number" value="@item.WidthPhoto" min="0" class="form-control" name="widthimg_@count"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="noidung form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label class="control-label">Thứ tự</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <input type="number" value="@item.Ordering" min="0" class="form-control" name="ordering_@count" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea id="content_@count" name="content_@count">@item.Content</textarea>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <label class="control-label">
+                                                        <a href="javascript://" title="Xóa" class="delete_content"><i class="fa fa-times" aria-hidden="true"></i> Xóa</a>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            CKEDITOR.replace("content_@count", {
+                                                language: 'vi',
+                                                disableNativeSpellChecker: false,
+                                                filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+                                                filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+                                                filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+                                                height: 150
+                                            });
+                                        </script>
+                                    }
+                                    count++;
+                                }
+
+                                <script>
+                                    var count = '@count';
+                                    if (count != '') $('#Total').val(count);
+                                    else $('#Total').val(0);
+
+                                    $('.item_img .fa').click(function () {
+                                        var href = $(this).prev().attr("src");
+                                        var val = $(this).parent('.item_img').parent().prev().val().split("|");
+                                        val = jQuery.grep(val, function (a) {
+                                            return a != href;
+                                        });
+                                        var strFile = val.join('|');
+                                        $(this).parent('.item_img').parent().prev().val(strFile);
+                                        $(this).parent('.item_img').remove();
+                                    });
+                                </script>
+                                <style>
+                                    .item_img { border: 1px solid #fff; box-sizing: border-box; display: block; float: left; position: relative; width: calc(100% / 4); }
+                                    .item_img .fa { color: red; position: absolute; right: 5px; top: 5px; z-index: 10; }
+                                    .item_img img { max-width: 100%; }
+                                </style>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-1" style="position: fixed; right: 0; bottom: 100px; z-index: 100">
+                        @{
+                            var link = "/pages/eMagazine/detail/" + objeMagazine.ID + "/" + HelperString.RemoveMark(objeMagazine.Name) + ".html";
+                        }
+                        <a href="@link" id="View" target="_blank" class="btn btn-success waves-effect waves-light" style="width: 100%; display: block"><i class="fa fa-search" aria-hidden="true"></i> Xem</a>
+                        <div style="height: 7px"></div>
+                        <a href="javascript://" id="addImage" class="btn btn-info waves-effect waves-light" style="width: 100%; display: block"><i class="fa fa-plus" aria-hidden="true"></i> Ảnh</a>
+                        <div style="height: 7px"></div>
+                        <a href="javascript://" id="addContent" class="btn btn-danger waves-effect waves-light" style="width: 100%; display: block"><i class="fa fa-plus" aria-hidden="true"></i> Nội dung</a>
+                        <div style="height: 7px"></div>
+                        <a href="javascript://" onclick="$('#frmpost').submit();" class="btn btn-primary waves-effect waves-light" style="width: 100%; display: block"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a>
+                        <div style="height: 7px"></div>
+                        <a href="javascript://" onclick="Exit();" class="btn btn-warning waves-effect waves-light" style="width: 100%; display: block"> <i class="fa fa-sign-out" aria-hidden="true"></i> Thoát</a>
+                        <div style="height: 7px"></div>
+                        <a href="javascript://" onclick="history.back()" class="btn btn-default waves-effect waves-light" style="width: 100%; display: block">Quay lại</a>
+                        <div class="clear"></div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .asterisk{ color: red; font-weight: normal; }
+    .clear{ clear: both; }
+    .hinhanh, .noidung{ border-bottom: 1px solid #dadada; padding: 5px 0; }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.select2').select2(); 
+        $('#addContent').click(function () {
+            var count = $('#Total').val();
+            var id = "content_" + count;
+            $('#eMagazine_content').append("<div class='noidung form-group'><div class='col-md-12'><div class='col-md-2'><div class='row'><div class='col-md-5'><label class='control-label'>Thứ tự</label></div><div class='col-md-7'><input type='number' value='" + count + "' min='0' class='form-control' name='ordering_" + count + "'/></div></div> </div><div class='col-md-9'><textarea id='" + id + "' name='" + id + "'></textarea></div><div class='col-md-1'> <label class='control-label'><a href='javascript://' title='Xóa' class='delete_content'><i class='fa fa-times' aria-hidden='true'></i> Xóa</a></label></div></div></div>");
+            CKEDITOR.replace(id, {
+                language: 'vi',
+                disableNativeSpellChecker: false,
+                filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+                filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+                filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+                height: 150
+            });
+            count++;
+            $('#Total').val(count);
+        }); 
+        $('#addImage').click(function () {
+            var count = $('#Total').val();
+            $('#eMagazine_content').append(
+                '<div class="hinhanh form-group"><div class="col-md-12"><div class="col-md-2"><div class="row"><div class="col-md-5"><label class="control-label">Thứ tự</label></div><div class="col-md-7"><input type="number" value="' + count + '" min="0" name="ordering_' + count + '" class="form-control"/></div></div></div><div class="col-md-7"><div class="row"><div class="col-md-2"><label class="control-label">Chọn ảnh</label></div><div class="col-md-10"><input type="file" multiple class="uploadFile" name="fileimg_' + count + '"/><input type="hidden" name="StrPhoto_' + count + '" value="" /></div></div></div><div class="col-md-2"><label class="control-label"><a href="javascript://" title="Nâng cao" class="advance"><i class="fa fa-cog" aria-hidden="true"></i> Nâng cao</a></label></div><div class="col-md-1"><label class="control-label"><a href="javascript://" title="Xóa" class="delete_image"><i class="fa fa-times" aria-hidden="true"></i> Xóa</a></label></div></div><div class="col-md-12 advanceDiv" style="margin-top:5px; display:none;"><div class="col-md-3"><div class="row"><div class="col-md-3"><label class="control-label">Vị trí</label></div><div class="col-md-9"><select name="position_' + count + '" class="form-control select2"><option value="1">Giữa</option><option value="2">Trái</option><option value="3">Phải</option><option value="4">Trái nội dung</option><option value="5">Phải nội dung</option></select></div></div></div><div class="col-md-3"><div class="row"><div class="col-md-6"><label class="control-label">Số ảnh / dòng</label></div><div class="col-md-6"><input type="number" value="1" min="0" class="form-control" name="countimg_' + count + '"/></div></div> </div><div class="col-md-3"><div class="col-md-2"></div><div class="col-md-10"><div class="checkbox checkbox-primary"><input name="check_' + count + '" type="checkbox" checked="" value="true"><label>Full màn hình</label></div></div></div><div class="col-md-3 dorong"><div class="row"><div class="col-md-5"><label class="control-label">Độ rộng (%)</label></div><div class="col-md-7"><input type="number" value="100" min="0" class="form-control" name="widthimg_' + count + '"/></div></div></div></div></div>');
+            count++;
+            $('#Total').val(count);
+            $('.select2').select2('destroy');
+            $('.select2').select2();
+        });
+
+        var sc = '@sc';
+        if (sc == 1) alertmsg.success("Cập nhật thành công!");
+        if (sc == 2) { alertmsg.error("Cập nhật thất bại!"); }
+         
+    });
+    $('#eMagazine_content').on('click','.advance', function () {
+        $(this).parents(".col-md-12").next().slideToggle();
+    });
+    $('#eMagazine_content').on('click','.delete_content', function () {
+        $del = $(this);
+        swal({
+                title: "Bạn có chắc chắn không?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Có",
+                cancelButtonText: "không",
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $del.parents(".noidung").remove();
+                    var count = $('#Total').val();
+                    count--;
+                    $('#Total').val(count);
+                }
+            });
+    });
+    $('#eMagazine_content').on('click','.delete_image', function () {
+        $del = $(this);
+        swal({
+                title: "Bạn có chắc chắn không?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Có",
+                cancelButtonText: "không",
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $del.parents(".hinhanh").remove();
+                    var count = $('#Total').val();
+                    count--;
+                    $('#Total').val(count);
+                }
+            });
+    }); 
+    function Exit() { 
+        swal({
+                title: "Bạn có muốn lưu không?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Có",
+                cancelButtonText: "không",
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $('#isContinue').val(1);
+                    $('#frmpost').submit();
+                } else { 
+                    location.href = "/Admin/eMagazine";
+                }
+            });
+    }  
+</script>

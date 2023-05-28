@@ -1,0 +1,76 @@
+﻿@model Web.Model.tbl_NewsPaper
+@using (Ajax.BeginForm("Add", "NewsPaper", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "newspaper.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tiêu đề: </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class="form-control", placeholder = "Tiêu đề bài viết"})
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Mô tả</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.Description, new { @class = "form-control", @rows = 5 })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Nội dung: </label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(g => g.NoiDung, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" checked="" value="1">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $("#basicForm").validate({
+            rules:
+            {
+                Name:
+                {
+                    required: true
+                },
+                NoiDung:
+                {
+                    required: true
+                }
+            },
+            messages:
+            {
+                Name:
+                {
+                    required: "Bạn phải nhập trường này"
+                },
+                NoiDung:
+                {
+                    required: "Bạn phải nhập trường này"
+                }
+            },
+        });
+        CKEDITOR.replace("NoiDung", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Content/Admin/assets/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Content/Admin/assets/ckfinder/ckfinder.html?Type=Flash',
+            height: 250
+        });
+    })
+</script>

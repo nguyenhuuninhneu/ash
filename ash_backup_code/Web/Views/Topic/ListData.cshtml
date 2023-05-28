@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+@using Web.Core
+@using Web.Model
+@model IEnumerable<Web.Model.tbl_TopicComment>
+@{
+    var dothtml = ".html"; 
+}
+ 
+<div class="noidung1">
+    @foreach (var item in Model)
+    {
+        <div class="item">
+            <div class="image">
+                <div>
+                    <img src="~/assets/display/Css/Icon/user.png" />
+                    <span>
+                        @string.Format("{0: HH:mm}", item.CreateDate)<br />
+                        @string.Format("{0: dd/MM/yyyy}", item.CreateDate).Replace('-', '/')
+                    </span>
+                </div>
+            </div>
+            <div class="details">
+                <div>
+                    <div class="name">@item.NoiDung</div>
+                    <div class="infouser">
+                        <span>@item.FullName - @item.Email</span>
+                    </div>
+                    <div>@Html.Raw(item.TraLoi) </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

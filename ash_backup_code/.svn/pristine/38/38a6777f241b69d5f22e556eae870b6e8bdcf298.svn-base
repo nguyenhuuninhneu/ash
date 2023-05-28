@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Danh sách eMagazine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+@using Web.Areas.Admin.Controllers
+@using Web.Core
+@using Web.Model
+@model List<tbl_eMagazine>
+
+@if (Model.Count > 0 && Model != null)
+{
+    var link = "";
+    <div id="emagazine">
+        <div class="group">
+            @foreach (var item in Model)
+            {
+                link = "pages/eMagazine/detail/"+ item.ID +"/"+ HelperString.RemoveMark(item.Name) +".html";
+                <div class="item">
+                    <div class="khungAnh">
+                        <a class="khungAnhCrop" href="@link" title="@item.Name">
+                            <img src="@item.Photo" alt="@item.Name" />
+                        </a>
+                    </div>
+                    <a href="@link" title="@item.Name" class="name">@item.Name</a>
+                    <div class="date">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> @Convert.ToDateTime(item.CreatedDate).ToString("dd/MM/yyyy hh:mm").Replace('-','/')
+                    </div>
+                    <div class="cont">
+                        @Html.Raw(item.Description)
+                    </div>
+                </div> 
+            }
+            <div class="cb"></div>
+        </div>
+    </div>
+}
+else
+{
+    <p style="font-style: italic; text-align: center;">@(ConfigTextController.GetValueCFT("DuLieuDangCapNhat"))</p>
+}
+
+
+<style>
+    #container .colleft {width: 100%}
+    #container .colright {display: none}
+</style>

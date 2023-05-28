@@ -1,0 +1,136 @@
+﻿<script src="~/Content/Admin/assets/ckfinder/ckfinder.js"></script>
+@using Web
+@using Web.Model
+@model Web.Model.tbl_Gallery
+@using (Ajax.BeginForm("Add", "Gallery", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "Gallery.onAddSuccess"
+    },
+    new { @id = "basicForm", @class = "form-horizontal" }))
+{
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Ngôn ngữ</label>
+        @{
+            var languages = (List<tbl_Languages>)TempData["Languages"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.LangCode, new SelectList(languages, "Code", "Name"), new { @class = "form-control" })
+        </div>
+    </div>*@
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Thuộc trang</label>
+        @{
+    var lstpageElements = (List<tbl_PageElement>)TempData["PageElement"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.PageElementId, new SelectList(lstpageElements, "ID", "Name"), new { @class = "form-control" })
+        </div>
+    </div>*@
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">Danh mục</label>
+        @{
+    var lstGalleryCategory = (List<tbl_GalleryCategory>)TempData["GalleryCategory"];
+        }
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.CategoryId, new SelectList(lstGalleryCategory, "ID", "Name"), "--Danh mục--", new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-md-2 control-label">Tên ảnh</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Name, new { @class = "form-control", placeholder = "Tên ảnh" })
+        </div>
+    </div>
+     @*<div class="form-group">
+        <label class="col-md-2 control-label">Đường dẫn</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(g => g.Url, new { @class = "form-control", placeholder = "http://" })
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ảnh</label>
+        <div class="col-md-10">
+            @Html.HiddenFor(g => g.Images)
+            <a id="Browser" class="btn btn-primary btn-custom waves-effect waves-light m-b-5">
+                <span class="glyphicon glyphicon-paperclip"></span> Tải ảnh lên
+            </a>
+            <div class="mt10" id="previewthumbnail"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Thứ tự hiển thị</label>
+        <div class="col-md-2">
+            @Html.TextBoxFor(g => g.Ordering, new { @class = "form-control", placeholder = "Thứ tự hiển thị" })
+        </div>
+    </div>
+    @*<div class="form-group">
+        <label class="col-md-2 control-label">Vị trí</label>
+        <div class="col-md-10">
+            <select class="form-control" id="typeslide" name="Type">
+                <option value="">--- Chọn vị trí ---</option>
+                <option value="@((int)Webconfig.Gallery.LargeImage)">Slide lớn</option>
+                <option value="@((int)Webconfig.Gallery.SmallImage)">Slide nhỏ</option>
+            </select>
+        </div>
+    </div>*@
+    <div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="Status" name="Status" type="checkbox" checked="" value="true">
+                <label for="Status">
+                    Kích hoạt
+                </label>
+            </div>
+        </div>
+    </div>
+    @*<div class="form-group">
+        <div class="col-sm-10 pull-right">
+            <div class="checkbox checkbox-primary">
+                <input id="IsHome" name="IsHome" type="checkbox" value="true">
+                <label for="IsHome">
+                    Hiển thị trang chủ
+                </label>
+            </div>
+        </div>
+    </div>*@
+    <div class="col-md-10 pull-right pl0">
+        <button type="submit" onclick="return validate();" class="btn btn-primary waves-effect waves-light">Thêm mới</button>
+    </div>
+}
+<script>
+    // Basic Form
+    $(document).ready(function () {
+        $("#Browser").click(function () {
+            var ckfinder = new CKFinder();
+            ckfinder.selectActionFunction = function (fileUrl) {
+                $("#previewthumbnail").html('<img src="' + fileUrl + '" width=150 />');
+                $("#Images").val(fileUrl);
+            }
+            ckfinder.popup();
+        });
+        //$("#basicForm #LangCode").change(function () {
+        //    $.get("/PageElement/GetAllByLangCode?LangCode=" + $(this).val(), function (res) {
+        //        var html = "";
+        //        for (var i = 0; i < res.length; i++) {
+        //            html += '<option value="' + res[i].ID + '">' + res[i].Name + '</option>';
+        //        }
+        //        $("#basicForm #PageElementId").html(html);
+        //    });
+        //});
+    });
+    var validate = function () {
+        if ($("#Images").val() == "") {
+            alertmsg.error("Bạn chưa chọn ảnh");
+            return false;
+        }
+        //if ($("#typeslide").val() == "") {
+        //    alertmsg.error("Bạn chưa chọn loại slide");
+        //    return false;
+        //}
+        return true;
+    }
+</script>
