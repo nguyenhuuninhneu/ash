@@ -1,7 +1,0 @@
-﻿@{ 
-    Layout = null;
-}
-@using Web.Model
-@model tbl_Advert
-<link rel="shortcut icon" href="@Model.Image">
- 

@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<repositories>
-  <repository path="..\Web.Core\packages.config" />
-  <repository path="..\Web.Model\packages.config" />
-  <repository path="..\Web.Repository.Entity\packages.config" />
-  <repository path="..\Web.Repository\packages.config" />
-  <repository path="..\Web\packages.config" />
-</repositories>
